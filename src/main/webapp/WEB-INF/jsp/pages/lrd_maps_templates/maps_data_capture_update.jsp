@@ -1,1283 +1,209 @@
-<%@ page language="java"
-    contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
 <%@ page import="ws.casemgt.Ws_client_application" %>
 <%@ page import="ws.users.Ws_users" %>
-
 <%@ page import="org.codehaus.jettison.json.*" %>
+<%@ page import="com.google.gson.Gson" %>
+<%@ page import="com.google.gson.GsonBuilder" %>
 <%@ page import="org.codehaus.jettison.json.JSONArray" %>
 <%@ page import="org.codehaus.jettison.json.JSONException" %>
 <%@ page import="org.codehaus.jettison.json.JSONObject" %>
 
-<%@ page import="com.google.gson.Gson" %>
-<%@ page import="com.google.gson.GsonBuilder" %>
-
-
-<div class="main-content app-content">
-
-    <div class="container-fluid page-container">
-
-        <!-- ========================================================= -->
-        <!-- PAGE HEADER                                               -->
-        <!-- ========================================================= -->
-        <div class="page-header-breadcrumb mb-4">
-
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-
-                <!-- LEFT -->
-                <div>
-
-                    <h1 class="page-title fw-semibold fs-20 mb-1">
-                        LRD Map Plottings
-                    </h1>
-
-                    <p class="text-muted mb-0">
-                        <i class="ri-information-line me-1"></i>
-                        Manage and plot LRD parcels and transactions
-                    </p>
-
-                </div>
-
-
-                <!-- RIGHT -->
-                <div class="text-end">
-
-                    <ol class="breadcrumb justify-content-end mb-2">
-
-                        <li class="breadcrumb-item">
-
-                            <a href="javascript:void(0);"
-                               class="text-decoration-none">
-                                ELIS
-                            </a>
-
-                        </li>
-
-
-                        <li class="breadcrumb-item">
-
-                            <a href="javascript:void(0);"
-                               class="text-decoration-none">
-                                LRD Map Plotting
-                            </a>
-
-                        </li>
-
-
-                        <li class="breadcrumb-item active"
-                            aria-current="page">
-                            Maps
-                        </li>
-
-                    </ol>
-
-
-                    <span class="badge bg-primary me-2 px-3 py-2">
-
-                        <i class="ri-map-pin-line me-1"></i>
-
-                        Parcels:
-
-                        <strong>
-                            <c:out value="${parcel_count}" default="0" />
-                        </strong>
-
-                    </span>
-
-
-                    <span class="badge bg-success px-3 py-2">
-
-                        <i class="ri-ruler-2-line me-1"></i>
-
-                        Acreage:
-
-                        <strong>
-                            <c:out value="${total_acreage}" default="0" />
-                        </strong>
-
-                    </span>
-
-                </div>
-
-            </div>
-
-        </div>
-        <!-- END PAGE HEADER -->
-
-
-        <div class="row">
-
-            <!-- ===================================================== -->
-            <!-- LEFT SIDEBAR                                         -->
-            <!-- ===================================================== -->
-            <div class="col-lg-4 col-xl-3">
-
-                <div class="card shadow-sm border-0 mb-4">
-
-
-                    <!-- ================================================= -->
-                    <!-- CONTROL PANEL HEADER                              -->
-                    <!-- ================================================= -->
-                    <div class="card-header bg-gradient-primary text-white border-0 py-3">
-
-                        <h5 class="mb-0 fw-semibold">
-
-                            <i class="fas fa-sliders-h me-2"></i>
-                            Control Panel
-
-                        </h5>
-
-                    </div>
-
-
-                    <div class="card-body">
-
-
-                        <!-- ================================================= -->
-                        <!-- MAIN ACTION BUTTONS                               -->
-                        <!-- ================================================= -->
-                        <div class="btn-group w-100 mb-4"
-                             role="group"
-                             aria-label="Coordinate actions">
-
-
-                            <!-- ADD COORDINATE -->
-                            <button
-                                type="button"
-                                class="btn btn-primary btn-sm"
-                                id="lc_btn_add_coordinate"
-                                data-bs-toggle="modal"
-                                data-bs-target="#addcoordinatetoplot"
-                                title="Add Coordinate">
-
-                                <i class="fas fa-plus-circle me-1"></i>
-                                Add
-
-                            </button>
-
-
-                            <!-- UPLOAD CSV -->
-                            <button
-                                type="button"
-                                class="btn btn-info btn-sm"
-                                id="lrd_btn_add_coordinate_by_csv"
-                                data-bs-toggle="modal"
-                                data-bs-target="#uploadcoordiantecsv"
-                                title="Upload CSV">
-
-                                <i class="fas fa-upload me-1"></i>
-                                CSV
-
-                            </button>
-
-
-                            <!-- VISUALISE -->
-                            <button
-                                type="button"
-                                class="btn btn-warning btn-sm"
-                                id="lrd_btn_visualise_coordinate"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="top"
-                                title="Visualise Polygon">
-
-                                <i class="fas fa-eye me-1"></i>
-                                Visualise
-
-                            </button>
-
-                        </div>
-
-
-                        <!-- ================================================= -->
-                        <!-- COORDINATE LIST                                   -->
-                        <!-- ================================================= -->
-                        <div class="mb-4">
-
-                            <h6 class="fw-semibold mb-3 text-primary">
-
-                                <i class="fas fa-list-ol me-2"></i>
-                                Coordinate List
-
-                            </h6>
-
-
-                            <div class="table-responsive">
-
-                                <table
-                                    class="table table-hover table-sm align-middle"
-                                    id="coordinatelis_Table">
-
-                                    <thead class="table-light">
-
-                                        <tr>
-
-                                            <th>
-                                                Name
-                                            </th>
-
-                                            <th>
-                                                X
-                                            </th>
-
-                                            <th>
-                                                Y
-                                            </th>
-
-                                            <th class="text-center">
-                                                Action
-                                            </th>
-
-                                        </tr>
-
-                                    </thead>
-
-
-                                    <tbody>
-
-                                        <!--
-                                            Coordinate rows are inserted
-                                            dynamically by JavaScript.
-                                        -->
-
-                                    </tbody>
-
-                                </table>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- ================================================= -->
-                        <!-- WKT POLYGON                                       -->
-                        <!-- ================================================= -->
-                        <div class="mb-4">
-
-                            <h6 class="fw-semibold mb-2 text-primary">
-
-                                <i class="fas fa-draw-polygon me-2"></i>
-                                WKT Polygon
-
-                            </h6>
-
-
-                            <textarea
-                                class="form-control form-control-sm"
-                                rows="4"
-                                id="lrd_txt_wkt_polygon"
-                                placeholder="POLYGON((x1 y1, x2 y2, x3 y3, x1 y1))"></textarea>
-
-
-                            <button
-                                type="button"
-                                class="btn btn-outline-primary btn-sm w-100 mt-2"
-                                id="lrd_btn_visualise_wkt"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="top"
-                                title="Visualise Polygon">
-
-                                <i class="fas fa-map me-1"></i>
-                                Visualise Polygon
-
-                            </button>
-
-
-                            <button
-                                type="button"
-                                class="btn btn-warning btn-sm w-100 mt-2 d-none"
-                                id="lrd_btn_request_add_existing_parcel"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="top"
-                                title="Request For Add Existing Parcel">
-
-                                <i class="fas fa-paper-plane me-1"></i>
-                                Request For Add Existing Parcel
-
-                            </button>
-
-                        </div>
-
-
-                        <!-- ================================================= -->
-                        <!-- QUICK COORDINATE SEARCH                           -->
-                        <!-- ================================================= -->
-                        <div class="card border-success mb-4">
-
-                            <div class="card-header bg-success bg-opacity-10 border-success py-2">
-
-                                <h6 class="mb-0 fw-semibold">
-
-                                    <i class="fas fa-search-location me-2"></i>
-                                    Quick Coordinate Search
-
-                                </h6>
-
-                            </div>
-
-
-                            <div class="card-body p-3">
-
-
-                                <!-- ========================================= -->
-                                <!-- X / Y COORDINATE SEARCH                  -->
-                                <!-- ========================================= -->
-                                <div class="row g-2 mb-2">
-
-                                    <div class="col-5">
-
-                                        <input
-                                            type="text"
-                                            class="form-control form-control-sm"
-                                            id="lrd_x_coordinate"
-                                            autocomplete="off"
-                                            inputmode="decimal"
-                                            placeholder="X Coordinate">
-
-                                    </div>
-
-
-                                    <div class="col-5">
-
-                                        <input
-                                            type="text"
-                                            class="form-control form-control-sm"
-                                            id="lrd_y_coordinate"
-                                            autocomplete="off"
-                                            inputmode="decimal"
-                                            placeholder="Y Coordinate">
-
-                                    </div>
-
-
-                                    <div class="col-2">
-
-                                        <div class="d-grid gap-1">
-
-                                            <button
-                                                type="button"
-                                                class="btn btn-primary btn-sm"
-                                                id="lrd_btn_show_location"
-                                                data-bs-toggle="tooltip"
-                                                data-bs-placement="left"
-                                                title="Show Location">
-
-                                                <i class="fas fa-map-marker-alt"></i>
-
-                                            </button>
-
-
-                                            <button
-                                                type="button"
-                                                class="btn btn-outline-primary btn-sm"
-                                                id="lrd_btn_load_for_scanned_maps_by_point"
-                                                data-bs-toggle="tooltip"
-                                                data-bs-placement="left"
-                                                title="Load Scanned Maps">
-
-                                                <i class="fas fa-map"></i>
-
-                                            </button>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-
-                                <!-- ========================================= -->
-                                <!-- CERTIFICATE / REFERENCE SEARCH           -->
-                                <!-- ========================================= -->
-                                <div class="row g-2">
-
-                                    <div class="col-10">
-
-                                        <input
-                                            type="text"
-                                            class="form-control form-control-sm"
-                                            id="lrd_search_by_text"
-                                            autocomplete="off"
-                                            placeholder="Search by Certificate/Ref Number">
-
-                                    </div>
-
-
-                                    <div class="col-2">
-
-                                        <button
-                                            type="button"
-                                            class="btn btn-info btn-sm w-100"
-                                            id="lrd_btn_search_by_certificate_number"
-                                            data-bs-toggle="tooltip"
-                                            data-bs-placement="left"
-                                            title="Search Certificate or Reference Number">
-
-                                            <i class="fas fa-search"></i>
-
-                                        </button>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- ================================================= -->
-                        <!-- SCANNED MAPS                                      -->
-                        <!-- ================================================= -->
-                        <div class="card border-warning mb-4">
-
-                            <div class="card-header bg-warning bg-opacity-10 border-warning py-2">
-
-                                <h6 class="mb-0 fw-semibold">
-
-                                    <i class="fas fa-layer-group me-2"></i>
-                                    Scanned Maps
-
-                                </h6>
-
-                            </div>
-
-
-                            <div class="card-body p-3">
-
-                                <div class="mb-3">
-
-                                    <label
-                                        for="geoserverscannedimages_list"
-                                        class="form-label small fw-semibold">
-
-                                        Scanned Map Sheet
-
-                                    </label>
-
-
-                                    <select
-                                        class="form-select form-select-sm"
-                                        id="geoserverscannedimages_list"
-                                        name="geoserverscannedimages_list">
-
-                                        <option value="-1">
-                                            Select Scanned Image
-                                        </option>
-
-                                    </select>
-
-                                </div>
-
-
-                                <div class="d-flex gap-2">
-
-                                    <button
-                                        type="button"
-                                        class="btn btn-warning btn-sm flex-fill"
-                                        id="lrd_btn_search_for_scanned_maps"
-                                        data-bs-toggle="tooltip"
-                                        data-bs-placement="top"
-                                        title="Search for related scanned maps">
-
-                                        <i class="fas fa-search me-1"></i>
-                                        Search
-
-                                    </button>
-
-
-                                    <button
-                                        type="button"
-                                        class="btn btn-success btn-sm flex-fill"
-                                        id="lrd_btn_load_for_scanned_maps"
-                                        data-bs-toggle="tooltip"
-                                        data-bs-placement="top"
-                                        title="Load selected scanned map">
-
-                                        <i class="fas fa-check-circle me-1"></i>
-                                        Load
-
-                                    </button>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- ================================================= -->
-                        <!-- ADVANCED SCANNED MAP SEARCH                       -->
-                        <!-- ================================================= -->
-                        <div class="card border-info mb-4">
-
-                            <div class="card-header bg-info bg-opacity-10 border-info py-2">
-
-                                <h6 class="mb-0 fw-semibold">
-
-                                    <i class="fas fa-search-plus me-2"></i>
-                                    Advanced Search
-
-                                </h6>
-
-                            </div>
-
-
-                            <div class="card-body p-3">
-
-                                <div class="mb-3">
-
-                                    <label
-                                        for="scannned_map_to_search_for"
-                                        class="form-label small fw-semibold">
-
-                                        Map Name
-
-                                    </label>
-
-
-                                    <input
-                                        class="form-control form-control-sm"
-                                        type="text"
-                                        id="scannned_map_to_search_for"
-                                        autocomplete="off"
-                                        placeholder="Enter Map name"
-                                        list="listofscannnedmaptosearchfor">
-
-
-                                    <datalist id="listofscannnedmaptosearchfor">
-                                    </datalist>
-
-                                </div>
-
-
-                                <div class="d-flex gap-2">
-
-                                    <button
-                                        type="button"
-                                        class="btn btn-info btn-sm flex-fill"
-                                        id="lrd_btn_search_for_scanned_maps_all"
-                                        data-bs-toggle="tooltip"
-                                        data-bs-placement="top"
-                                        title="Find scanned maps">
-
-                                        <i class="fas fa-search me-1"></i>
-                                        Find
-
-                                    </button>
-
-
-                                    <button
-                                        type="button"
-                                        class="btn btn-primary btn-sm flex-fill"
-                                        id="lrd_btn_load_for_scanned_maps_all"
-                                        data-bs-toggle="tooltip"
-                                        data-bs-placement="top"
-                                        title="Load all matching scanned maps">
-
-                                        <i class="fas fa-layer-group me-1"></i>
-                                        Load All
-
-                                    </button>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- ================================================= -->
-                        <!-- MULTIPLE PARCEL OVERLAYS                          -->
-                        <!-- ================================================= -->
-                        <div class="mt-4">
-
-                            <h6 class="fw-semibold mb-3 text-primary">
-
-                                <i class="fas fa-copy me-2"></i>
-                                Multiple Parcel Overlays
-
-                            </h6>
-
-
-                            <div class="table-responsive">
-
-                                <table
-                                    class="table table-hover table-sm align-middle"
-                                    id="lrd_more_than_one_parcel_Table">
-
-                                    <thead class="table-light">
-
-                                        <tr>
-
-                                            <th>
-                                                Reference Number
-                                            </th>
-
-                                            <th>
-                                                Locality
-                                            </th>
-
-                                            <th>
-                                                Remarks
-                                            </th>
-
-                                            <th class="text-center">
-                                                Details
-                                            </th>
-
-                                        </tr>
-
-                                    </thead>
-
-
-                                    <tbody>
-
-                                        <!--
-                                            Multiple parcel overlay rows
-                                            are inserted dynamically.
-                                        -->
-
-                                    </tbody>
-
-                                </table>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-            <!-- END LEFT SIDEBAR -->
-
-
-            <!-- ===================================================== -->
-            <!-- MAIN MAP AREA                                        -->
-            <!-- ===================================================== -->
-            <div class="col-lg-8 col-xl-9">
-
-                <div class="card shadow-sm border-0 mb-4">
-
-
-                    <!-- ================================================= -->
-                    <!-- MAP HEADER                                        -->
-                    <!-- ================================================= -->
-                    <div class="card-header bg-gradient-success text-white border-0 py-3">
-
-                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-
-                            <h5 class="mb-0 fw-semibold">
-
-                                <i class="fas fa-map me-2"></i>
-                                Interactive Map Viewer
-
-                            </h5>
-
-
-                            <div class="small">
-
-                                <i class="fas fa-layer-group me-1"></i>
-
-                                Parcels:
-
-                                <strong>
-                                    <c:out value="${parcel_count}" default="0" />
-                                </strong>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="card-body">
-
-
-                        <!-- ================================================= -->
-                        <!-- MAP TOOLBAR                                       -->
-                        <!-- ================================================= -->
-                        <div class="d-flex flex-wrap align-items-center gap-3 mb-4">
-
-
-                            <!-- ================================================= -->
-                            <!-- DRAWING TOOLS                                      -->
-                            <!-- ================================================= -->
-                            <div class="btn-group"
-                                 role="group"
-                                 aria-label="LRD drawing tools">
-
-
-                                <button
-                                    type="button"
-                                    class="btn btn-outline-primary btn-sm"
-                                    id="lrd_btn_draw_polygon"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="top"
-                                    title="Draw Polygon">
-
-                                    <i class="fas fa-draw-polygon me-1"></i>
-                                    Draw
-
-                                </button>
-
-
-                                <button
-                                    type="button"
-                                    class="btn btn-outline-warning btn-sm"
-                                    id="lrd_btn_modify_polygon"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="top"
-                                    title="Modify Shape">
-
-                                    <i class="fas fa-edit me-1"></i>
-                                    Modify
-
-                                </button>
-
-
-                                <button
-                                    type="button"
-                                    class="btn btn-outline-danger btn-sm"
-                                    id="lrd_btn_delete_polygon"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="top"
-                                    title="Delete Selected Polygon">
-
-                                    <i class="fas fa-trash me-1"></i>
-                                    Delete
-
-                                </button>
-
-
-                                <button
-                                    type="button"
-                                    class="btn btn-outline-success btn-sm"
-                                    id="lrd_btn_measure_distance"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="top"
-                                    title="Measure Distance">
-
-                                    <i class="fas fa-ruler me-1"></i>
-                                    Measure
-
-                                </button>
-
-
-                                <button
-                                    type="button"
-                                    class="btn btn-outline-info btn-sm"
-                                    id="lrd_btn_measure_area"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="top"
-                                    title="Measure Area">
-
-                                    <i class="fas fa-ruler-combined me-1"></i>
-                                    Area
-
-                                </button>
-
-                            </div>
-
-
-                            <!-- ================================================= -->
-                            <!-- SCALE CONTROLS                                    -->
-                            <!-- ================================================= -->
-                            <div class="d-flex flex-wrap align-items-center gap-2">
-
-                                <span class="fw-semibold text-muted small">
-                                    Scale:
-                                </span>
-
-
-                                <select
-                                    class="form-select form-select-sm"
-                                    style="width: 125px;"
-                                    id="lrd_scale_value"
-                                    name="lrd_scale_value">
-
-                                    <option value="500">
-                                        1:500
-                                    </option>
-
-                                    <option value="1107">
-                                        1:1,107
-                                    </option>
-
-                                    <option value="1250">
-                                        1:1,250
-                                    </option>
-
-                                    <option value="2140">
-                                        1:2,140
-                                    </option>
-
-                                    <option value="2215">
-                                        1:2,215
-                                    </option>
-
-                                    <option value="2500">
-                                        1:2,500
-                                    </option>
-
-                                    <option value="2670">
-                                        1:2,670
-                                    </option>
-
-                                    <option value="2825">
-                                        1:2,825
-                                    </option>
-
-                                    <option value="5000">
-                                        1:5,000
-                                    </option>
-
-                                    <option value="10000">
-                                        1:10,000
-                                    </option>
-
-                                    <option value="15000">
-                                        1:15,000
-                                    </option>
-
-                                    <option value="20000">
-                                        1:20,000
-                                    </option>
-
-                                </select>
-
-
-                                <div class="form-check mb-0">
-
-                                    <input
-                                        class="form-check-input"
-                                        type="checkbox"
-                                        id="lrd_lockmapscale"
-                                        checked>
-
-
-                                    <label
-                                        class="form-check-label small"
-                                        for="lrd_lockmapscale">
-
-                                        Lock
-
-                                    </label>
-
-                                </div>
-
-
-                                <button
-                                    type="button"
-                                    class="btn btn-primary btn-sm"
-                                    id="lrd_btn_scale_zoom"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="top"
-                                    title="Zoom to Scale">
-
-                                    <i class="fas fa-search"></i>
-
-                                </button>
-
-                            </div>
-
-
-                            <!-- ================================================= -->
-                            <!-- MAP ACTION BUTTONS                                -->
-                            <!-- ================================================= -->
-                            <div class="d-flex flex-wrap gap-2 ms-lg-auto">
-
-
-                                <button
-                                    type="button"
-                                    class="btn btn-outline-danger btn-sm"
-                                    id="lrd_btn_refresh_btn_wkt"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="top"
-                                    title="Refresh Map">
-
-                                    <i class="fas fa-redo me-1"></i>
-                                    Refresh
-
-                                </button>
-
-
-                                <button
-                                    type="button"
-                                    class="btn btn-outline-primary btn-sm"
-                                    id="lrd_btn_print_map"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="top"
-                                    title="Print Map">
-
-                                    <i class="fas fa-print me-1"></i>
-                                    Print
-
-                                </button>
-
-
-                                <button
-                                    type="button"
-                                    class="btn btn-outline-secondary btn-sm"
-                                    id="lrd_btn_clear_measurements"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="top"
-                                    title="Clear Measurements">
-
-                                    <i class="fas fa-eraser me-1"></i>
-                                    Clear
-
-                                </button>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- ================================================= -->
-                        <!-- MAP CONTAINER                                     -->
-                        <!-- ================================================= -->
-                        <div
-                            id="lrd-map-wrapper"
-                            class="border rounded position-relative overflow-hidden"
-                            style="
-                                height: 600px;
-                                min-height: 450px;
-                                background-color: #f8f9fa;
-                            ">
-
-                            <div
-                                id="lrd-map"
-                                class="h-100 w-100">
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- ================================================= -->
-                    <!-- MAP FOOTER                                        -->
-                    <!-- ================================================= -->
-                    <div class="card-footer bg-transparent border-0 pt-3">
-
-                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-
-                            <div class="text-muted small">
-
-                                <i class="fas fa-info-circle me-1"></i>
-
-                                Total Parcels:
-
-                                <span class="fw-semibold">
-                                    <c:out value="${parcel_count}" default="0" />
-                                </span>
-
-                            </div>
-
-
-                            <div class="text-muted small">
-
-                                <i class="fas fa-ruler-combined me-1"></i>
-
-                                Total Acreage:
-
-                                <span class="fw-semibold">
-                                    <c:out value="${total_acreage}" default="0" />
-                                </span>
-
-                            </div>
-
-
-                            <div class="text-muted small">
-
-                                <i class="fas fa-sync-alt me-1"></i>
-
-                                Last updated:
-
-                                <span id="lrd_last_updated">
-                                    Just now
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-            <!-- END MAIN MAP AREA -->
-
-        </div>
-
+<style>
+/* ELIS LRD Map Plotting — scoped emerald green theme */
+.main-content.app-content:has(#lrd-map) {
+  --lrd-green-dark:#064b39; --lrd-green:#087f5b; --lrd-green-bright:#0b9469;
+  --lrd-green-pale:#e9f8ef; --lrd-green-border:#cce9d8;
+  background:linear-gradient(145deg,#f8fcf9,#eef8f1);
+}
+.main-content.app-content:has(#lrd-map) .page-header-breadcrumb {
+  background:linear-gradient(120deg,#064b39 0%,#087f5b 70%,#0b9469 100%);
+  border-radius:16px; padding:20px 24px; box-shadow:0 12px 28px rgba(6,75,57,.16);
+}
+.main-content.app-content:has(#lrd-map) .page-header-breadcrumb .page-title,
+.main-content.app-content:has(#lrd-map) .page-header-breadcrumb p,
+.main-content.app-content:has(#lrd-map) .page-header-breadcrumb .breadcrumb-item,
+.main-content.app-content:has(#lrd-map) .page-header-breadcrumb .breadcrumb-item a {color:#fff!important;}
+.main-content.app-content:has(#lrd-map) .page-header-breadcrumb p,
+.main-content.app-content:has(#lrd-map) .page-header-breadcrumb .breadcrumb-item {opacity:.87;}
+.main-content.app-content:has(#lrd-map) .page-header-breadcrumb .badge {
+  background:rgba(255,255,255,.16)!important;color:#fff!important;
+  border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(6px);
+}
+.main-content.app-content:has(#lrd-map) .card {
+  border:1px solid var(--lrd-green-border)!important;border-radius:15px;
+  box-shadow:0 8px 24px rgba(6,75,57,.07)!important;overflow:hidden;
+}
+.main-content.app-content:has(#lrd-map) .card .card {box-shadow:none!important;border-radius:12px;}
+.main-content.app-content:has(#lrd-map) .card-header.bg-gradient-primary,
+.main-content.app-content:has(#lrd-map) .card-header.bg-gradient-success {
+  background:linear-gradient(115deg,#064b39,#087f5b 75%,#0b9469)!important;
+  color:#fff!important;border:0!important;
+}
+.main-content.app-content:has(#lrd-map) .card-header.bg-gradient-primary *,
+.main-content.app-content:has(#lrd-map) .card-header.bg-gradient-success * {color:#fff!important;}
+.main-content.app-content:has(#lrd-map) .card-header.bg-success,
+.main-content.app-content:has(#lrd-map) .card-header.bg-warning,
+.main-content.app-content:has(#lrd-map) .card-header.bg-info {
+  background:var(--lrd-green-pale)!important;color:var(--lrd-green-dark)!important;
+  border-bottom:1px solid var(--lrd-green-border)!important;
+}
+.main-content.app-content:has(#lrd-map) h6.text-primary,
+.main-content.app-content:has(#lrd-map) .card-header h6 {color:var(--lrd-green-dark)!important;}
+.main-content.app-content:has(#lrd-map) .card-header.bg-gradient-primary h5,
+.main-content.app-content:has(#lrd-map) .card-header.bg-gradient-success h5 {color:#fff!important;}
+.main-content.app-content:has(#lrd-map) .btn-primary,
+.main-content.app-content:has(#lrd-map) .btn-info,
+.main-content.app-content:has(#lrd-map) .btn-success {
+  background:linear-gradient(120deg,#087f5b,#0b9469)!important;
+  border-color:#087f5b!important;color:#fff!important;
+}
+.main-content.app-content:has(#lrd-map) .btn-primary:hover,
+.main-content.app-content:has(#lrd-map) .btn-info:hover,
+.main-content.app-content:has(#lrd-map) .btn-success:hover {
+  background:#064b39!important;border-color:#064b39!important;transform:translateY(-1px);
+}
+.main-content.app-content:has(#lrd-map) .btn-warning {
+  background:#d9f3df!important;border-color:#9bd6b0!important;color:#064b39!important;
+}
+.main-content.app-content:has(#lrd-map) .btn-warning:hover {background:#bce8ca!important;}
+.main-content.app-content:has(#lrd-map) .btn-outline-primary,
+.main-content.app-content:has(#lrd-map) .btn-outline-info,
+.main-content.app-content:has(#lrd-map) .btn-outline-success,
+.main-content.app-content:has(#lrd-map) .btn-outline-warning {
+  color:#087f5b!important;border-color:#89c9a6!important;background:#fff!important;
+}
+.main-content.app-content:has(#lrd-map) .btn-outline-primary:hover,
+.main-content.app-content:has(#lrd-map) .btn-outline-info:hover,
+.main-content.app-content:has(#lrd-map) .btn-outline-success:hover,
+.main-content.app-content:has(#lrd-map) .btn-outline-warning:hover {
+  background:#087f5b!important;border-color:#087f5b!important;color:#fff!important;
+}
+.main-content.app-content:has(#lrd-map) .btn {transition:background .2s,border-color .2s,transform .2s;}
+.main-content.app-content:has(#lrd-map) .form-control,
+.main-content.app-content:has(#lrd-map) .form-select {
+  border-color:#c8dfd0;border-radius:8px;
+}
+.main-content.app-content:has(#lrd-map) .form-control:focus,
+.main-content.app-content:has(#lrd-map) .form-select:focus {
+  border-color:#0b9469;box-shadow:0 0 0 .2rem rgba(11,148,105,.14);
+}
+.main-content.app-content:has(#lrd-map) .form-check-input:checked {
+  background-color:#087f5b;border-color:#087f5b;
+}
+.main-content.app-content:has(#lrd-map) .table thead th {
+  background:#e5f5eb!important;color:#064b39!important;border-bottom:2px solid #9fd4b4;
+  font-weight:700;white-space:nowrap;
+}
+.main-content.app-content:has(#lrd-map) .table tbody tr:hover > * {background:#f0faf3!important;}
+.main-content.app-content:has(#lrd-map) .table td {border-color:#e4f0e8;}
+.main-content.app-content:has(#lrd-map) #lrd-map-wrapper {
+  border:2px solid #b8ddc6!important;border-radius:12px!important;
+  box-shadow:inset 0 0 0 1px rgba(6,75,57,.05);
+}
+.main-content.app-content:has(#lrd-map) .card-footer {background:#f5fbf7!important;}
+@media(max-width:767.98px){
+  .main-content.app-content:has(#lrd-map) .page-header-breadcrumb {padding:16px;}
+  .main-content.app-content:has(#lrd-map) #lrd-map-wrapper {min-height:400px!important;height:60vh!important;}
+}
+
+
+/* Scoped ELIS emerald design — does not override the global application theme. */
+.lrd-green { --lrd-dark:#064b39;--lrd-deep:#053f31;--lrd-primary:#087f5b;--lrd-bright:#0ba26f;--lrd-soft:#e8f7ee;--lrd-border:#d3e9dc;--lrd-ink:#193d31; color:var(--lrd-ink); }
+.lrd-green .lrd-hero{background:linear-gradient(120deg,#064b39 0%,#087f5b 65%,#0ba26f 100%);color:#fff;border-radius:18px;padding:23px 27px;box-shadow:0 14px 30px rgba(6,75,57,.18);margin-bottom:22px;position:relative;overflow:hidden}
+.lrd-green .lrd-hero:after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.06);right:-90px;top:-150px;pointer-events:none}
+.lrd-green .lrd-hero h1,.lrd-green .lrd-hero p{color:#fff!important}
+.lrd-green .lrd-hero p{opacity:.86}
+.lrd-green .lrd-hero .breadcrumb-item,.lrd-green .lrd-hero .breadcrumb-item a{color:rgba(255,255,255,.85)!important}
+.lrd-green .lrd-hero .breadcrumb-item.active{color:#fff!important}
+.lrd-green .lrd-kpi{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.23);background:rgba(255,255,255,.14);padding:8px 13px;border-radius:12px;color:#fff;font-size:.88rem}
+.lrd-green .lrd-card{background:#fff;border:1px solid var(--lrd-border)!important;border-radius:16px;overflow:hidden;box-shadow:0 8px 24px rgba(6,75,57,.07)!important}
+.lrd-green .lrd-card>.card-header{background:linear-gradient(120deg,var(--lrd-dark),var(--lrd-primary))!important;color:#fff!important;border:0!important;padding:16px 19px}
+.lrd-green .lrd-card>.card-header h5{color:#fff!important}
+.lrd-green .lrd-section-title{font-weight:750;color:var(--lrd-dark)!important;display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.lrd-green .lrd-section-title i{color:var(--lrd-bright)}
+.lrd-green .lrd-subcard{border:1px solid var(--lrd-border)!important;border-radius:13px;overflow:hidden;background:#fcfffd}
+.lrd-green .lrd-subcard>.card-header{background:var(--lrd-soft)!important;border-bottom:1px solid var(--lrd-border)!important;color:var(--lrd-dark)!important;padding:11px 14px}
+.lrd-green .lrd-subcard>.card-header h6{color:var(--lrd-dark)!important}
+.lrd-green .form-control,.lrd-green .form-select,.lrd-green .input-group-text{border-color:#cfe2d6;border-radius:8px}
+.lrd-green .form-control:focus,.lrd-green .form-select:focus{border-color:var(--lrd-bright);box-shadow:0 0 0 .2rem rgba(11,162,111,.13)}
+.lrd-green .form-check-input:checked{background-color:var(--lrd-primary);border-color:var(--lrd-primary)}
+.lrd-green .btn{border-radius:9px;font-weight:600;transition:transform .15s,box-shadow .15s}
+.lrd-green .btn:hover{transform:translateY(-1px)}
+.lrd-green .btn-primary,.lrd-green .btn-success{background:var(--lrd-primary)!important;border-color:var(--lrd-primary)!important;color:#fff!important}
+.lrd-green .btn-primary:hover,.lrd-green .btn-success:hover{background:var(--lrd-dark)!important;border-color:var(--lrd-dark)!important}
+.lrd-green .btn-info{background:#15876d!important;border-color:#15876d!important;color:#fff!important}
+.lrd-green .btn-warning{background:#d5a13c!important;border-color:#d5a13c!important;color:#253528!important}
+.lrd-green .btn-outline-primary,.lrd-green .btn-outline-success,.lrd-green .btn-outline-info{border-color:var(--lrd-primary)!important;color:var(--lrd-primary)!important;background:#fff}
+.lrd-green .btn-outline-primary:hover,.lrd-green .btn-outline-success:hover,.lrd-green .btn-outline-info:hover{background:var(--lrd-primary)!important;color:#fff!important}
+.lrd-green .lrd-toolbar{background:#f5fbf7;border:1px solid var(--lrd-border);border-radius:13px;padding:12px;margin-bottom:16px}
+.lrd-green .lrd-map-frame{height:600px;border:2px solid #b9dfc9;border-radius:13px;overflow:hidden;background:#eef7f0;position:relative}
+.lrd-green #lrd-map{height:100%;width:100%}
+.lrd-green .table{font-size:.83rem;margin-bottom:0}
+.lrd-green .table thead th{background:#e9f6ee!important;color:var(--lrd-dark)!important;font-weight:700;border-bottom:1px solid var(--lrd-border);white-space:nowrap}
+.lrd-green .table tbody tr:hover{background:#f0faf4}
+.lrd-green .lrd-divider{border-top:1px solid #e2eee6;margin:18px 0}
+.lrd-green .lrd-map-footer{background:#f8fcf9;color:#527365;padding:11px 18px;border-top:1px solid var(--lrd-border)}
+@media(max-width:991.98px){.lrd-green .lrd-map-frame{height:480px}}
+@media(max-width:575.98px){.lrd-green .lrd-hero{padding:19px}.lrd-green .lrd-map-frame{height:380px}.lrd-green .lrd-toolbar .btn{margin-bottom:3px}}
+</style>
+
+<div class="main-content app-content lrd-green">
+ <div class="container-fluid page-container">
+  <div class="lrd-hero">
+   <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+    <div><div class="small mb-2" style="opacity:.8"><i class="fas fa-layer-group me-1"></i> ELIS / LAND REGISTRATION DIVISION</div><h1 class="fw-bold fs-22 mb-2">LRD Map Plottings</h1><p class="mb-0"><i class="ri-information-line me-1"></i>Manage and plot LRD parcels and transactions</p></div>
+    <div class="text-lg-end"><ol class="breadcrumb justify-content-lg-end mb-2"><li class="breadcrumb-item"><a href="javascript:void(0);">ELIS</a></li><li class="breadcrumb-item"><a href="javascript:void(0);">LRD Map Plotting</a></li><li class="breadcrumb-item active">Maps</li></ol><div class="d-flex flex-wrap gap-2 justify-content-lg-end"><span class="lrd-kpi"><i class="ri-map-pin-line"></i>Parcels: <strong><c:out value="${parcel_count}" default="0"/></strong></span><span class="lrd-kpi"><i class="ri-ruler-2-line"></i>Acreage: <strong><c:out value="${total_acreage}" default="0"/></strong></span></div></div>
+   </div>
+  </div>
+  <div class="row g-3">
+   <div class="col-lg-4 col-xl-3">
+    <div class="card lrd-card mb-4"><div class="card-header"><h5 class="mb-0 fw-semibold"><i class="fas fa-sliders-h me-2"></i>Control Panel</h5></div>
+     <div class="card-body p-3">
+      <div class="d-flex flex-wrap gap-2 mb-4">
+       <button type="button" class="btn btn-primary btn-sm flex-fill" id="lc_btn_add_coordinate" data-bs-toggle="modal" data-bs-target="#addcoordinatetoplot" data-bs-tooltip="tooltip" title="Add Coordinate"><i class="fas fa-plus-circle me-1"></i>Add</button>
+       <button type="button" class="btn btn-info btn-sm flex-fill" id="lrd_btn_add_coordinate_by_csv" data-bs-toggle="modal" data-bs-target="#uploadcoordiantecsv" data-bs-tooltip="tooltip" title="Upload CSV"><i class="fas fa-upload me-1"></i>CSV</button>
+       <button type="button" class="btn btn-warning btn-sm flex-fill" id="lrd_btn_visualise_coordinate" data-bs-tooltip="tooltip" title="Visualise Polygon"><i class="fas fa-eye me-1"></i>Visualise</button>
+      </div>
+      <h6 class="lrd-section-title"><i class="fas fa-list-ol"></i>Coordinate List</h6>
+      <div class="table-responsive"><table class="table table-hover table-sm" id="coordinatelis_Table"><thead><tr><th>Name</th><th>X</th><th>Y</th><th class="text-center">Action</th></tr></thead><tbody></tbody></table></div>
+      <div class="lrd-divider"></div>
+      <h6 class="lrd-section-title"><i class="fas fa-draw-polygon"></i>WKT Polygon</h6>
+      <textarea class="form-control form-control-sm" rows="3" id="lrd_txt_wkt_polygon" placeholder="POLYGON((...))"></textarea>
+      <button type="button" class="btn btn-outline-primary btn-sm w-100 mt-2" id="lrd_btn_visualise_wkt" data-bs-tooltip="tooltip" data-bs-original-title="Visualise Polygon"><i class="fas fa-map me-1"></i>Visualise Polygon</button>
+      <button type="button" class="btn btn-warning btn-sm w-100 mt-2 d-none" id="lrd_btn_request_add_existing_parcel" title="Request For Add Existing Parcel"><i class="fas fa-paper-plane me-1"></i>Request For Add Existing Parcel</button>
+      <button type="button" class="btn btn-outline-danger btn-sm w-100 mt-2" id="lrd_btn_refresh_btn_wkt" data-bs-tooltip="tooltip" title="Refresh"><i class="fas fa-redo me-1"></i>Refresh</button>
+      <div class="card lrd-subcard mt-4 mb-3"><div class="card-header"><h6 class="mb-0 fw-semibold"><i class="fas fa-search-location me-2"></i>Quick Coordinate Search</h6></div><div class="card-body p-3">
+       <div class="row g-2 mb-2"><div class="col-5"><input type="text" class="form-control form-control-sm" id="lrd_x_coordinate" placeholder="Y Coordinate"></div><div class="col-5"><input type="text" class="form-control form-control-sm" id="lrd_y_coordinate" placeholder="X Coordinate"></div><div class="col-2 d-grid gap-1"><button type="button" class="btn btn-primary btn-sm" id="lrd_btn_show_location" title="Show Location"><i class="fas fa-map-marker-alt"></i></button><button type="button" class="btn btn-outline-primary btn-sm" id="lrd_btn_load_for_scanned_maps_by_point" title="Load Scanned Maps"><i class="fas fa-map"></i></button></div></div>
+       <div class="row g-2"><div class="col-10"><input type="text" class="form-control form-control-sm" id="lrd_search_by_text" placeholder="Search by Certificate/Ref Number"></div><div class="col-2"><button type="button" class="btn btn-info btn-sm w-100" id="lrd_btn_search_by_certificate_number" title="Search"><i class="fas fa-search"></i></button></div></div>
+      </div></div>
+      <div class="card lrd-subcard mb-3"><div class="card-header"><h6 class="mb-0 fw-semibold"><i class="fas fa-layer-group me-2"></i>Scanned Maps</h6></div><div class="card-body p-3"><div class="mb-3"><select class="form-select form-select-sm" id="geoserverscannedimages_list"><option value="-1">Select Scanned Image</option></select></div><div class="d-flex gap-2"><button type="button" class="btn btn-warning btn-sm flex-fill" id="lrd_btn_search_for_scanned_maps"><i class="fas fa-search me-1"></i>Search</button><button type="button" class="btn btn-success btn-sm flex-fill" id="lrd_btn_load_for_scanned_maps"><i class="fas fa-check-circle me-1"></i>Load</button></div></div></div>
+      <div class="card lrd-subcard"><div class="card-header"><h6 class="mb-0 fw-semibold"><i class="fas fa-search-plus me-2"></i>Advanced Search</h6></div><div class="card-body p-3"><div class="mb-3"><input class="form-control form-control-sm" type="text" id="scannned_map_to_search_for" placeholder="Enter Map name" list="listofscannnedmaptosearchfor"><datalist id="listofscannnedmaptosearchfor"></datalist></div><div class="d-flex gap-2"><button type="button" class="btn btn-info btn-sm flex-fill" id="lrd_btn_search_for_scanned_maps_all"><i class="fas fa-search me-1"></i>Find</button><button type="button" class="btn btn-primary btn-sm flex-fill" id="lrd_btn_load_for_scanned_maps_all"><i class="fas fa-layer-group me-1"></i>Load All</button></div></div></div>
+      <div class="mt-4"><h6 class="lrd-section-title"><i class="fas fa-copy"></i>Multiple Parcel Overlays</h6><div class="table-responsive"><table class="table table-hover table-sm" id="lrd_more_than_one_parcel_Table"><thead><tr><th>Reference Number</th><th>Locality</th><th>Remarks</th><th class="text-center">Details</th></tr></thead><tbody></tbody></table></div></div>
+     </div>
     </div>
-
+   </div>
+   <div class="col-lg-8 col-xl-9"><div class="card lrd-card mb-4"><div class="card-header"><h5 class="mb-0 fw-semibold"><i class="fas fa-map me-2"></i>Interactive Map Viewer</h5></div><div class="card-body p-3 p-xl-4">
+    <div class="lrd-toolbar d-flex flex-wrap align-items-center gap-3">
+     <div class="btn-group flex-wrap" role="group"><button type="button" class="btn btn-outline-primary btn-sm" id="lrd_btn_draw_polygon" title="Draw Polygon"><i class="fas fa-draw-polygon me-1"></i>Draw</button><button type="button" class="btn btn-outline-warning btn-sm" id="lrd_btn_modify_polygon" title="Modify Shape"><i class="fas fa-edit me-1"></i>Modify</button><button type="button" class="btn btn-outline-danger btn-sm" id="lrd_btn_delete_polygon" title="Delete Selected"><i class="fas fa-trash me-1"></i>Delete</button><button type="button" class="btn btn-outline-success btn-sm" id="lrd_btn_measure_distance" title="Measure Distance"><i class="fas fa-ruler me-1"></i>Measure</button><button type="button" class="btn btn-outline-info btn-sm" id="lrd_btn_measure_area" title="Measure Area"><i class="fas fa-ruler-combined me-1"></i>Area</button></div>
+     <div class="d-flex align-items-center gap-2 flex-wrap"><label class="fw-semibold" for="lrd_scale_value">Scale:</label><select class="form-select form-select-sm" style="width:120px" id="lrd_scale_value"><option value="500">1:500</option><option value="1107">1:1,107</option><option value="1250">1:1,250</option><option value="2140">1:2,140</option><option value="2215">1:2,215</option><option value="2500">1:2,500</option><option value="2670">1:2,670</option><option value="2825">1:2,825</option><option value="5000">1:5,000</option><option value="10000">1:10,000</option><option value="15000">1:15,000</option><option value="20000">1:20,000</option></select><div class="form-check mb-0"><input class="form-check-input" type="checkbox" id="lrd_lockmapscale" checked><label class="form-check-label small" for="lrd_lockmapscale">Lock</label></div><button type="button" class="btn btn-primary btn-sm" id="lrd_btn_scale_zoom" title="Zoom to Scale"><i class="fas fa-search"></i></button></div>
+     <div class="d-flex gap-2 flex-wrap ms-xl-auto"><!-- Keep the original refresh selector unique: two buttons with this ID would cause unpredictable event binding. --><button type="button" class="btn btn-outline-danger btn-sm" id="lrd_btn_refresh_map" title="Refresh Map"><i class="fas fa-redo me-1"></i>Refresh</button><button type="button" class="btn btn-outline-primary btn-sm" id="lrd_btn_print_map" title="Print Map"><i class="fas fa-print me-1"></i>Print</button><button type="button" class="btn btn-outline-secondary btn-sm" id="lrd_btn_clear_measurements" title="Clear Measurements"><i class="fas fa-eraser me-1"></i>Clear</button></div>
+    </div>
+    <div class="lrd-map-frame"><div id="lrd-map"></div></div>
+   </div><div class="lrd-map-footer d-flex justify-content-between align-items-center flex-wrap gap-2"><span class="small"><i class="fas fa-info-circle me-1"></i>Total Parcels: <strong><c:out value="${parcel_count}" default="0"/></strong></span><span class="small"><i class="fas fa-ruler-combined me-1"></i>Total Acreage: <strong><c:out value="${total_acreage}" default="0"/></strong></span><span class="small"><i class="fas fa-sync-alt me-1"></i>Last updated: <span id="lrd_last_updated">Just now</span></span></div></div></div>
+  </div>
+ </div>
 </div>
 
-
-<!-- ============================================================= -->
-<!-- MODALS                                                        -->
-<!-- ============================================================= -->
-
 <jsp:include page="lrd_maps_modals.jsp" />
-
-
-<!-- ============================================================= -->
-<!-- PAGE INITIALISATION                                           -->
-<!-- ============================================================= -->
-
 <script>
-
-(function () {
-
-    "use strict";
-
-
-    /**
-     * Initialise Bootstrap tooltips.
-     */
-    function initialiseLrdTooltips() {
-
-        if (typeof bootstrap === "undefined") {
-
-            console.warn(
-                "Bootstrap JavaScript is not loaded. " +
-                "LRD tooltips cannot be initialised."
-            );
-
-            return;
-
-        }
-
-
-        var tooltipElements =
-            document.querySelectorAll(
-                '[data-bs-toggle="tooltip"]'
-            );
-
-
-        tooltipElements.forEach(function (element) {
-
-            try {
-
-                var existingTooltip =
-                    bootstrap.Tooltip.getInstance(element);
-
-
-                if (!existingTooltip) {
-
-                    new bootstrap.Tooltip(element);
-
-                }
-
-            } catch (error) {
-
-                console.error(
-                    "Could not initialise Bootstrap tooltip:",
-                    element,
-                    error
-                );
-
-            }
-
-        });
-
-    }
-
-
-    /**
-     * Set the current updated time.
-     */
-    function updateLastUpdatedTime() {
-
-        var element =
-            document.getElementById(
-                "lrd_last_updated"
-            );
-
-
-        if (!element) {
-
-            return;
-
-        }
-
-
-        try {
-
-            var now =
-                new Date();
-
-
-            element.textContent =
-                now.toLocaleTimeString(
-                    [],
-                    {
-                        hour: "2-digit",
-                        minute: "2-digit"
-                    }
-                );
-
-        } catch (error) {
-
-            element.textContent =
-                "Just now";
-
-        }
-
-    }
-
-
-    /**
-     * Try to force OpenLayers to recalculate
-     * the map container size.
-     *
-     * This does not create a new map.
-     */
-    function refreshLrdMapSize() {
-
-        window.setTimeout(function () {
-
-            try {
-
-                if (
-                    typeof window.lrd_map !== "undefined" &&
-                    window.lrd_map &&
-                    typeof window.lrd_map.updateSize === "function"
-                ) {
-
-                    window.lrd_map.updateSize();
-
-                    return;
-
-                }
-
-
-                if (
-                    typeof window.lrdMap !== "undefined" &&
-                    window.lrdMap &&
-                    typeof window.lrdMap.updateSize === "function"
-                ) {
-
-                    window.lrdMap.updateSize();
-
-                    return;
-
-                }
-
-
-                if (
-                    typeof window.map !== "undefined" &&
-                    window.map &&
-                    typeof window.map.updateSize === "function"
-                ) {
-
-                    window.map.updateSize();
-
-                }
-
-            } catch (error) {
-
-                console.warn(
-                    "Unable to refresh LRD map size:",
-                    error
-                );
-
-            }
-
-        }, 300);
-
-    }
-
-
-    /**
-     * Validate critical page elements.
-     */
-    function validateLrdPageElements() {
-
-        var requiredElements = [
-
-            "coordinatelis_Table",
-
-            "lrd_txt_wkt_polygon",
-
-            "lrd_x_coordinate",
-
-            "lrd_y_coordinate",
-
-            "lrd_search_by_text",
-
-            "geoserverscannedimages_list",
-
-            "lrd-map"
-
-        ];
-
-
-        requiredElements.forEach(function (id) {
-
-            if (!document.getElementById(id)) {
-
-                console.warn(
-                    "LRD page element not found: #" + id
-                );
-
-            }
-
-        });
-
-    }
-
-
-    /**
-     * Main page initialisation.
-     */
-    function initialiseLrdPage() {
-
-        validateLrdPageElements();
-
-        initialiseLrdTooltips();
-
-        updateLastUpdatedTime();
-
-        refreshLrdMapSize();
-
-    }
-
-
-    /**
-     * Handles both normal page loading
-     * and JSP content inserted dynamically.
-     */
-    if (document.readyState === "loading") {
-
-        document.addEventListener(
-            "DOMContentLoaded",
-            initialiseLrdPage
-        );
-
-    } else {
-
-        initialiseLrdPage();
-
-    }
-
+(function(){
+ function setupLrdTooltips(){if(typeof bootstrap==='undefined'||!bootstrap.Tooltip)return;document.querySelectorAll('.lrd-green [data-bs-tooltip="tooltip"]').forEach(function(el){if(!bootstrap.Tooltip.getInstance(el))new bootstrap.Tooltip(el);});}
+ function initLrdPage(){setupLrdTooltips();var t=document.getElementById('lrd_last_updated');if(t)t.textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});setTimeout(function(){var m=window.lrd_map||window.lrdMap||window.map;if(m&&typeof m.updateSize==='function')m.updateSize();},300);}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initLrdPage);else initLrdPage();
+ // Map refresh delegates to the existing WKT refresh handler where it is bound.
+ document.addEventListener('click',function(event){var button=event.target.closest('#lrd_btn_refresh_map');if(!button)return;var existing=document.getElementById('lrd_btn_refresh_btn_wkt');if(existing)existing.click();});
 })();
-
 </script>
+<script src="${pageContext.request.contextPath}/js-pages/gated_workflow.js"></script>
 
-
-<!-- ============================================================= -->
-<!-- APPLICATION JAVASCRIPT                                        -->
-<!-- ============================================================= -->
-
-<script
-    src="${pageContext.request.contextPath}/js-pages/gated_workflow.js">
-</script>

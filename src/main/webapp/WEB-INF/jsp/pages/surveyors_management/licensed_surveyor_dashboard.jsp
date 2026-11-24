@@ -9,339 +9,59 @@
 <%@ page import="org.codehaus.jettison.json.JSONException"%>
 <%@ page import="org.codehaus.jettison.json.JSONObject"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-
-    <div class="main-content app-content">
-        <div class="container-fluid page-container">
-            <!-- Breadcrumbs -->
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">
-                        <a href="index.jsp"><i class="fas fa-home me-1"></i>Licensed Surveyors Dashboard</a>
-                    </li>
-                    <li class="breadcrumb-item active" aria-current="page">${fullname}</li>
-                </ol>
-            </nav>
-
-            <!-- Content Row - Statistics Cards -->
-            <div class="row g-4 mb-4">
-                <!-- Total Licensed Surveyors Card -->
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white shadow h-100">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <div class="small text-uppercase fw-bold text-white-50">Total Licensed Surveyors</div>
-                                    <div class="h3 fw-bold mt-2">${total_surveyors}</div>
-                                </div>
-                                <div class="bg-white bg-opacity-25 rounded-circle p-3">
-                                    <i class="fas fa-users fa-2x"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Inactive Surveyors Card -->
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-danger text-white shadow h-100">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <div class="small text-uppercase fw-bold text-white-50">Inactive Surveyors</div>
-                                    <div class="h3 fw-bold mt-2">${inactive_surveyors}</div>
-                                </div>
-                                <div class="bg-white bg-opacity-25 rounded-circle p-3">
-                                    <i class="fas fa-user-slash fa-2x"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Surveyors Due for Renewal Card -->
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-warning text-dark shadow h-100">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <div class="small text-uppercase fw-bold text-dark">Due for Renewal</div>
-                                    <div class="h3 fw-bold mt-2">${renewal_due}</div>
-                                </div>
-                                <div class="bg-white bg-opacity-25 rounded-circle p-3">
-                                    <i class="fas fa-exclamation-triangle fa-2x"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Active Surveyors Card -->
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-success text-white shadow h-100">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <div class="small text-uppercase fw-bold text-white-50">Active Surveyors (This Year)</div>
-                                    <div class="h3 fw-bold mt-2">0</div>
-                                </div>
-                                <div class="bg-white bg-opacity-25 rounded-circle p-3">
-                                    <i class="fas fa-check-circle fa-2x"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Search and Table Row -->
-            <div class="row g-4">
-                <div class="col-lg-8">
-                    <!-- Search and Action Section -->
-                    <div class="card mb-4">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <div class="card card-body bg-light p-3" style="flex: 1;">
-                                <label class="col-form-label fw-bold"><i class="fas fa-search me-2"></i>Search Section:</label>
-                                <div class="row g-2">
-                                    <div class="col-md-4">
-                                        <select class="form-select" id="surveyor_select_type">
-                                            <option disabled selected value="-1">-- select type --</option>
-                                            <option value="License Number">License Number</option>
-                                            <option value="Name">Name</option>
-                                            <option value="Email">Email</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-4 d-none" id="div_surveyor_keyword">
-                                        <input class="form-control" id="surveyor_keyword" placeholder="Enter keyword..." />
-                                    </div>
-                                    <div class="col-md-4">
-                                        <button class="btn btn-success w-100" id="btn_surveyor_search">
-                                            <i class="fas fa-search me-1"></i>Search
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ms-3">
-                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#addSurveyor">
-                                    <i class="fas fa-plus-circle me-1"></i>Add Surveyor
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-hover display" id="surveyor_dataTable" width="100%" cellspacing="0">
-                                    <thead class="table-dark">
-                                        <tr>
-                                            <th>License Number</th>
-                                            <th>Name</th>
-                                            <th>Mobile</th>
-                                            <th>Email</th>
-                                            <th>Capacity</th>
-                                            <th>Level</th>
-                                            <th>Jobs Assigned</th>
-                                            <th>Outstanding Jobs</th>
-                                            <th>Last Job Date</th>
-                                            <th>Status</th>
-                                            <th>Inception Year</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach var="surveyor" items="${surveyorList}">
-                                            <tr>
-                                                <td><span class="badge bg-secondary">${surveyor.licensed_surveyor_number}</span></td>
-                                                <td>${surveyor.licensed_surveyor_name}</td>
-                                                <td>${surveyor.licensed_surveyor_mobile}</td>
-                                                <td>${surveyor.licensed_surveyor_email}</td>
-                                                <td><span class="badge bg-info">${surveyor.ls_capacity}</span></td>
-                                                <td><span class="badge bg-primary">${surveyor.ls_level}</span></td>
-                                                <td>${surveyor.no_of_jobs_assigned}</td>
-                                                <td>${surveyor.outstanding_jobs_to_assign}</td>
-                                                <td>${surveyor.last_date_job_was_assigned}</td>
-                                                <td>
-                                                    <c:choose>
-                                                        <c:when test="${surveyor.licensed_surveyor_status == 'Active'}">
-                                                            <span class="badge bg-success">Active</span>
-                                                        </c:when>
-                                                        <c:when test="${surveyor.licensed_surveyor_status == 'Inactive'}">
-                                                            <span class="badge bg-danger">Inactive</span>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <span class="badge bg-secondary">${surveyor.licensed_surveyor_status}</span>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </td>
-                                                <td>${surveyor.licensed_surveyor_inception_year != null ? surveyor.licensed_surveyor_inception_year : 'N/A'}</td>
-                                                <td>
-                                                    <div class="btn-group" role="group">
-                                                        <button class="btn btn-info btn-sm" 
-                                                                data-bs-toggle="modal" 
-                                                                data-bs-target="#list_surveyor_determinants_modal" 
-                                                                data-target-id="${surveyor.scd_id}"
-                                                                title="View Details">
-                                                            <i class="fas fa-info-circle"></i>
-                                                        </button>
-                                                        <button class="btn btn-danger btn-sm" title="Delete">
-                                                            <i class="fas fa-trash"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Right Panel - Accordion -->
-                <div class="col-lg-4">
-                    <div class="accordion" id="accordion">
-                        <!-- Capacity Assessment Criteria -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    <i class="fas fa-calculator me-2"></i>Capacity Assessment Criteria
-                                </button>
-                            </h2>
-                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordion">
-                                <div class="accordion-body">
-                                    <div class="d-grid gap-2 mb-3">
-                                        <button class="btn btn-primary" onclick="reassessAllSurveyors()">
-                                            <i class="fas fa-sync-alt me-1"></i>Re-assess All Surveyors
-                                        </button>
-                                    </div>
-                                    <c:forEach var="item" items="${capacityList}">
-                                        <div class="card mb-2">
-                                            <div class="card-body py-2">
-                                                <strong>${item.cd_deterterminant_factor}</strong><br />
-                                                <small class="text-muted">Value: ${item.cd_value} | Min: ${item.min_values}</small>
-                                            </div>
-                                        </div>
-                                    </c:forEach>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- License History -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingTwo">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    <i class="fas fa-history me-2"></i>License History
-                                </button>
-                            </h2>
-                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordion">
-                                <div class="accordion-body">
-                                    <div class="row g-2 mb-3">
-                                        <div class="col-8">
-                                            <input class="form-control form-control-sm" placeholder="Enter License Number" />
-                                        </div>
-                                        <div class="col-4">
-                                            <button class="btn btn-success btn-sm w-100" id="btn_license_search">
-                                                <i class="fas fa-search me-1"></i>Search
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-sm" id="license_history_table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Action</th>
-                                                    <th>Status Change</th>
-                                                    <th>Date</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td colspan="3" class="text-center text-muted">No history available</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Reports -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingThree">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                    <i class="fas fa-file-alt me-2"></i>Reports
-                                </button>
-                            </h2>
-                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordion">
-                                <div class="accordion-body">
-                                    <div class="list-group">
-                                        <a href="#" class="list-group-item list-group-item-action">
-                                            <i class="fas fa-file-pdf me-2 text-danger"></i>Surveyors Report
-                                        </a>
-                                        <a href="#" class="list-group-item list-group-item-action">
-                                            <i class="fas fa-file-pdf me-2 text-danger"></i>Renewal Report
-                                        </a>
-                                        <a href="#" class="list-group-item list-group-item-action">
-                                            <i class="fas fa-file-excel me-2 text-success"></i>Capacity Assessment Report
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        $(document).ready(function() {
-            // Initialize DataTable
-            $('#surveyor_dataTable').DataTable({
-                pageLength: 10,
-                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                responsive: true,
-                columnDefs: [
-                    { orderable: false, targets: [11] } // Disable sorting on Action column
-                ]
-            });
-
-            // Show/hide keyword input based on search type selection
-            $('#surveyor_select_type').on('change', function() {
-                if ($(this).val() !== '-1') {
-                    $('#div_surveyor_keyword').removeClass('d-none');
-                } else {
-                    $('#div_surveyor_keyword').addClass('d-none');
-                }
-            });
-
-            // Search button click handler
-            $('#btn_surveyor_search').on('click', function() {
-                var searchType = $('#surveyor_select_type').val();
-                var keyword = $('#surveyor_keyword').val();
-                if (searchType && keyword) {
-                    // Perform search - you can implement AJAX call here
-                    console.log('Searching for ' + searchType + ': ' + keyword);
-                    alert('Search functionality: ' + searchType + ' - ' + keyword);
-                } else {
-                    alert('Please select search type and enter keyword');
-                }
-            });
-
-            // License search handler
-            $('#btn_license_search').on('click', function() {
-                var licenseNo = $(this).closest('.row').find('input').val();
-                if (licenseNo) {
-                    console.log('Searching license: ' + licenseNo);
-                    alert('Searching license history for: ' + licenseNo);
-                } else {
-                    alert('Please enter a license number');
-                }
-            });
-
-            // Re-assess all surveyors
-            window.reassessAllSurveyors = function() {
-                if (confirm('Are you sure you want to re-assess all surveyors?')) {
-                    console.log('Re-assessing all surveyors...');
-                    alert('Re-assessment initiated for all surveyors.');
-                }
-            };
-        });
-    </script>
+<style>
+/* ELIS Licensed Surveyors: self-contained emerald green theme */
+.ls-green{--ls-dark:#064b39;--ls-deep:#0b5128;--ls-primary:#087f5b;--ls-bright:#0b9469;--ls-light:#e9f8ef;--ls-border:#cde9d9;color:#173c2e}
+.ls-green .ls-hero{background:linear-gradient(120deg,#064b39,#087f5b 65%,#0b9469);color:white;border:0;border-radius:17px;box-shadow:0 14px 30px rgba(6,75,57,.18)}
+.ls-green .ls-hero .breadcrumb-item,.ls-green .ls-hero .breadcrumb-item.active,.ls-green .ls-hero a{color:#fff!important}
+.ls-green .ls-hero .breadcrumb-item+.breadcrumb-item::before{color:#ccebdd}
+.ls-green .ls-stat{border:1px solid var(--ls-border);border-radius:15px;overflow:hidden;box-shadow:0 8px 22px rgba(6,75,57,.07);height:100%;transition:transform .2s,box-shadow .2s;background:#fff}
+.ls-green .ls-stat:hover{transform:translateY(-4px);box-shadow:0 14px 28px rgba(6,75,57,.13)}
+.ls-green .ls-stat .card-body{padding:1.4rem}
+.ls-green .ls-stat .ls-icon{width:58px;height:58px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:#e3f5ea;color:#087f5b}
+.ls-green .ls-stat .ls-stat-title{color:#577366;font-size:.76rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.ls-green .ls-stat .ls-stat-value{font-size:2rem;font-weight:800;color:#064b39}
+.ls-green .ls-stat.ls-inactive{border-top:4px solid #d97706}.ls-green .ls-stat.ls-renewal{border-top:4px solid #c19a26}.ls-green .ls-stat.ls-active{border-top:4px solid #0b9469}.ls-green .ls-stat.ls-total{border-top:4px solid #064b39}
+.ls-green .ls-panel{border:1px solid var(--ls-border);border-radius:15px;box-shadow:0 8px 25px rgba(6,75,57,.07);overflow:hidden;background:#fff}
+.ls-green .ls-panel>.card-header{background:linear-gradient(110deg,#064b39,#087f5b);border:0;color:#fff;padding:1rem 1.2rem}
+.ls-green .ls-search{background:#f2fbf5;border:1px solid #d2eadb;border-radius:12px;padding:1rem}
+.ls-green .form-control:focus,.ls-green .form-select:focus{border-color:#0b9469;box-shadow:0 0 0 .2rem rgba(11,148,105,.15)}
+.ls-green .btn-primary,.ls-green .btn-success,.ls-green .btn-info{background:linear-gradient(120deg,#087f5b,#0b9469);border-color:#087f5b;color:#fff}
+.ls-green .btn-primary:hover,.ls-green .btn-success:hover,.ls-green .btn-info:hover{background:#064b39;border-color:#064b39;color:#fff}
+.ls-green .btn-warning{background:#e5f5e9;border-color:#9bd2b0;color:#07563b;font-weight:600}.ls-green .btn-warning:hover{background:#c8ead5;border-color:#087f5b;color:#064b39}
+.ls-green .btn-danger{background:#fff1f1;border-color:#efc7c7;color:#b42318}.ls-green .btn-danger:hover{background:#b42318;color:#fff}
+.ls-green .ls-table thead th,.ls-green #license_history_table thead th{background:#e3f4e9!important;color:#064b39!important;border-bottom:2px solid #8dc8a6;font-weight:700;white-space:nowrap}
+.ls-green .ls-table tbody tr:hover,.ls-green #license_history_table tbody tr:hover{background:#f1faf4}
+.ls-green .ls-table td{vertical-align:middle}.ls-green .badge.bg-primary,.ls-green .badge.bg-info,.ls-green .badge.bg-secondary{background:#e1f3e8!important;color:#075a3c!important;border:1px solid #b6dfc5}
+.ls-green .accordion-item{border:1px solid var(--ls-border);overflow:hidden;margin-bottom:12px;border-radius:12px!important;box-shadow:0 6px 16px rgba(6,75,57,.05)}
+.ls-green .accordion-button{background:#eff9f2;color:#064b39;font-weight:700}.ls-green .accordion-button:not(.collapsed){background:linear-gradient(110deg,#064b39,#087f5b);color:#fff;box-shadow:none}.ls-green .accordion-button:focus{box-shadow:0 0 0 .2rem rgba(11,148,105,.15)}.ls-green .accordion-button:not(.collapsed)::after{filter:brightness(0) invert(1)}
+.ls-green .accordion-body .card{border:1px solid #d8ecdf;border-radius:10px;background:#f8fcf9}
+.ls-green .list-group-item:hover{background:#eff9f2;color:#064b39}
+.ls-green .dataTables_wrapper .dataTables_filter input,.ls-green .dataTables_wrapper .dataTables_length select{border:1px solid #b7d9c4;border-radius:8px;padding:.35rem .6rem}
+.ls-green .dataTables_wrapper .dataTables_paginate .paginate_button.current,.ls-green .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{background:#087f5b!important;color:white!important;border-color:#087f5b!important}
+@media(max-width:767px){.ls-green .ls-hero{padding:1rem!important}.ls-green .ls-stat .ls-stat-value{font-size:1.65rem}}
+</style>
+<div class="main-content app-content ls-green"><div class="container-fluid page-container">
+  <div class="ls-hero p-4 mb-4"><div class="d-flex align-items-center justify-content-between flex-wrap gap-3"><div><div class="small text-white-50 text-uppercase fw-semibold mb-1">ELIS · Professional Registry</div><h2 class="fw-bold text-white mb-1"><i class="fas fa-user-check me-2"></i>Licensed Surveyors Dashboard</h2><div class="text-white-50">Surveyor licensing, capacity assessment and renewal monitoring</div></div><nav aria-label="breadcrumb"><ol class="breadcrumb mb-0"><li class="breadcrumb-item"><a href="index.jsp"><i class="fas fa-home me-1"></i>Licensed Surveyors Dashboard</a></li><li class="breadcrumb-item active" aria-current="page"><c:out value="${fullname}"/></li></ol></nav></div></div>
+  <div class="row g-4 mb-4">
+    <div class="col-xl-3 col-md-6"><div class="card ls-stat ls-total"><div class="card-body"><div class="d-flex justify-content-between align-items-center"><div><div class="ls-stat-title">Total Licensed Surveyors</div><div class="ls-stat-value mt-2">${total_surveyors}</div></div><div class="ls-icon"><i class="fas fa-users fa-2x"></i></div></div></div></div></div>
+    <div class="col-xl-3 col-md-6"><div class="card ls-stat ls-inactive"><div class="card-body"><div class="d-flex justify-content-between align-items-center"><div><div class="ls-stat-title">Inactive Surveyors</div><div class="ls-stat-value mt-2">${inactive_surveyors}</div></div><div class="ls-icon"><i class="fas fa-user-slash fa-2x"></i></div></div></div></div></div>
+    <div class="col-xl-3 col-md-6"><div class="card ls-stat ls-renewal"><div class="card-body"><div class="d-flex justify-content-between align-items-center"><div><div class="ls-stat-title">Due for Renewal</div><div class="ls-stat-value mt-2">${renewal_due}</div></div><div class="ls-icon"><i class="fas fa-exclamation-triangle fa-2x"></i></div></div></div></div></div>
+    <div class="col-xl-3 col-md-6"><div class="card ls-stat ls-active"><div class="card-body"><div class="d-flex justify-content-between align-items-center"><div><div class="ls-stat-title">Active Surveyors (This Year)</div><div class="ls-stat-value mt-2">0</div></div><div class="ls-icon"><i class="fas fa-check-circle fa-2x"></i></div></div></div></div></div>
+  </div>
+  <div class="row g-4"><div class="col-lg-8"><div class="card ls-panel mb-4"><div class="card-header"><div class="d-flex justify-content-between align-items-center flex-wrap gap-3"><h5 class="mb-0 fw-semibold text-white"><i class="fas fa-search me-2"></i>Search Licensed Surveyors</h5><button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#addSurveyor"><i class="fas fa-plus-circle me-1"></i>Add Surveyor</button></div></div><div class="card-body"><div class="ls-search mb-4"><div class="row g-2 align-items-end"><div class="col-md-4"><label for="surveyor_select_type" class="form-label fw-semibold">Search By</label><select class="form-select" id="surveyor_select_type"><option disabled selected value="-1">-- select type --</option><option value="License Number">License Number</option><option value="Name">Name</option><option value="Email">Email</option></select></div><div class="col-md-4 d-none" id="div_surveyor_keyword"><label for="surveyor_keyword" class="form-label fw-semibold">Keyword</label><input class="form-control" id="surveyor_keyword" placeholder="Enter keyword..." /></div><div class="col-md-4"><button class="btn btn-success w-100" id="btn_surveyor_search"><i class="fas fa-search me-1"></i>Search</button></div></div></div>
+  <div class="table-responsive"><table class="table table-bordered table-hover display ls-table" id="surveyor_dataTable" width="100%" cellspacing="0"><thead><tr><th>License Number</th><th>Name</th><th>Mobile</th><th>Email</th><th>Capacity</th><th>Level</th><th>Jobs Assigned</th><th>Outstanding Jobs</th><th>Last Job Date</th><th>Status</th><th>Inception Year</th><th>Action</th></tr></thead><tbody><c:forEach var="surveyor" items="${surveyorList}"><tr><td><span class="badge bg-secondary">${surveyor.licensed_surveyor_number}</span></td><td>${surveyor.licensed_surveyor_name}</td><td>${surveyor.licensed_surveyor_mobile}</td><td>${surveyor.licensed_surveyor_email}</td><td><span class="badge bg-info">${surveyor.ls_capacity}</span></td><td><span class="badge bg-primary">${surveyor.ls_level}</span></td><td>${surveyor.no_of_jobs_assigned}</td><td>${surveyor.outstanding_jobs_to_assign}</td><td>${surveyor.last_date_job_was_assigned}</td><td><c:choose><c:when test="${surveyor.licensed_surveyor_status == 'Active'}"><span class="badge bg-success">Active</span></c:when><c:when test="${surveyor.licensed_surveyor_status == 'Inactive'}"><span class="badge bg-danger">Inactive</span></c:when><c:otherwise><span class="badge bg-secondary">${surveyor.licensed_surveyor_status}</span></c:otherwise></c:choose></td><td>${surveyor.licensed_surveyor_inception_year != null ? surveyor.licensed_surveyor_inception_year : 'N/A'}</td><td><div class="btn-group" role="group"><button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#list_surveyor_determinants_modal" data-target-id="${surveyor.scd_id}" title="View Details"><i class="fas fa-info-circle"></i></button><button class="btn btn-danger btn-sm" title="Delete"><i class="fas fa-trash"></i></button></div></td></tr></c:forEach></tbody></table></div></div></div></div>
+  <div class="col-lg-4"><div class="accordion" id="accordion"><div class="accordion-item"><h2 class="accordion-header" id="headingOne"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"><i class="fas fa-calculator me-2"></i>Capacity Assessment Criteria</button></h2><div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordion"><div class="accordion-body"><div class="d-grid gap-2 mb-3"><button class="btn btn-primary" onclick="reassessAllSurveyors()"><i class="fas fa-sync-alt me-1"></i>Re-assess All Surveyors</button></div><c:forEach var="item" items="${capacityList}"><div class="card mb-2"><div class="card-body py-2"><strong>${item.cd_deterterminant_factor}</strong><br/><small class="text-muted">Value: ${item.cd_value} | Min: ${item.min_values}</small></div></div></c:forEach></div></div></div>
+  <div class="accordion-item"><h2 class="accordion-header" id="headingTwo"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><i class="fas fa-history me-2"></i>License History</button></h2><div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordion"><div class="accordion-body"><div class="row g-2 mb-3"><div class="col-8"><input class="form-control form-control-sm" placeholder="Enter License Number" /></div><div class="col-4"><button class="btn btn-success btn-sm w-100" id="btn_license_search"><i class="fas fa-search me-1"></i>Search</button></div></div><div class="table-responsive"><table class="table table-striped table-sm" id="license_history_table"><thead><tr><th>Action</th><th>Status Change</th><th>Date</th></tr></thead><tbody><tr><td colspan="3" class="text-center text-muted">No history available</td></tr></tbody></table></div></div></div></div>
+  <div class="accordion-item"><h2 class="accordion-header" id="headingThree"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><i class="fas fa-file-alt me-2"></i>Reports</button></h2><div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordion"><div class="accordion-body"><div class="list-group"><a href="#" class="list-group-item list-group-item-action"><i class="fas fa-file-pdf me-2 text-danger"></i>Surveyors Report</a><a href="#" class="list-group-item list-group-item-action"><i class="fas fa-file-pdf me-2 text-danger"></i>Renewal Report</a><a href="#" class="list-group-item list-group-item-action"><i class="fas fa-file-excel me-2 text-success"></i>Capacity Assessment Report</a></div></div></div></div></div></div></div>
+</div></div>
+<script>
+$(document).ready(function() {
+    if ($.fn.DataTable.isDataTable('#surveyor_dataTable')) { $('#surveyor_dataTable').DataTable().destroy(); }
+    $('#surveyor_dataTable').DataTable({pageLength:10,lengthMenu:[[10,25,50,-1],[10,25,50,'All']],responsive:true,columnDefs:[{orderable:false,targets:[11]}]});
+    $('#surveyor_select_type').on('change',function(){if($(this).val()!=='-1'){$('#div_surveyor_keyword').removeClass('d-none');}else{$('#div_surveyor_keyword').addClass('d-none');}});
+    $('#btn_surveyor_search').on('click',function(){var searchType=$('#surveyor_select_type').val();var keyword=$('#surveyor_keyword').val();if(searchType&&keyword){console.log('Searching for '+searchType+': '+keyword);alert('Search functionality: '+searchType+' - '+keyword);}else{alert('Please select search type and enter keyword');}});
+    $('#btn_license_search').on('click',function(){var licenseNo=$(this).closest('.row').find('input').val();if(licenseNo){console.log('Searching license: '+licenseNo);alert('Searching license history for: '+licenseNo);}else{alert('Please enter a license number');}});
+    window.reassessAllSurveyors=function(){if(confirm('Are you sure you want to re-assess all surveyors?')){console.log('Re-assessing all surveyors...');alert('Re-assessment initiated for all surveyors.');}};
+});
+</script>

@@ -1,157 +1,92 @@
-  <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page import="org.codehaus.jettison.json.*"%>
-<%@ page import="com.google.gson.Gson"%>
-<%@ page import="com.google.gson.GsonBuilder"%>
-  <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<style>
+/* ELIS Transaction Reports — scoped emerald theme */
+.elis-transactions{--et-dark:#064b39;--et-green:#087f5b;--et-mid:#0a9869;--et-light:#e9f7ee;--et-border:#d4e8db;--et-text:#183c2e;color:var(--et-text)}
+.elis-transactions .et-hero{background:linear-gradient(112deg,#064b39 0%,#087f5b 65%,#26a776 100%);padding:25px 28px;border-radius:16px;color:white;box-shadow:0 12px 30px rgba(6,75,57,.18);margin-bottom:22px}
+.elis-transactions .et-hero h1{color:#fff;font-weight:800;font-size:24px;margin:5px 0}.elis-transactions .et-hero p{color:#ddf8e8;margin:0;font-size:13px}.elis-transactions .et-hero .breadcrumb-item,.elis-transactions .et-hero .breadcrumb-item a{color:#e9fff2!important}.elis-transactions .et-hero .breadcrumb-item+.breadcrumb-item::before{color:#b8e9cc}
+.elis-transactions .card,.elis-transactions .transaction-report-card{border:1px solid var(--et-border)!important;border-radius:14px;box-shadow:0 5px 20px rgba(6,75,57,.07);overflow:hidden}.elis-transactions .transaction-report-card{transition:box-shadow .2s,transform .2s}.elis-transactions .transaction-report-card:hover{box-shadow:0 10px 25px rgba(6,75,57,.11);transform:translateY(-2px)}
+.elis-transactions .et-tabs{border-bottom:1px solid var(--et-border);gap:8px;flex-wrap:wrap}.elis-transactions .et-tabs .nav-link{border:0;border-bottom:3px solid transparent;color:#526e5e;font-weight:750;padding:13px 19px;border-radius:9px 9px 0 0}.elis-transactions .et-tabs .nav-link.active{background:#e7f6ec;color:#06553e;border-bottom-color:#087f5b}.elis-transactions .et-tabs .nav-link:hover{background:#f1faf4;color:#087f5b}
+.elis-transactions .et-section-header,.elis-transactions .card-header-dark{background:linear-gradient(110deg,#064b39,#0a8e63)!important;color:#fff;border:0;padding:16px 19px}.elis-transactions .et-section-header h5,.elis-transactions .card-header-dark h5{color:#fff!important}.elis-transactions .et-filter-header{background:#eff9f2!important;color:#07543f;border-bottom:1px solid var(--et-border);padding:16px}.elis-transactions .et-filter-header h5{color:#07543f;font-size:15px}
+.elis-transactions .form-label{font-size:12px;font-weight:750;color:#365d49}.elis-transactions .form-control,.elis-transactions .form-select{border:1px solid #c9e2d3;border-radius:9px;min-height:40px;font-size:13px}.elis-transactions select[multiple]{min-height:115px}.elis-transactions .form-control:focus,.elis-transactions .form-select:focus{border-color:#0a9869;box-shadow:0 0 0 .2rem rgba(8,127,91,.13)}.elis-transactions .input-group-text{background:#eaf7ee;color:#087f5b;border-color:#c9e2d3}
+.elis-transactions .btn-primary{background:linear-gradient(110deg,#087f5b,#0aa370);border-color:#087f5b;color:white}.elis-transactions .btn-primary:hover{background:#065d45;border-color:#065d45}.elis-transactions .btn-outline-primary{border-color:#0a9366;color:#087f5b}.elis-transactions .btn-outline-primary:hover{background:#087f5b;color:white}.elis-transactions .action-btn{border-radius:9px;padding:10px 15px;font-weight:750}
+.elis-transactions .stat-card{border-left:4px solid #087f5b!important}.elis-transactions .stat-card.border-warning{border-left-color:#d6a13a!important}.elis-transactions .stat-card.border-info{border-left-color:#34a88a!important}.elis-transactions .stats-icon{height:52px;width:52px;border-radius:13px;display:grid;place-items:center;background:#e5f6eb!important;color:#087f5b!important;flex-shrink:0}.elis-transactions .stat-card.border-warning .stats-icon{background:#fff5df!important;color:#b77b19!important}.elis-transactions .stat-card .text-primary,.elis-transactions .stat-card .text-success,.elis-transactions .stat-card .text-info{color:#075c44!important}.elis-transactions .stat-card .text-warning{color:#ad751a!important}
+.elis-transactions .chart-container{background:#fff;border:1px solid #e3eee6;border-radius:12px;padding:15px}.elis-transactions .data-table thead th,.elis-transactions table.table thead th{background:#07543f!important;color:#fff!important;font-size:12px;font-weight:700;padding:12px 10px;white-space:nowrap;border-color:#07543f}.elis-transactions table.table tbody tr:nth-child(even){background:#f7fcf9}.elis-transactions table.table tbody tr:hover{background:#edf8f1}.elis-transactions table.table tbody td{padding:11px 10px;vertical-align:middle;font-size:12px}
+.elis-transactions .dt-buttons{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}.elis-transactions .dt-buttons .dt-button{background:#e8f7ed!important;border:1px solid #b8dec7!important;color:#07543f!important;border-radius:8px!important;padding:7px 12px!important;font-weight:700}.elis-transactions .dt-buttons .dt-button:hover{background:#cdebd9!important}.elis-transactions .dataTables_filter input{border:1px solid #c9e2d3;border-radius:8px;padding:7px 10px}.elis-transactions .dataTables_paginate .paginate_button.current{background:#087f5b!important;color:white!important;border:0!important}.elis-transactions .et-help{font-size:12px;color:#738a7c}
+.et-report-modal .modal-content{border:0;border-radius:15px;overflow:hidden;box-shadow:0 20px 55px rgba(5,55,40,.2)}.et-report-modal .modal-header{background:linear-gradient(110deg,#064b39,#0a9468)!important;color:white!important;padding:17px 21px}.et-report-modal .modal-title{color:white!important;font-weight:800}.et-report-modal .modal-body{background:#fbfefc}.et-report-modal .modal-footer{background:#f3faf5;border-color:#d8e9df}.et-report-modal .table thead th{background:#07543f!important;color:white!important;padding:12px;border-color:#07543f}.et-report-modal .table tbody tr:hover{background:#eaf7ef}.et-report-modal .btn-danger{background:#f1f5f2;color:#315645;border:1px solid #cdded3}.et-report-modal .btn-danger:hover{background:#e1ede5;color:#064b39}.et-report-modal .text-primary{color:#087f5b!important}
+@media(max-width:767px){.elis-transactions .et-hero{padding:18px}.elis-transactions .et-hero h1{font-size:20px}.elis-transactions .et-tabs .nav-link{padding:10px;font-size:12px}.elis-transactions .card-body{padding:14px}.elis-transactions .stat-card{margin-bottom:10px}}
+</style>
+<div class="main-content app-content elis-transactions"><div class="container-fluid page-container">
+ <div class="et-hero"><div class="d-flex justify-content-between align-items-center flex-wrap gap-3"><div><div class="text-uppercase fw-bold" style="font-size:11px;letter-spacing:1.4px;color:#bdf0d2"><i class="ri-government-line me-1"></i> ELIS / Financial Analytics</div><h1><i class="ri-pie-chart-line me-2"></i>Transaction Reports</h1><p>Comprehensive revenue tracking, payment transactions and bill-item analysis.</p></div><ol class="breadcrumb mb-0"><li class="breadcrumb-item"><a href="javascript:void(0)">ELIS</a></li><li class="breadcrumb-item active">Transaction Reports</li></ol></div></div>
+ <div id="acct_graph_data_values" style="display:none"><c:out value="${data}"/></div>
+ <div class="card mb-4"><div class="card-header bg-white border-0 px-4 pt-3 pb-0"><ul class="nav nav-tabs et-tabs" role="tablist">
+  <li class="nav-item"><button class="nav-link ${(active == 'graph') ? 'active' : ''}" data-bs-toggle="tab" data-bs-target="#summarized-revenue" type="button" role="tab"><i class="ri-pie-chart-line me-2"></i>Summarized Revenues</button></li>
+  <li class="nav-item"><button class="nav-link ${(active == 'trans') ? 'active' : ''}" data-bs-toggle="tab" data-bs-target="#transactions-report" type="button" role="tab"><i class="ri-list-check me-2"></i>Transactions Report</button></li>
+  <li class="nav-item"><button class="nav-link ${(active == 'bill_item') ? 'active' : ''}" data-bs-toggle="tab" data-bs-target="#bill-item-report" type="button" role="tab"><i class="ri-file-list-line me-2"></i>Report Per Bill Item</button></li>
+ </ul></div><div class="card-body px-4 pt-4"><div class="tab-content">
+ <div class="tab-pane fade ${(active == 'graph') ? 'show active' : ''}" id="summarized-revenue" role="tabpanel"><div class="row g-3">
+  <div class="col-lg-3"><div class="card transaction-report-card filter-card h-100"><div class="card-header et-filter-header"><h5 class="mb-0 fw-semibold"><i class="ri-filter-line me-2"></i>Filter Options</h5></div><div class="card-body"><form method="post"><div class="row g-3">
+   <div class="col-12"><label class="form-label" for="date_from">Date From</label><div class="input-group"><span class="input-group-text"><i class="ri-calendar-line"></i></span><input type="date" class="form-control form-control-sm" name="date_from" id="date_from" value="${date_from}"></div></div>
+   <div class="col-12"><label class="form-label" for="date_to">Date To</label><div class="input-group"><span class="input-group-text"><i class="ri-calendar-line"></i></span><input type="date" class="form-control form-control-sm" name="date_to" id="date_to" value="${date_to}"></div></div>
+   <div class="col-12"><label class="form-label" for="region_id">Region</label><div class="input-group"><span class="input-group-text"><i class="ri-map-pin-line"></i></span><select id="region_id" name="region_id" class="form-select form-control-sm" required><option value="-1">-- select --</option><c:forEach items="${officeregionlist}" var="officeregion"><option value="${fn:replace(officeregion.ord_region_code, '.0', '')}" data-name="${officeregion.ord_region_name}" ${fn:replace(region_id, '.0', '') == fn:replace(officeregion.ord_region_code, '.0', '') ? 'selected' : ''}>${officeregion.ord_region_name}</option></c:forEach></select></div></div>
+   <div class="col-12"><label class="form-label" for="type">Summarize by</label><select class="form-select form-control-sm" name="type" id="type" required><option value="values" ${(type == 'values') ? 'selected' : ''}>Value</option><option value="count" ${(type == 'count') ? 'selected' : ''}>Count</option></select></div>
+   <div class="col-12"><label class="form-label" for="division">Division</label><select class="form-select form-control-sm" name="division" id="division" multiple required><option value="PVLMD" ${fn:contains(division, 'PVLMD') ? 'selected' : ''}>PVLMD</option><option value="SMD" ${fn:contains(division, 'SMD') ? 'selected' : ''}>SMD</option><option value="LVD" ${fn:contains(division, 'LVD') ? 'selected' : ''}>LVD</option><option value="LRD" ${fn:contains(division, 'LRD') ? 'selected' : ''}>LRD</option></select><small class="et-help">Hold Ctrl/Cmd to select multiple</small></div>
+   <div class="col-12"><label class="form-label" for="limit">Cut-Off Point on Graph</label><input type="number" step="1" class="form-control form-control-sm" name="limit" value="${limit}" min="3" id="limit" required></div>
+  </div><div class="d-grid mt-4"><button type="submit" class="btn btn-primary action-btn"><i class="ri-filter-3-line me-2"></i>Apply Filter</button></div></form></div></div></div>
+  <div class="col-lg-9"><div class="row g-3 mb-3"><div class="col-md-6"><div class="card stat-card border-primary h-100"><div class="card-body d-flex align-items-center"><div class="stats-icon bg-primary me-3"><i class="ri-money-dollar-circle-line fs-4"></i></div><div><div class="text-muted small fw-semibold mb-1">Total Amount</div><h3 class="fw-bold text-primary mb-0">GHS <fmt:formatNumber type="number" maxFractionDigits="3" minFractionDigits="2" value="${total_amount}"/></h3></div></div></div></div><div class="col-md-6"><div class="card stat-card border-success h-100"><div class="card-body d-flex align-items-center"><div class="stats-icon bg-success me-3"><i class="ri-file-list-line fs-4"></i></div><div><div class="text-muted small fw-semibold mb-1">Total Payment Count</div><h3 class="fw-bold text-success mb-0"><fmt:formatNumber type="number" maxFractionDigits="2" value="${total_count}"/></h3></div></div></div></div></div>
+   <div class="card transaction-report-card"><div class="card-header card-header-dark d-flex justify-content-between align-items-center"><h5 class="mb-0 fw-semibold text-white"><i class="ri-pie-chart-line me-2"></i>Revenue per Service</h5><button type="button" class="btn btn-sm btn-outline-light" title="Toggle fullscreen"><i class="ri-fullscreen-line"></i></button></div><div class="card-body"><div class="chart-container"><div id="main-echart" style="width:100%;height:500px"></div></div></div></div>
+  </div></div></div>
+ <div class="tab-pane fade ${(active == 'trans') ? 'show active' : ''}" id="transactions-report" role="tabpanel"><div class="row g-3"><div class="col-lg-3"><div class="card transaction-report-card filter-card h-100"><div class="card-header et-filter-header"><h5 class="mb-0 fw-semibold"><i class="ri-filter-line me-2"></i>Filter Options</h5></div><div class="card-body"><form method="post"><div class="row g-3">
+  <div class="col-12"><label class="form-label" for="t_date_from">Date From</label><div class="input-group"><span class="input-group-text"><i class="ri-calendar-line"></i></span><input type="date" class="form-control form-control-sm" name="t_date_from" id="t_date_from" value="${t_date_from}"></div></div>
+  <div class="col-12"><label class="form-label" for="t_date_to">Date To</label><div class="input-group"><span class="input-group-text"><i class="ri-calendar-line"></i></span><input type="date" class="form-control form-control-sm" name="t_date_to" id="t_date_to" value="${t_date_to}"></div></div>
+  <div class="col-12"><label class="form-label" for="t_region_id">Region</label><div class="input-group"><span class="input-group-text"><i class="ri-map-pin-line"></i></span><select id="t_region_id" name="t_region_id" class="form-select form-control-sm" required><option value="-1">-- select --</option><c:forEach items="${officeregionlist}" var="officeregion"><option value="${fn:replace(officeregion.ord_region_code, '.0', '')}" data-name="${officeregion.ord_region_name}" ${fn:replace(region_id, '.0', '') == fn:replace(officeregion.ord_region_code, '.0', '') ? 'selected' : ''}>${officeregion.ord_region_name}</option></c:forEach></select></div></div>
+  <div class="col-12"><label class="form-label" for="t_division">Division</label><select class="form-select form-control-sm" name="t_division" id="t_division" multiple required><option value="PVLMD" ${fn:contains(t_division, 'PVLMD') ? 'selected' : ''}>PVLMD</option><option value="SMD" ${fn:contains(t_division, 'SMD') ? 'selected' : ''}>SMD</option><option value="LVD" ${fn:contains(t_division, 'LVD') ? 'selected' : ''}>LVD</option><option value="LRD" ${fn:contains(t_division, 'LRD') ? 'selected' : ''}>LRD</option></select><small class="et-help">Hold Ctrl/Cmd to select multiple</small></div>
+  </div><div class="d-grid mt-4"><button type="submit" name="transactions_form" value="1" class="btn btn-primary action-btn"><i class="ri-filter-3-line me-2"></i>Apply Filter</button></div></form></div></div></div>
+  <div class="col-lg-9"><div class="row g-3 mb-3"><div class="col-md-6"><div class="card stat-card border-primary h-100"><div class="card-body d-flex align-items-center"><div class="stats-icon bg-primary me-3"><i class="ri-money-dollar-circle-line fs-4"></i></div><div><div class="text-muted small fw-semibold mb-1">Total Amount</div><h3 class="fw-bold text-primary mb-0">GHS <fmt:formatNumber type="number" maxFractionDigits="3" minFractionDigits="2" value="${t_total_amount}"/></h3></div></div></div></div><div class="col-md-6"><div class="card stat-card border-success h-100"><div class="card-body d-flex align-items-center"><div class="stats-icon bg-success me-3"><i class="ri-file-list-line fs-4"></i></div><div><div class="text-muted small fw-semibold mb-1">Total Payment Count</div><h3 class="fw-bold text-success mb-0"><fmt:formatNumber type="number" maxFractionDigits="2" value="${t_total_count}"/></h3></div></div></div></div></div>
+  <div class="card transaction-report-card"><div class="card-header card-header-dark d-flex justify-content-between align-items-center"><h5 class="mb-0 fw-semibold text-white"><i class="ri-list-check me-2"></i>Revenue Transactions List</h5><button type="button" class="btn btn-sm btn-outline-light" title="Toggle fullscreen"><i class="ri-fullscreen-line"></i></button></div><div class="card-body"><div class="table-responsive"><table class="table table-hover data-table nowrap w-100" id="tbl_transactions_result" width="100%" cellspacing="0"><thead><tr><th>Bill Number</th><th>GOG Invoice No.</th><th>Created Date</th><th>Payment Date</th><th>Bill Amount</th><th>Payment Amount</th><th>Payment Slip No.</th><th>Payment Mode</th><th>Job Number</th><th>Application Type</th></tr></thead><tbody><c:forEach items="${t_applicationlist}" var="row"><tr><td><c:out value="${row.ref_number}"/></td><td><c:out value="${row.gog_invoice_number}"/></td><td><c:out value="${row.created_date}"/></td><td><c:out value="${row.payment_date}"/></td><td><c:out value="${row.bill_amount}"/></td><td><c:out value="${row.payment_amount}"/></td><td><c:out value="${row.payment_slip_number}"/></td><td><c:out value="${row.payment_mode}"/></td><td><c:out value="${row.job_number}"/></td><td><c:out value="${row.business_process_sub_name}"/></td></tr></c:forEach></tbody></table></div></div></div></div></div></div>
+ <div class="tab-pane fade ${(active == 'bill_item') ? 'show active' : ''}" id="bill-item-report" role="tabpanel"><div class="row g-3 mb-4"><div class="col-md-4"><div class="card transaction-report-card"><div class="card-body"><label class="form-label" for="datefrom">Date From</label><input type="date" id="datefrom" class="form-control form-control-sm" placeholder="Select Date"></div></div></div><div class="col-md-4"><div class="card transaction-report-card"><div class="card-body"><label class="form-label" for="dateto">Date To</label><input type="date" id="dateto" class="form-control form-control-sm" placeholder="Select Date"></div></div></div><div class="col-md-4"><div class="card transaction-report-card"><div class="card-body"><label class="form-label" for="sel_change_region_compliance">Office Region</label><select id="sel_change_region_compliance" class="form-select form-control-sm" required><option selected value="-1">-- select --</option><option value="0">Nationwide</option><c:forEach items="${officeregionlist}" var="officeregion"><option value="${fn:replace(officeregion.ord_region_code, '.0', '')}" data-name="${officeregion.ord_region_name}">${officeregion.ord_region_name}</option></c:forEach></select></div></div></div></div>
+  <input type="hidden" id="start_date"><input type="hidden" id="end_date"><input type="hidden" id="region_select">
+  <div class="row g-3"><div class="col-md-6" id="totalrevenue"><div class="card stat-card border-warning h-100"><div class="card-body d-flex align-items-center"><div class="stats-icon bg-warning me-3"><i class="ri-money-dollar-circle-line fs-4"></i></div><div><div class="text-muted small fw-semibold mb-1">Total Revenue</div><h3 id="total_revenue" class="fw-bold text-warning mb-0">GHS 0.00</h3></div></div></div></div><div class="col-md-6" id="totalTransactions"><div class="card stat-card border-info h-100"><div class="card-body d-flex align-items-center"><div class="stats-icon bg-info me-3"><i class="ri-file-list-line fs-4"></i></div><div><div class="text-muted small fw-semibold mb-1">Total Transactions</div><h3 id="total_transactions" class="fw-bold text-info mb-0">0</h3></div></div></div></div></div>
+ </div></div></div></div></div></div>
 
-<!-- Begin Page Content -->
-<div class="container-fluid">
-<div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h5 class="m-0 text-dark">REVENUES PER SERVICE</h5>
-          </div>
-        </div>
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
-	<div class="content">
-	      <div class="container-fluid">
-	        <div class="row">
-	          <div class="col-lg-3">
-	            <div class="card">
-	            	<div class="card-header">
-	            		<h6 class="card-title">Filter</h6>
-	            	</div>
-	            	<div class="card-body">
-	            		<div class="row mb-2">
-	            			<div class="form-group">
-	            				<label>Filter by</label>
-	            				<select class="form-control filter" style="width: 100%;">
-	            					<option selected="selected" value="">All</option>
-	            					<option value="">Others</option>
-	            				</select>
-	            			</div>
-	            		</div>
-	            		<div class="row">
-	            			<div class="form-group">
-                  				<label>Date</label>
-                  				<div class="input-group">
-                    				<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-calendar-alt"></i></span>
-                    				</div>
-                    				<input type="date" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask>
-                  				</div>
-                  			</div>
-                  		</div>
-                  		<div class="row mb-2">
-                  				<div class="form-group ">
-                  					<div class="input-group">
-	                    				<div class="input-group-prepend"><span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
-	                    				</div>
-	                    				<input type="date" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask>
-	                  				</div>
-	            				</div>
-	            		</div>
-	            		<div class="row mb-2">
-	            			<div class="form-group">
-	            				<label>Transaction Type</label>
-	            				<div class="input-group">
-			            			<div class="input-group-prepend">
-		                    			<button type="button" class="btn btn-danger">Volume	</button>
-		                  			</div>
-          							<button type="button" class="btn btn-danger">Count</button>
-	            				</div>
-	            			</div>
-	            		</div>
-	            			
-	            		<div class="row mb-2">
-	            			<div class="form-group">
-                    			<label>Cut-Off Point</label>
-                    			<input type="text" class="form-control" >
-                  			</div>
-	            		</div>
-	  
-	            		<div class="row mb-2">
-	            			<div class="form-group">
-	            				<label>Export Type</label>
-	            				<div class="input-group">
-	            					<div class="input-group-prepend">
-                    					<button type="button" class="btn btn-danger">PDF</button>
-                  					</div>
-                  						<button type="button" class="btn btn-danger">CSV</button>
-	            				</div>
-	            			</div>
-	            		</div>
-	            		<div class="row mb-2">
-	            			<div class="form-group">
-                  				<button type="button" class="btn btn-danger">Count</button>
-	            			</div>
-	            		</div>
-	           	</div>
-	    	</div>
-	    </div>
-	
-	           <div class="col-lg-9">
-	            <div class="card">
-	            	<div class="container-fluid">
-       			
-				        <div class="row">
-				          <div class="col-lg-4 col-6">
-				            <!-- Card -->
-				            <div class="card ">
-				            	<div class="card-body">
-				
-					                <h3>GHC</h3>
-					                <p>Total Amount</p>
-					              
-					             </div>
-					        </div>
-				          </div>
+<div class="modal fade et-report-modal" id="sub_service_modal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-xl"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="sub_service_modalLabel"></h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body">
+<div class="table-responsive"><table class="table table-hover data-table" id="sub_service_table" width="100%"><thead><tr><th>Sub Service Name</th><th>Amount</th><th>Count</th><th>Action</th></tr></thead><tbody></tbody></table></div></div><div class="modal-footer"><button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="ri-close-line me-1"></i>Close</button></div></div></div></div>
 
-				            <div class="col-lg-4 col-6">
-				            <!-- Card -->
-				            <div class="card ">
-				            	<div class="card-body">
-					              
-					                <h3>GHC</h3>
-					                <p>Average Amount per Transaction</p>
-					       
-					              
-					            </div>
-					        </div>
-				          </div>
-				      
+<div class="modal fade et-report-modal" id="bill_items" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-xl"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Bill Items</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body">
+<div class="table-responsive"><table class="table table-hover data-table" id="banks_table" width="100%"><thead><tr><th>Bill Item Name</th><th>Amount</th><th>Action</th></tr></thead><tbody></tbody></table></div></div><div class="modal-footer"><button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="ri-close-line me-1"></i>Close</button></div></div></div></div>
 
-				        
-				            <div class="col-lg-4 col-6">
-				            <!-- Card -->
-				            <div class="card ">
-				            	<div class="card-body">
-					              
-					                <h3>GHC</h3>
-					                <p>Total Count</p>
-					              
-					            </div>
-					        </div>
-				          </div>
-				         
-          
-        			</div>
-             		<!-- /.row -->
-	            </div>
-	            <!-- Container -->
-	           </div>
-	           <!-- Card -->
-	        </div>
-	        <!-- col -->
-	      </div>
-	      <!-- row -->
+<div class="modal fade et-report-modal" id="transactions_modal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-fullscreen"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="transactions_Label"></h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body">
+<div class="table-responsive"><table class="table table-hover data-table" id="transactions_table" width="100%"><thead><tr><th>Applicant Name</th><th>Job Number</th><th>Application Type</th><th>Bill Number</th><th>Bill Amount</th><th>Amount Paid</th><th>GHANA.GOV Ref Number</th><th>EGRC Number</th><th>Payment Mode</th><th>Payment Date</th><th>Action</th></tr></thead><tbody></tbody></table></div></div><div class="modal-footer"><button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="ri-close-line me-1"></i>Close</button></div></div></div></div>
 
-	</div>
-	<!-- Container -->
-</div>
-<!-- Content -->
-</div>
+<div class="modal fade et-report-modal" id="job_numberbill_items" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-xl"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="job_numberbillLabel"></h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body">
+<div class="row g-3 mb-3"><div class="col-md-6"><label class="form-label">Bill Number</label><input type="text" id="bill_number" disabled class="form-control"></div><div class="col-md-6"><label class="form-label">Bill Amount</label><input type="text" id="bill_amount" disabled class="form-control"></div><div class="col-12"><label class="form-label">Applicant Name</label><input type="text" id="applicant_name" disabled class="form-control"></div></div><div class="table-responsive"><table class="table table-hover data-table" id="job_numberbill_table" width="100%"><thead><tr><th>Bill Item Name</th><th>Amount</th></tr></thead><tbody></tbody></table></div></div><div class="modal-footer"><button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="ri-close-line me-1"></i>Close</button></div></div></div></div>
+
+<div class="modal fade et-report-modal" id="bill_items_new" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-xl"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="banks_modalLabel_1">Applications Received</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body">
+<div class="card mb-3"><div class="card-body"><strong>Total: <span class="text-primary" id="total_span2"></span></strong></div></div><input type="hidden" id="subprocessid"><input type="hidden" id="completed_subprocessid"><input type="hidden" id="service_to_bank_name"><div class="table-responsive"><table class="table table-hover data-table" id="banks_table_1" width="100%"><thead><tr><th>Bill Item Name</th><th>Amount</th></tr></thead><tbody></tbody></table></div></div><div class="modal-footer"><button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="ri-close-line me-1"></i>Close</button></div></div></div></div>
+
+<div class="modal fade et-report-modal" id="bill_items_regional_modal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-xl"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="bill_items_regional_Label"></h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body">
+<div class="card mb-3"><div class="card-body"><strong>Total: <span class="text-primary" id="total_span"></span></strong></div></div><div class="table-responsive"><table class="table table-hover data-table" id="bill_items_regional_table" width="100%"><thead><tr><th>Bill Item Name</th><th>Amount</th></tr></thead><tbody></tbody></table></div></div><div class="modal-footer"><button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="ri-close-line me-1"></i>Close</button></div></div></div></div>
+
+<!-- The original source repeated #bill_items, #banks_table and several hidden IDs. Duplicates have been consolidated so Bootstrap and jQuery selectors work reliably. -->
+<script type="text/javascript" src="client_application/audit_report.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+ if(window.bootstrap){document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function(el){bootstrap.Tooltip.getOrCreateInstance(el)});document.querySelectorAll('[data-bs-toggle="popover"]').forEach(function(el){bootstrap.Popover.getOrCreateInstance(el)});}
+ if(window.jQuery){
+  if(jQuery.fn.selectpicker && jQuery('.selectpicker').length)jQuery('.selectpicker').selectpicker();
+  function exportMessage(){return 'This report is generated using the Enterprise Land Information System\nSelected Date Range: '+(jQuery('#t_date_from').val()||'Not selected')+' to '+(jQuery('#t_date_to').val()||'Not selected');}
+  if(jQuery.fn.DataTable && !jQuery.fn.DataTable.isDataTable('#tbl_transactions_result')){
+   var config={dom:'Bfrtip',responsive:true,scrollX:true,pageLength:25,lengthMenu:[[10,25,50,100,-1],[10,25,50,100,'All']],order:[[3,'desc']]};
+   if(jQuery.fn.dataTable.Buttons){config.buttons=['pageLength',
+    {extend:'copy',text:'<i class="ri-file-copy-line me-1"></i>Copy',title:'Revenue Transactions List',messageTop:exportMessage},
+    {extend:'csv',text:'<i class="ri-file-excel-line me-1"></i>CSV',title:'Revenue Transactions List',filename:'Revenue_Transactions_List',messageTop:exportMessage},
+    {extend:'excel',text:'<i class="ri-file-excel-2-line me-1"></i>Excel',title:'Revenue Transactions List',filename:'Revenue_Transactions_List',messageTop:exportMessage},
+    {extend:'pdf',text:'<i class="ri-file-pdf-line me-1"></i>PDF',title:'Revenue Transactions List',filename:'Revenue_Transactions_List',messageTop:exportMessage,orientation:'landscape',pageSize:'A4'},
+    {extend:'print',text:'<i class="ri-printer-line me-1"></i>Print',title:'Revenue Transactions List',messageTop:exportMessage}];}
+   jQuery('#tbl_transactions_result').DataTable(config);
+  }
+ }
+});
+</script>

@@ -1,3 +1,38 @@
+<style>
+/* ELIS LRD Map Modals | Emerald theme, scoped to this include */
+.lrd-green-modal { --lrd-deep:#064b39; --lrd-primary:#087f5b; --lrd-bright:#0ba26f; --lrd-soft:#e8f7ee; --lrd-border:#ccebd8; --lrd-ink:#244438; }
+.lrd-green-modal .modal-content { border:0!important; border-radius:15px!important; overflow:hidden; box-shadow:0 22px 55px rgba(6,75,57,.22); background:#fff; }
+.lrd-green-modal .modal-header, .lrd-green-modal .modal-header.bg-primary, .lrd-green-modal .modal-header.bg-success, .lrd-green-modal .modal-header.bg-light { background:linear-gradient(115deg,#064b39 0%,#087f5b 62%,#0ba26f 100%)!important; border-bottom:0!important; padding:17px 22px; color:#fff!important; }
+.lrd-green-modal .modal-header .modal-title, .lrd-green-modal .modal-header h4, .lrd-green-modal .modal-header h5, .lrd-green-modal .modal-header h6, .lrd-green-modal .modal-header .text-primary, .lrd-green-modal .modal-header .text-dark {color:#fff!important;font-weight:700!important;}
+.lrd-green-modal .modal-header .btn-close {filter:brightness(0) invert(1);opacity:.9;}
+.lrd-green-modal .modal-header .close {color:#fff!important;opacity:.95;text-shadow:none;}
+.lrd-green-modal .modal-body {background:#fbfdfb; padding:20px; color:var(--lrd-ink);}
+.lrd-green-modal .modal-footer {background:#f0f8f3!important;border-top:1px solid var(--lrd-border)!important;padding:14px 20px;}
+.lrd-green-modal .card {border:1px solid #dcece2;border-radius:11px;box-shadow:0 3px 10px rgba(6,75,57,.045);overflow:hidden;}
+.lrd-green-modal .card-header, .lrd-green-modal .card-header.bg-light, .lrd-green-modal .card-header.bg-primary, .lrd-green-modal .card-header.bg-success {background:var(--lrd-soft)!important;border-bottom:1px solid var(--lrd-border)!important;color:var(--lrd-deep)!important;}
+.lrd-green-modal .card-header h4,.lrd-green-modal .card-header h5,.lrd-green-modal .card-header h6,.lrd-green-modal .card-header .text-white {color:var(--lrd-deep)!important;font-weight:700;}
+.lrd-green-modal .form-label,.lrd-green-modal label {color:#315b47;font-weight:600;}
+.lrd-green-modal .form-control,.lrd-green-modal .form-select,.lrd-green-modal select,.lrd-green-modal textarea {border-color:#c9dfd2;border-radius:7px;}
+.lrd-green-modal .form-control:focus,.lrd-green-modal .form-select:focus,.lrd-green-modal select:focus,.lrd-green-modal textarea:focus {border-color:var(--lrd-primary)!important;box-shadow:0 0 0 3px rgba(8,127,91,.12)!important;}
+.lrd-green-modal .input-group-text {background:var(--lrd-soft);border-color:#c9dfd2;color:var(--lrd-primary);}
+.lrd-green-modal .btn-primary,.lrd-green-modal .btn-success,.lrd-green-modal .btn-info {background:var(--lrd-primary)!important;border-color:var(--lrd-primary)!important;color:#fff!important;}
+.lrd-green-modal .btn-primary:hover,.lrd-green-modal .btn-success:hover,.lrd-green-modal .btn-info:hover {background:var(--lrd-deep)!important;border-color:var(--lrd-deep)!important;}
+.lrd-green-modal .btn-outline-primary,.lrd-green-modal .btn-outline-success,.lrd-green-modal .btn-outline-info {color:var(--lrd-primary)!important;border-color:var(--lrd-primary)!important;}
+.lrd-green-modal .btn-outline-primary:hover,.lrd-green-modal .btn-outline-success:hover,.lrd-green-modal .btn-outline-info:hover {background:var(--lrd-primary)!important;color:#fff!important;}
+.lrd-green-modal .btn {border-radius:7px;transition:background .2s ease,transform .2s ease;}
+.lrd-green-modal .table thead th,.lrd-green-modal .table thead.table-light th,.lrd-green-modal .table .table-light th {background:var(--lrd-soft)!important;color:var(--lrd-deep)!important;border-bottom:2px solid #a9dabc!important;font-weight:700;white-space:nowrap;}
+.lrd-green-modal .table tbody tr:hover td {background:#f0faf4;}
+.lrd-green-modal .nav-tabs .nav-link {color:#4d7461;}
+.lrd-green-modal .nav-tabs .nav-link.active {color:var(--lrd-primary)!important;background:var(--lrd-soft)!important;border-bottom-color:var(--lrd-primary)!important;font-weight:700;}
+.lrd-green-modal .form-check-input:checked {background-color:var(--lrd-primary);border-color:var(--lrd-primary);}
+.lrd-green-modal .text-primary,.lrd-green-modal .text-success,.lrd-green-modal .text-info {color:var(--lrd-primary)!important;}
+.lrd-green-modal .badge.bg-primary,.lrd-green-modal .badge.bg-success,.lrd-green-modal .badge.bg-info {background:var(--lrd-primary)!important;color:#fff!important;}
+.lrd-green-modal .progress-bar.bg-primary,.lrd-green-modal .progress-bar.bg-success {background:var(--lrd-primary)!important;}
+.lrd-green-modal .dataTables_filter input {border:1px solid #c9dfd2;border-radius:7px;padding:6px 10px;}
+.lrd-green-modal .dataTables_paginate .paginate_button.current {background:var(--lrd-primary)!important;color:#fff!important;border-color:var(--lrd-primary)!important;}
+@media(max-width:767.98px){.lrd-green-modal .modal-body{padding:14px}.lrd-green-modal .modal-header{padding:14px 16px}.lrd-green-modal .modal-footer{padding:12px 14px}}
+</style>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="org.codehaus.jettison.json.*"%>
 <%@ page import="com.google.gson.Gson"%>
@@ -10,7 +45,7 @@
 <!-- ============================================================ -->
 <!-- MODAL 1: MAIN LRD PARCEL INFORMATION                          -->
 <!-- ============================================================ -->
-<div class="modal fade" id="lrdparcelIndormation" tabindex="-1" aria-labelledby="lrdparcelIndormationLabel" aria-hidden="true">
+<div class="modal fade lrd-green-modal" id="lrdparcelIndormation" tabindex="-1" aria-labelledby="lrdparcelIndormationLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -341,7 +376,7 @@
 <!-- ============================================================ -->
 <!-- MODAL 2: ADD LRD TRANSACTION                                 -->
 <!-- ============================================================ -->
-<div class="modal fade modal-blur" id="addlrdtransaction" tabindex="-1" aria-labelledby="addlrdtransactionLabel" aria-hidden="true">
+<div class="modal fade modal-blur lrd-green-modal" id="addlrdtransaction" tabindex="-1" aria-labelledby="addlrdtransactionLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content border-0 shadow-lg overflow-hidden">
             <div class="modal-header bg-primary text-white align-items-center">
@@ -484,7 +519,7 @@
 </div>
 
 
-<div class="modal fade" id="lrdparcelinformationfirsttimesavewithinfo" role="dialog"
+<div class="modal fade lrd-green-modal" id="lrdparcelinformationfirsttimesavewithinfo" role="dialog"
 >
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -598,7 +633,7 @@
 
 
 
-<div class="modal fade bd-example-modal-xl" tabindex="-1"
+<div class="modal fade bd-example-modal-xl lrd-green-modal" tabindex="-1"
 	id="transitional_certificate_template" role="dialog"
 	aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
 >
@@ -1391,7 +1426,7 @@
 
 
 
-<div class="modal fade bd-example-modal-xl" tabindex="-1"
+<div class="modal fade bd-example-modal-xl lrd-green-modal" tabindex="-1"
 	id="original_transitional_certificate_template" role="dialog"
 	aria-labelledby="myExtraLargeModalLabel" aria-hidden="true"
 >
@@ -2112,7 +2147,7 @@
 
 
    <!-- Certificate Section============================= -->
-	<div class="modal fade" id="newCertificateModal" tabindex="-1" role="dialog" aria-labelledby="newCertificateModalLabel" aria-hidden="true">
+	<div class="modal fade lrd-green-modal" id="newCertificateModal" tabindex="-1" role="dialog" aria-labelledby="newCertificateModalLabel" aria-hidden="true">
 	  <div class="modal-dialog modal-lg">
 	    <div class="modal-content">
 	      <div class="modal-header">
@@ -2172,7 +2207,7 @@
 
 
 	<!-- Reservation Section============================= -->
-	<div class="modal fade" id="newReservationModal" tabindex="-1" role="dialog" aria-labelledby="newReservationModalLabel" aria-hidden="true">
+	<div class="modal fade lrd-green-modal" id="newReservationModal" tabindex="-1" role="dialog" aria-labelledby="newReservationModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 		  <div class="modal-content">
 			<div class="modal-header">
@@ -2221,7 +2256,7 @@
 	  </div>
  
 <!-- Encumberances Section============================= -->
-	<div class="modal fade" id="newEncumberancesModal" tabindex="-1" role="dialog" aria-labelledby="newEncumberancesModalLabel" aria-hidden="true">
+	<div class="modal fade lrd-green-modal" id="newEncumberancesModal" tabindex="-1" role="dialog" aria-labelledby="newEncumberancesModalLabel" aria-hidden="true">
 	  <div class="modal-dialog modal-lg">
 	    <div class="modal-content">
 	      <div class="modal-header">
@@ -2297,7 +2332,7 @@
 	</div>
 
 	
-	<div class="modal fade" id="newEncumberancesOnMotherModal" tabindex="-1" role="dialog" aria-labelledby="newEncumberancesModalLabel" aria-hidden="true">
+	<div class="modal fade lrd-green-modal" id="newEncumberancesOnMotherModal" tabindex="-1" role="dialog" aria-labelledby="newEncumberancesModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 		  <div class="modal-content">
 			<div class="modal-header">
@@ -2372,7 +2407,7 @@
 		</div>
 	  </div>
 <!-- Memorials Section============================= -->
-	<div class="modal fade" id="newMemorialsModal" tabindex="-1" role="dialog" aria-labelledby="newMemorialsModalLabel" aria-hidden="true">
+	<div class="modal fade lrd-green-modal" id="newMemorialsModal" tabindex="-1" role="dialog" aria-labelledby="newMemorialsModalLabel" aria-hidden="true">
 	  <div class="modal-dialog modal-lg">
 	    <div class="modal-content">
 	      <div class="modal-header">
@@ -2451,7 +2486,7 @@
 	</div>
 
 
-	<div class="modal fade" id="newMemorialsMDModal" tabindex="-1" role="dialog" aria-labelledby="newMemorialsModalLabel" aria-hidden="true">
+	<div class="modal fade lrd-green-modal" id="newMemorialsMDModal" tabindex="-1" role="dialog" aria-labelledby="newMemorialsModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 		  <div class="modal-content">
 			<div class="modal-header">
@@ -2528,7 +2563,7 @@
 		</div>
 	  </div>
 	<!-- Proprietorship Section============================= -->
-	<div class="modal fade" id="newProprietorshipModal" tabindex="-1" role="dialog" aria-labelledby="newProprietorshipModalLabel" aria-hidden="true">
+	<div class="modal fade lrd-green-modal" id="newProprietorshipModal" tabindex="-1" role="dialog" aria-labelledby="newProprietorshipModalLabel" aria-hidden="true">
 	  <div class="modal-dialog modal-lg">
 	    <div class="modal-content">
 	      <div class="modal-header">
@@ -2646,7 +2681,7 @@ Lenders Act, 2008 (Act 773)</option>
 	  </div>
 	  
 	   <!-- Valuation Section============================= -->
-	<div class="modal fade" id="newValuationModal" tabindex="-1" role="dialog" aria-labelledby="newValuationModalLabel" aria-hidden="true">
+	<div class="modal fade lrd-green-modal" id="newValuationModal" tabindex="-1" role="dialog" aria-labelledby="newValuationModalLabel" aria-hidden="true">
 	  <div class="modal-dialog modal-lg">
 	    <div class="modal-content">
 	      <div class="modal-header">
@@ -2703,7 +2738,7 @@ Lenders Act, 2008 (Act 773)</option>
 
 
 <!-- 
-<div class="modal fade" id="transitional_certificate_template" role="dialog"
+<div class="modal fade lrd-green-modal" id="transitional_certificate_template" role="dialog"
 >
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -2775,7 +2810,7 @@ Lenders Act, 2008 (Act 773)</option>
 
 
 
-<div class="modal fade" id="frmlrdtitleplanupdatemodal" role="dialog"
+<div class="modal fade lrd-green-modal" id="frmlrdtitleplanupdatemodal" role="dialog"
 >
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -2930,7 +2965,7 @@ Lenders Act, 2008 (Act 773)</option>
 </div>
 
 
-<div class="modal fade" id="frmlrdtitlehardcopyplanupdatemodal" role="dialog"
+<div class="modal fade lrd-green-modal" id="frmlrdtitlehardcopyplanupdatemodal" role="dialog"
 >
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -3075,7 +3110,7 @@ Lenders Act, 2008 (Act 773)</option>
 </div>
 
 
-<div class="modal fade" id="frmlrdtitlemecdplanupdatemodal" role="dialog"
+<div class="modal fade lrd-green-modal" id="frmlrdtitlemecdplanupdatemodal" role="dialog"
 >
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -3224,7 +3259,7 @@ Lenders Act, 2008 (Act 773)</option>
 </div>
 
 
-<div class="modal fade" id="frmlrdtitleplanupdatemodal_smd" role="dialog"
+<div class="modal fade lrd-green-modal" id="frmlrdtitleplanupdatemodal_smd" role="dialog"
 >
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -3356,7 +3391,7 @@ Lenders Act, 2008 (Act 773)</option>
 
 
 
-<div class="modal fade" id="frmlrdgeneratelsnumberdeedsmodal" role="dialog"
+<div class="modal fade lrd-green-modal" id="frmlrdgeneratelsnumberdeedsmodal" role="dialog"
 >
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -3459,7 +3494,7 @@ Lenders Act, 2008 (Act 773)</option>
 
 
 <!-- Memorials Section - Bootstrap 5 -->
-<div class="modal fade" id="lrdpEncumbranceModal" tabindex="-1" aria-labelledby="lrdpEncumbranceModalLabel" aria-hidden="true">
+<div class="modal fade lrd-green-modal" id="lrdpEncumbranceModal" tabindex="-1" aria-labelledby="lrdpEncumbranceModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -3515,7 +3550,7 @@ Lenders Act, 2008 (Act 773)</option>
 	
 	
 	   <!-- Certificate Section============================= -->
-	<div class="modal fade" id="newTransferMothertoChildModal" tabindex="-1" role="dialog" aria-labelledby="newTransferMothertoChildModalLabel" aria-hidden="true">
+	<div class="modal fade lrd-green-modal" id="newTransferMothertoChildModal" tabindex="-1" role="dialog" aria-labelledby="newTransferMothertoChildModalLabel" aria-hidden="true">
 	  <div class="modal-dialog modal-lg">
 	    <div class="modal-content">
 	      <div class="modal-header">

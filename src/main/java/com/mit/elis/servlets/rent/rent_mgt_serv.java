@@ -120,6 +120,33 @@ if (request_type.equals("select_prepare_rent_demand_notice_single_v1")) {
 
 			}
 
+			if (request_type.equals("loadGovernmentEstates")) {
+
+					String region_id = request.getParameter("region_id");
+					String search = request.getParameter("search");
+
+					JSONObject obj_d = new JSONObject();
+
+					obj_d.put("action", "list");
+
+					if (region_id != null && !region_id.trim().isEmpty()) {
+						obj_d.put("region_id", region_id);
+					}
+
+					if (search != null) {
+						obj_d.put("search", search);
+					} else {
+						obj_d.put("search", "");
+					}
+
+					web_service_response = rent_mgt_cl.manage_estate_setup(
+							cls_url_config.getWeb_service_url_ser(),
+							cls_url_config.getWeb_service_url_ser_api_key(),
+							obj_d.toString()
+					);
+
+				}
+
 			if (request_type.equals("select_rent_leasee_details")) {
 
 
@@ -265,7 +292,6 @@ if (request_type.equals("select_prepare_rent_demand_notice_single_v1")) {
 				obj.put("last_payment_period", last_payment_period);
 				obj.put("period_in_arrears", period_in_arrears);
 
-
 				obj.put("fullname", fullname);
 				obj.put("userid", userid); 
 				obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
@@ -280,6 +306,33 @@ if (request_type.equals("select_prepare_rent_demand_notice_single_v1")) {
 				//System.out.println(obj.toString());
 				web_service_response = casemgt_cl_m.add_update_rent_leasee_details(cls_url_config.getWeb_service_url_ser(),
 						cls_url_config.getWeb_service_url_ser_api_key(),
+						obj.toString());
+				if (web_service_response != null) {
+					// //System.out.println(web_service_response);
+				} else {
+					//System.out.println(web_service_response);
+				}
+
+				return web_service_response;
+			}
+
+			if (request_type.equals("select_rent_leasee_details")) {
+
+				String select_type = request.getParameter("select_type");		
+				String estate = request.getParameter("estate");	
+				String keyword = request.getParameter("keyword");			
+				// //System.out.println(list_of_application);
+				JSONObject obj = new JSONObject();
+				obj.put("select_type", select_type);
+				obj.put("estate", estate);
+				obj.put("keyword", keyword);
+				
+
+				// String batchlistdivison = obj.toString();
+
+			  //System.out.println("testing cabinet batch: " + obj.toString());
+				web_service_response = casemgt_cl_m.select_rent_leasee_details(
+						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 						obj.toString());
 				if (web_service_response != null) {
 					// //System.out.println(web_service_response);

@@ -228,6 +228,360 @@ public class RentController {
 
 	}
 
+
+	@RequestMapping("/rent_update_review")
+	@GetMapping
+	public String rent_update_review(HttpSession session, Model model, HttpServletRequest request,
+			HttpServletResponse response) {
+		
+
+		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
+			// Session is expired
+			request.setAttribute("login", "sessionout");
+			//System.out.println("If Not success");
+			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
+
+		}
+
+		Gson googleJson = new Gson();
+		try {
+
+			JSONObject obj = new JSONObject();
+
+	
+			obj.put("needs_approval_id", "0");
+
+			NumberFormat numberFormat = NumberFormat.getNumberInstance(new Locale("en", "GH"));
+			numberFormat.setMinimumFractionDigits(2); // Ensuring two decimal places
+
+			// String web_service_response_menu = null;
+			// web_service_response_menu = rent_mgt_service
+			// 		.select_rent_dashboard_stats(
+			// 				cls_url_config.getWeb_service_url_ser(),
+			// 				cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
+
+			// JSONObject professioan_dashboard_details_obj;
+			// professioan_dashboard_details_obj = new JSONObject(web_service_response_menu);
+			// //System.out.println(web_service_response_menu);
+			// String total_leasee_count = professioan_dashboard_details_obj.get("total_leasee")
+			// 		.toString();
+			// request.setAttribute("total_leasee", total_leasee_count);
+
+			// String total_rent_oustanding_count = professioan_dashboard_details_obj.get("total_rent_outstanding")
+			// 		.toString();
+			// double value = Double.parseDouble(total_rent_oustanding_count);
+			// request.setAttribute("total_rent_outstanding", numberFormat.format(value));
+
+			// String estate_outstanding_rent = professioan_dashboard_details_obj.get("estate_outstanding_rent")
+			// 		.toString();
+			// request.setAttribute("estate_outstanding_rent", estate_outstanding_rent);
+
+			// // String bills_unpaid_count =
+			// // professioan_dashboard_details_obj.get("bills_unpaid_count").toString();
+			// // request.setAttribute("bills_unpaid_count", bills_unpaid_count);
+
+			// String web_service_response_est = null;
+
+			// web_service_response_est = rent_mgt_service.select_rt_govt_estatesg_list(
+			// 		cls_url_config.getWeb_service_url_ser(),
+			// 		cls_url_config.getWeb_service_url_ser_api_key());
+			// JSONObject web_response_case_est = new JSONObject(web_service_response_est);
+			// String estate_list = web_response_case_est.get("data").toString();
+			// ArrayList estate_list_list = googleJson.fromJson(estate_list, ArrayList.class);
+
+			// request.setAttribute("estate_list", estate_list_list);
+
+			// String web_service_response_nt = null;
+
+			// web_service_response_nt = rent_mgt_service.select_rt_nature_of_instrument_list(
+			// 		cls_url_config.getWeb_service_url_ser(),
+			// 		cls_url_config.getWeb_service_url_ser_api_key());
+			// JSONObject web_response_case_nt = new JSONObject(web_service_response_nt);
+			// String nature_of_instrument_list = web_response_case_nt.get("data").toString();
+			// ArrayList nature_of_instrument_list_list = googleJson.fromJson(nature_of_instrument_list, ArrayList.class);
+
+			// request.setAttribute("nature_of_instrument_list", nature_of_instrument_list_list);
+
+			// String web_service_response_na = null;
+
+			// web_service_response_na = rent_mgt_service.select_rt_nature_of_development_list(
+			// 		cls_url_config.getWeb_service_url_ser(),
+			// 		cls_url_config.getWeb_service_url_ser_api_key());
+			// JSONObject web_response_case_na = new JSONObject(web_service_response_na);
+			// String nature_of_development_list = web_response_case_na.get("data").toString();
+			// ArrayList nature_of_development_list_list = googleJson.fromJson(nature_of_development_list,
+			// 		ArrayList.class);
+
+			// request.setAttribute("nature_of_development_list", nature_of_development_list_list);
+
+			// String web_service_response_us = null;
+
+			// web_service_response_us = rent_mgt_service.select_rt_user_category_list(
+			// 		cls_url_config.getWeb_service_url_ser(),
+			// 		cls_url_config.getWeb_service_url_ser_api_key());
+			// JSONObject web_response_case_us = new JSONObject(web_service_response_us);
+			// String user_category_list = web_response_case_us.get("data").toString();
+			// ArrayList user_category_list_list = googleJson.fromJson(user_category_list, ArrayList.class);
+
+			// request.setAttribute("user_category_list", user_category_list_list);
+
+			// String office_region_list = (String) session.getAttribute("office_region_list");
+			// Gson googleJson_officeregions = new Gson();
+			// ArrayList javaArrayListFromGSON_officeregions = googleJson_officeregions.fromJson(office_region_list,
+			// 		ArrayList.class);
+			// request.setAttribute("officeregionlist", javaArrayListFromGSON_officeregions);
+
+			// String region_list = (String) session.getAttribute("region_list");
+			// Gson googleJson_regions = new Gson();
+			// ArrayList javaArrayListFromGSON_regions = googleJson_regions.fromJson(region_list, ArrayList.class);
+			// request.setAttribute("regionlist", javaArrayListFromGSON_regions);
+
+			// String regional_code = (String) session.getAttribute("regional_code");
+
+			// String web_service_response_incoming_lessee_update = null;
+			// web_service_response_incoming_lessee_update = rent_mgt_service
+			// 		.select_ground_rent_lessee_information_update_by_region(
+			// 				cls_url_config.getWeb_service_url_ser(),
+			// 				cls_url_config.getWeb_service_url_ser_api_key(), regional_code);
+
+			// JSONObject incoming_lessee_update_obj = new JSONObject(web_service_response_incoming_lessee_update);
+			// String incoming_lessee_update_data = incoming_lessee_update_obj.optString("data", "[]");
+			// JSONArray incoming_lessee_update_array = new JSONArray(incoming_lessee_update_data);
+			// ArrayList<Object> incoming_lessee_updates = new ArrayList<>();
+			// ArrayList<Object> pending_lessee_updates = new ArrayList<>();
+			// ArrayList<Object> approved_lessee_updates = new ArrayList<>();
+			// ArrayList<Object> rejected_lessee_updates = new ArrayList<>();
+
+			// for (int i = 0; i < incoming_lessee_update_array.length(); i++) {
+			// 	JSONObject update = incoming_lessee_update_array.getJSONObject(i);
+			// 	Object update_data = googleJson.fromJson(update.toString(), Object.class);
+			// 	String review_status = update.optString("review_status", "pending_review").trim().toLowerCase();
+
+			// 	incoming_lessee_updates.add(update_data);
+			// 	if (review_status.equals("accepted") || review_status.equals("approved")) {
+			// 		approved_lessee_updates.add(update_data);
+			// 	} else if (review_status.equals("rejected")) {
+			// 		rejected_lessee_updates.add(update_data);
+			// 	} else {
+			// 		pending_lessee_updates.add(update_data);
+			// 	}
+			// }
+
+			// request.setAttribute("total_incoming_lessee_update",
+			// 		incoming_lessee_update_obj.optInt("record_count", incoming_lessee_updates.size()));
+			// request.setAttribute("incoming_lessee_updates", incoming_lessee_updates);
+			// request.setAttribute("pending_lessee_updates", pending_lessee_updates);
+			// request.setAttribute("approved_lessee_updates", approved_lessee_updates);
+			// request.setAttribute("rejected_lessee_updates", rejected_lessee_updates);
+			// request.setAttribute("pending_lessee_update_count", pending_lessee_updates.size());
+			// request.setAttribute("approved_lessee_update_count", approved_lessee_updates.size());
+			// request.setAttribute("rejected_lessee_update_count", rejected_lessee_updates.size());
+
+			request.setAttribute("page_name", "rent_update_review");
+					model.addAttribute("content", "../pages/rent_management/rent_update_review.jsp"); return "layouts/app";
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
+	@RequestMapping("/rent_demand_note_bulk")
+	@GetMapping
+	public String rent_demand_note_bulk(HttpSession session, Model model, HttpServletRequest request,
+			HttpServletResponse response) {
+		// TODO Auto-generated method stub
+		// response.getWriter().append("Served at:
+		// ").append(request.getContextPath());
+
+		/*
+		 * Ws_users user_web_service = new Ws_users();
+		 * 
+		 * String jsonArrayContent =null; jsonArrayContent
+		 * =user_web_service.get_list_of_users();
+		 * 
+		 * 
+		 * 
+		 * Gson gson = new Gson(); List<Cls_users> list =
+		 * gson.fromJson(jsonArrayContent, new
+		 * TypeToken<List<Cls_users>>(){}.getType());
+		 * 
+		 * List<Cls_users> result=new ArrayList<Cls_users>(); JSONArray jArr;
+		 * try { jArr = new JSONArray(jsonArrayContent); for (int i=0; i <
+		 * jArr.length(); i++) { JSONObject jsonObject = jArr.getJSONObject(i);
+		 * 
+		 * String uid = (String) jsonObject.getString("uid"); String user_name =
+		 * (String) jsonObject.getString("user_name"); String gender = (String)
+		 * jsonObject.getString("gender"); String password = (String)
+		 * jsonObject.getString("password");
+		 * 
+		 * Cls_users user = new Cls_users(); user.setUid(uid);
+		 * user.setUser_name(user_name); user.setGender(gender);
+		 * user.setPassword(password); result.add(user); } } catch
+		 * (JSONException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); }
+		 */
+
+		// request.setAttribute("errorString", "Error on Page");
+		// request.setAttribute("users_list", result);
+
+		if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
+			// Session is expired
+			request.setAttribute("login", "sessionout");
+			//System.out.println("If Not success");
+			 model.addAttribute("content", "../auth/login.jsp");return "layouts/guest";
+
+		}
+
+		Gson googleJson = new Gson();
+		try {
+
+			JSONObject obj = new JSONObject();
+
+			// obj.put("unit_id", (String) session.getAttribute("unit_id"));
+			obj.put("office_region", (String) session.getAttribute("regional_code"));
+
+			NumberFormat numberFormat = NumberFormat.getNumberInstance(new Locale("en", "GH"));
+			numberFormat.setMinimumFractionDigits(2); // Ensuring two decimal places
+
+			String web_service_response_menu = null;
+			web_service_response_menu = rent_mgt_service
+					.select_rent_dashboard_stats(
+							cls_url_config.getWeb_service_url_ser(),
+							cls_url_config.getWeb_service_url_ser_api_key(), obj.toString());
+
+			JSONObject professioan_dashboard_details_obj;
+			professioan_dashboard_details_obj = new JSONObject(web_service_response_menu);
+			//System.out.println(web_service_response_menu);
+			String total_leasee_count = professioan_dashboard_details_obj.get("total_leasee")
+					.toString();
+			request.setAttribute("total_leasee", total_leasee_count);
+
+			String total_rent_oustanding_count = professioan_dashboard_details_obj.get("total_rent_outstanding")
+					.toString();
+			double value = Double.parseDouble(total_rent_oustanding_count);
+			request.setAttribute("total_rent_outstanding", numberFormat.format(value));
+
+			String estate_outstanding_rent = professioan_dashboard_details_obj.get("estate_outstanding_rent")
+					.toString();
+			request.setAttribute("estate_outstanding_rent", estate_outstanding_rent);
+
+			// String bills_unpaid_count =
+			// professioan_dashboard_details_obj.get("bills_unpaid_count").toString();
+			// request.setAttribute("bills_unpaid_count", bills_unpaid_count);
+
+			String web_service_response_est = null;
+
+			web_service_response_est = rent_mgt_service.select_rt_govt_estatesg_list(
+					cls_url_config.getWeb_service_url_ser(),
+					cls_url_config.getWeb_service_url_ser_api_key());
+			JSONObject web_response_case_est = new JSONObject(web_service_response_est);
+			String estate_list = web_response_case_est.get("data").toString();
+			ArrayList estate_list_list = googleJson.fromJson(estate_list, ArrayList.class);
+
+			request.setAttribute("estate_list", estate_list_list);
+
+			String web_service_response_nt = null;
+
+			web_service_response_nt = rent_mgt_service.select_rt_nature_of_instrument_list(
+					cls_url_config.getWeb_service_url_ser(),
+					cls_url_config.getWeb_service_url_ser_api_key());
+			JSONObject web_response_case_nt = new JSONObject(web_service_response_nt);
+			String nature_of_instrument_list = web_response_case_nt.get("data").toString();
+			ArrayList nature_of_instrument_list_list = googleJson.fromJson(nature_of_instrument_list, ArrayList.class);
+
+			request.setAttribute("nature_of_instrument_list", nature_of_instrument_list_list);
+
+			String web_service_response_na = null;
+
+			web_service_response_na = rent_mgt_service.select_rt_nature_of_development_list(
+					cls_url_config.getWeb_service_url_ser(),
+					cls_url_config.getWeb_service_url_ser_api_key());
+			JSONObject web_response_case_na = new JSONObject(web_service_response_na);
+			String nature_of_development_list = web_response_case_na.get("data").toString();
+			ArrayList nature_of_development_list_list = googleJson.fromJson(nature_of_development_list,
+					ArrayList.class);
+
+			request.setAttribute("nature_of_development_list", nature_of_development_list_list);
+
+			String web_service_response_us = null;
+
+			web_service_response_us = rent_mgt_service.select_rt_user_category_list(
+					cls_url_config.getWeb_service_url_ser(),
+					cls_url_config.getWeb_service_url_ser_api_key());
+			JSONObject web_response_case_us = new JSONObject(web_service_response_us);
+			String user_category_list = web_response_case_us.get("data").toString();
+			ArrayList user_category_list_list = googleJson.fromJson(user_category_list, ArrayList.class);
+
+			request.setAttribute("user_category_list", user_category_list_list);
+
+			String office_region_list = (String) session.getAttribute("office_region_list");
+			Gson googleJson_officeregions = new Gson();
+			ArrayList javaArrayListFromGSON_officeregions = googleJson_officeregions.fromJson(office_region_list,
+					ArrayList.class);
+			request.setAttribute("officeregionlist", javaArrayListFromGSON_officeregions);
+
+			String region_list = (String) session.getAttribute("region_list");
+			Gson googleJson_regions = new Gson();
+			ArrayList javaArrayListFromGSON_regions = googleJson_regions.fromJson(region_list, ArrayList.class);
+			request.setAttribute("regionlist", javaArrayListFromGSON_regions);
+
+			String regional_code = (String) session.getAttribute("regional_code");
+
+			String web_service_response_incoming_lessee_update = null;
+			web_service_response_incoming_lessee_update = rent_mgt_service
+					.select_ground_rent_lessee_information_update_by_region(
+							cls_url_config.getWeb_service_url_ser(),
+							cls_url_config.getWeb_service_url_ser_api_key(), regional_code);
+
+			JSONObject incoming_lessee_update_obj = new JSONObject(web_service_response_incoming_lessee_update);
+			String incoming_lessee_update_data = incoming_lessee_update_obj.optString("data", "[]");
+			JSONArray incoming_lessee_update_array = new JSONArray(incoming_lessee_update_data);
+			ArrayList<Object> incoming_lessee_updates = new ArrayList<>();
+			ArrayList<Object> pending_lessee_updates = new ArrayList<>();
+			ArrayList<Object> approved_lessee_updates = new ArrayList<>();
+			ArrayList<Object> rejected_lessee_updates = new ArrayList<>();
+
+			for (int i = 0; i < incoming_lessee_update_array.length(); i++) {
+				JSONObject update = incoming_lessee_update_array.getJSONObject(i);
+				Object update_data = googleJson.fromJson(update.toString(), Object.class);
+				String review_status = update.optString("review_status", "pending_review").trim().toLowerCase();
+
+				incoming_lessee_updates.add(update_data);
+				if (review_status.equals("accepted") || review_status.equals("approved")) {
+					approved_lessee_updates.add(update_data);
+				} else if (review_status.equals("rejected")) {
+					rejected_lessee_updates.add(update_data);
+				} else {
+					pending_lessee_updates.add(update_data);
+				}
+			}
+
+			request.setAttribute("total_incoming_lessee_update",
+					incoming_lessee_update_obj.optInt("record_count", incoming_lessee_updates.size()));
+			request.setAttribute("incoming_lessee_updates", incoming_lessee_updates);
+			request.setAttribute("pending_lessee_updates", pending_lessee_updates);
+			request.setAttribute("approved_lessee_updates", approved_lessee_updates);
+			request.setAttribute("rejected_lessee_updates", rejected_lessee_updates);
+			request.setAttribute("pending_lessee_update_count", pending_lessee_updates.size());
+			request.setAttribute("approved_lessee_update_count", approved_lessee_updates.size());
+			request.setAttribute("rejected_lessee_update_count", rejected_lessee_updates.size());
+
+			request.setAttribute("page_name", "rent_management_dashboard");
+					model.addAttribute("content", "../pages/rent_management/rent_demand_note_bulk.jsp"); return "layouts/app";
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
+	
+
 	@PostMapping("/review_ground_rent_lessee_information_update")
 	@ResponseBody
 	public String review_ground_rent_lessee_information_update(HttpSession session, HttpServletRequest request) {
@@ -413,6 +767,142 @@ public class RentController {
 		return null;
 
 	}
+
+
+	@RequestMapping("/rent_management_setup")
+@GetMapping
+public String rent_management_setup(
+        HttpSession session,
+        Model model,
+        HttpServletRequest request,
+        HttpServletResponse response) {
+
+    String web_service_response = null;
+
+    // ==========================================================
+    // 1. CHECK SESSION
+    // ==========================================================
+
+    if (request.getRequestedSessionId() != null
+            && !request.isRequestedSessionIdValid()) {
+
+        request.setAttribute("login", "sessionout");
+
+        model.addAttribute("content", "../auth/login.jsp");
+
+        return "layouts/guest";
+    }
+
+    Gson googleJson = new Gson();
+
+    try {
+
+        // ======================================================
+        // 2. PREPARE JSON REQUEST
+        // ======================================================
+
+        JSONObject obj_d = new JSONObject();
+
+        obj_d.put("action", "list");
+        obj_d.put("region_id", JSONObject.NULL);
+        obj_d.put("search", "");
+
+        // ======================================================
+        // 3. FETCH ALL GOVERNMENT ESTATES FROM API
+        // ======================================================
+
+        web_service_response = rent_mgt_service.manage_estate_setup(
+                cls_url_config.getWeb_service_url_ser(),
+                cls_url_config.getWeb_service_url_ser_api_key(),
+                obj_d.toString()
+        );
+
+        // ======================================================
+        // 4. PREPARE ESTATE LIST
+        // ======================================================
+
+        ArrayList estate_list_list = new ArrayList();
+
+        if (web_service_response != null
+                && !web_service_response.trim().isEmpty()) {
+
+            JSONObject web_response_case =
+                    new JSONObject(web_service_response);
+
+            boolean success =
+                    web_response_case.optBoolean("success", false);
+
+            if (success) {
+
+                JSONArray estate_array =
+                        web_response_case.optJSONArray("data");
+
+                if (estate_array != null) {
+
+                    estate_list_list = googleJson.fromJson(
+                            estate_array.toString(),
+                            ArrayList.class
+                    );
+
+                }
+
+            } else {
+
+                System.out.println(
+                        "Unable to load government estates: "
+                        + web_response_case.optString("msg")
+                );
+
+            }
+
+        }
+
+        // ======================================================
+        // 5. PASS ESTATE DATA TO JSP
+        // ======================================================
+
+        request.setAttribute("estate_list", estate_list_list);
+
+        request.setAttribute("estate_list_json",
+                googleJson.toJson(estate_list_list));
+
+        request.setAttribute("total_estates",
+                estate_list_list.size());
+
+        request.setAttribute("page_name",
+                "rent_management_setup");
+
+        // ======================================================
+        // 6. LOAD JSP PAGE
+        // ======================================================
+
+        model.addAttribute(
+                "content",
+                "../pages/rent_management/rent_management_setup.jsp"
+        );
+
+        return "layouts/app";
+
+    } catch (Exception e) {
+
+        e.printStackTrace();
+
+        request.setAttribute("estate_list", new ArrayList<>());
+
+        request.setAttribute("estate_list_json", "[]");
+
+        request.setAttribute("total_estates", 0);
+
+        request.setAttribute("page_name", "rent_management_setup");
+
+        model.addAttribute(
+                "content",
+                "../pages/rent_management/rent_management_setup.jsp"
+        );
+
+        return "layouts/app";
+    }
+}
 
 	@RequestMapping("/rent_application_progress_details")
 	@PostMapping

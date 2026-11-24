@@ -1,446 +1,92 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="ws.casemgt.Ws_client_application"%>
 <%@ page import="ws.users.Ws_users"%>
 <%@ page import="org.codehaus.jettison.json.*"%>
 <%@ page import="com.google.gson.Gson"%>
 <%@ page import="com.google.gson.GsonBuilder"%>
-
 <%@ page import="org.codehaus.jettison.json.JSONArray"%>
 <%@ page import="org.codehaus.jettison.json.JSONException"%>
 <%@ page import="org.codehaus.jettison.json.JSONObject"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
+<style>
+/* Unit Case Management: colour-only theme, scoped to avoid disturbing ELIS layout. */
+.unit-case-green{--uc-forest:#07543f;--uc-emerald:#0b8a61;--uc-mint:#dff6eb;--uc-ink:#124d3c}
+.unit-case-green .page-header-breadcrumb{background:linear-gradient(110deg,#07543f,#0b8a61);border:1px solid #087653;border-radius:12px;padding:19px 23px;box-shadow:0 6px 20px rgba(7,84,63,.13)}
+.unit-case-green .page-header-breadcrumb .page-title,.unit-case-green .page-header-breadcrumb .page-title span,.unit-case-green .page-header-breadcrumb .breadcrumb-item,.unit-case-green .page-header-breadcrumb .breadcrumb-item a{color:#fff!important}
+.unit-case-green .page-header-breadcrumb .breadcrumb-item+.breadcrumb-item::before{color:#bdebd7!important}
+.unit-case-green .custom-card:not(.stat-card)>.card-header{background:linear-gradient(105deg,#07543f,#0b8a61)!important;border-color:#087653!important}
+.unit-case-green .custom-card:not(.stat-card)>.card-header .card-title,.unit-case-green .custom-card:not(.stat-card)>.card-header .card-title *{color:#fff!important}
+.unit-case-green .stat-card:not(.border-0){border-color:#c8e8d9!important;background:linear-gradient(125deg,#fff,#f1faf5)}
+.unit-case-green .stat-card:not(.border-0):hover{border-color:#0b8a61!important;box-shadow:0 5px 16px rgba(7,84,63,.12)}
+.unit-case-green .stat-card:not(.border-0) .card-body h5{color:#07543f}
+.unit-case-green #card-incoming .avatar,.unit-case-green #card-awaiting_inspection .avatar,.unit-case-green #card-awaiting_request .avatar,.unit-case-green #card-request_completed .avatar{background:#0b8a61!important;color:white!important}
+.unit-case-green #card-incoming,.unit-case-green #card-awaiting_inspection{border-left:3px solid #0b8a61!important}
+.unit-case-green #job_casemgtdetailsdataTable thead th{background:#07543f!important;color:#fff!important;border-color:#16765b!important}
+.unit-case-green #job_casemgtdetailsdataTable tbody tr:hover{background:#effaf4}
+.unit-case-green .btn-primary{background:#087b56!important;border-color:#087b56!important;color:#fff!important}
+.unit-case-green .btn-primary:hover{background:#07543f!important;border-color:#07543f!important}
+.unit-case-green .btn-outline-info{border-color:#0b8a61!important;color:#087b56!important}
+.unit-case-green .btn-outline-info:hover{background:#0b8a61!important;color:#fff!important}
+.unit-case-green .form-control:focus,.unit-case-green .form-check-input:focus{border-color:#0b8a61!important;box-shadow:0 0 0 .2rem rgba(11,138,97,.14)!important}
+.unit-case-green .form-check-input:checked{background-color:#0b8a61!important;border-color:#0b8a61!important}
+.unit-case-green .text-primary{color:#087b56!important}
+.unit-case-green .alert-dark{background:#f0f8f4!important;border-color:#d4eade!important;color:#245441!important}
+.unit-case-green .alert-dark .text-dark{color:#245441!important}
+/* Keep semantic warning, error, and compliance indicators distinct. */
+</style>
 
-<div class="main-content app-content">
-    <div class="container-fluid page-container">
-        <!-- Start::page-header -->
-        <div class="page-header-breadcrumb mb-3">
-            <div class="d-flex align-center justify-content-between flex-wrap">
-                <h1 class="page-title fw-medium fs-18 mb-0">Unit Case Management :: <span class="text-primary">${unit_name}</span></h1>
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="javascript:void(0);">ELIS</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Unit Case Management</li>
-                </ol>
-            </div>
-        </div>
-        <!-- End::page-header -->
-
-        <!-- Hidden Inputs -->
-        <input type="hidden" id="userid" value="${sessionScope.userid}">
-        <input type="hidden" class="form-control" id="inc_1" value="${incoming}">
-        <input type="hidden" class="form-control" id="com_3" value="${completed}">
-        <input type="hidden" class="form-control" id="que_2" value="${queried}">
-        <input type="hidden" class="form-control" id="awa_4" value="${awaiting_payment}">
-        <input type="hidden" class="form-control" id="awa_req_5" value="${awaiting_request}">
-        <input type="hidden" class="form-control" id="req_com_6" value="${completed_request}">
-        <input type="hidden" class="form-control" id="req_com_7" value="${attention_required}">
-        <input type="hidden" class="form-control" id="req_inp_8" value="${request_for_additional_input}">
-        <input type="hidden" class="form-control" id="awa_insp_9" value="${awaiting_inspection}">
-        <input type="hidden" class="form-control" id="awa_pub_10" value="${awaiting_publication}">
-        
-        <!-- Stats Cards -->
-
-        <!-- Start:: row-1 -->
-        <div class="row">
-            <div class="col-xxl-9">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div class="card custom-card stat-card dashboard-main-card primary" id="card-incoming">
-                            <a href="javascript:void(0);" class="btnLoadUnitApplications" data-id="1">
-                                <div class="card-body" id="body-bg-1">
-                                    <div class="d-flex align-items-start gap-3">
-                                        <div>
-                                            <span class="avatar avatar-md bg-primary svg-white">
-                                                <i class="ri-download-2-line fs-20"></i>
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <span class="d-block text-muted">Incoming Files</span>
-                                            <h5 class="fw-semibold mb-1">${incoming}</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="card custom-card stat-card dashboard-main-card danger" id="card-queried">
-                            <a href="javascript:void(0);" class="btnLoadUnitApplications" data-id="2">
-                                <div class="card-body" id="body-bg-2">
-                                    <div class="d-flex align-items-start gap-3">
-                                        <div>
-                                            <span class="avatar avatar-md bg-danger svg-white">
-                                                <i class="ri-question-line fs-20"></i>
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <span class="d-block text-muted">Queried</span>
-                                            <h5 class="fw-semibold mb-1">${queried}</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="card custom-card stat-card dashboard-main-card warning" id="card-awaiting_payments">
-                            <a href="javascript:void(0);" class="btnLoadUnitApplications" data-id="4">
-                                <div class="card-body" id="body-bg-4">
-                                    <div class="d-flex align-items-start gap-3">
-                                        <div>
-                                            <span class="avatar avatar-md bg-warning svg-white">
-                                              <i class="ri-hand-coin-line fs-20"></i>
-                                            </span>
-                                        </div>  
-                                        <div>
-                                            <span class="d-block text-muted">Awaiting Payments</span>
-                                            <h5 class="fw-semibold mb-1">${awaiting_payment}</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="card custom-card stat-card dashboard-main-card info" id="card-awaiting_request">
-                            <a href="javascript:void(0);" class="btnLoadUnitApplications" data-id="5">
-                                <div class="card-body" id="body-bg-5">
-                                    <div class="d-flex align-items-start gap-3">
-                                        <div>
-                                            <span class="avatar avatar-md bg-info svg-white">
-                                             <i class="ri-time-line fs-20"></i>
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <span class="d-block text-muted">Awaiting Request</span>
-                                            <h5 class="fw-semibold mb-1">${awaiting_request}</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="card custom-card stat-card dashboard-main-card success" id="card-request_completed">
-                            <a href="javascript:void(0);" class="btnLoadUnitApplications" data-id="6">
-                                <div class="card-body" id="body-bg-6">
-                                    <div class="d-flex align-items-start gap-3">
-                                        <div>
-                                            <span class="avatar avatar-md bg-success svg-white">
-                                             <i class="ri-checkbox-circle-line fs-20"></i>
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <span class="d-block text-muted">Completed Request</span>
-                                            <h5 class="fw-semibold mb-1">${completed_request}</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="card custom-card stat-card dashboard-main-card secondary" id="card-attention_required">
-                            <a href="javascript:void(0);" class="btnLoadUnitApplications" data-id="7">
-                                <div class="card-body" id="body-bg-7">
-                                    <div class="d-flex align-items-start gap-3">
-                                        <div>
-                                            <span class="avatar avatar-md bg-secondary svg-white">
-                                             <i class="ri-alarm-warning-line fs-20"></i>
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <span class="d-block text-muted">Attention Required</span>
-                                            <h5 class="fw-semibold mb-1">${attention_required}</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                     <div class="col-lg-4">
-                        <div class="card custom-card stat-card dashboard-main-card danger" id="card-request_additional_input">
-                            <a href="javascript:void(0);" class="btnLoadUnitApplications" data-id="8">
-                                <div class="card-body" id="body-bg-8">
-                                    <div class="d-flex align-items-start gap-3">
-                                        <div>
-                                            <span class="avatar avatar-md bg-danger svg-white">
-                                             <i class="bi bi-envelope-arrow-up fs-20"></i>
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <span class="d-block text-muted">Request for Additional Input</span>
-                                            <h5 class="fw-semibold mb-1">${request_for_additional_input}</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                     <div class="col-lg-4">
-                        <div class="card custom-card stat-card dashboard-main-card primary" id="card-awaiting_inspection">
-                            <a href="javascript:void(0);" class="btnLoadUnitApplications" data-id="9">
-                                <div class="card-body" id="body-bg-9">
-                                    <div class="d-flex align-items-start gap-3">
-                                        <div>
-                                            <span class="avatar avatar-md bg-primary svg-white">
-                                             <i class="bi bi-eyeglasses fs-20"></i>
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <span class="d-block text-muted">Awaiting Inspection</span>
-                                            <h5 class="fw-semibold mb-1">${awaiting_inspection}</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="card custom-card stat-card dashboard-main-card warning" id="card-awaiting_publication">
-                            <a href="javascript:void(0);" class="btnLoadUnitApplications" data-id="10">
-                                <div class="card-body" id="body-bg-10">
-                                    <div class="d-flex align-items-start gap-3">
-                                        <div>
-                                            <span class="avatar avatar-md bg-warning svg-white">
-                                             <i class="bi bi-newspaper fs-20"></i>
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <span class="d-block text-muted">Awaiting Publication</span>
-                                            <h5 class="fw-semibold mb-1">${awaiting_publication}</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-xl-12">
-                        <div class="card custom-card overflow-hidden">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <div class="card-title">
-                                    Application Details
-                                </div>
-                                <div>
-                                    <button class="btn btn-warning label-btn" id="btnViewBatchlist">
-                                        <i class="ri-list-check label-btn-icon"></i>
-                                        View Batch List
-                                    </button>
-                                    <button class="btn btn-primary label-btn" data-bs-toggle="modal" data-bs-target="#incoming_advanced_search">
-                                        <i class="ri-filter-line label-btn-icon"></i>
-                                        Advanced Filter
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="card-body p-3">
-                                <div class="row d-none" id="allBatchList">
-                                    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
-                                        <div class="card card-body">
-                                            <div class="form-group mb-2">
-                                                <label for="">Purpose for Batching</label>
-                                                <input type="text" class="form-control form-control-sm" id="txt_general_job_purpose">
-                                            </div>
-                                            <div class="form-group mb-2">
-                                                <label for="">Remarks/Notes</label>
-                                                <textarea type="text" class="form-control col" id="txt_general_remarks_notes"  value="" placeholder="Remarks/Notes"></textarea>
-                                            </div>
-                                            <button class="btn btn-sm w-100 btn-primary"  id="btnAddAlltoBatchlist">Add All to Batch List</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="table-responsive">
-                                    <table class="table table-striped"  id="job_casemgtdetailsdataTable">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th>
-                                                    <input type="checkbox" class="form-check-input" id="selectAll">
-                                                </th>
-                                                <th>Created Date</th>
-                                                <th>Job Number</th>
-                                                <th>Applicant Name</th>
-                                                <th>Application Type</th>
-                                                <th>Status</th>
-                                                <th class="officerInd">Sent By</th>
-                                                <th>Locality</th>
-                                                <th>Type of Plotting</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xxl-3">
-                <div class="row">
-                    <div class="col-xl-12">
-                        <div class="card custom-card overflow-hidden custom-hrm-list">
-                            <div class="card-body p-0">
-                                <div class="row g-0">
-                                    <div class="col-xl-6 ">
-                                        <div class="card custom-card stat-card dashboard-main-card border-0 shadow-none border-lg-end border-bottom mb-0 rounded-0 h-100">
-                                            <a href="javascript:void(0);" id="btn_load_resolved_queries">
-                                                 <div class="card-body">
-                                                    <div class="mb-3">
-                                                        <span class="avatar avatar-lg avatar-rounded bg-primary-transparent svg-primary">
-                                                            <i class="ri-discuss-fill fs-20"></i>
-                                                        </span>
-                                                    </div>
-                                                    <div class="text-muted mb-2">
-                                                        Responded Queries
-                                                    </div>
-                                                    <div class="d-flex align-items-end gap-2 flex-wrap">
-                                                        <h5 class="fw-semibold mb-0 lh-1">${query_response}</h5>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-6">
-                                        <div class="card custom-card stat-card dashboard-main-card border-0 shadow-none border-bottom mb-0 rounded-0 h-100">
-                                            <a href="javascript:void(0);" class="loadReminderApps"
-                                                data-method="reminder_apps" 
-                                                data-url="DashboardAppsWithDivision" 
-                                                data-type="${unit_name}" 
-                                                data-title="Applications" 
-                                            >
-                                                <div class="card-body">
-                                                    <div class="mb-3">
-                                                        <span class="avatar avatar-lg avatar-rounded bg-info-transparent svg-info">
-                                                            <i class="ri-24-hours-fill fs-20"></i>
-                                                        </span>
-                                                    </div>
-                                                    <div class="text-muted mb-2">
-                                                        Reminder Queries
-                                                    </div>
-                                                    <div class="d-flex align-items-end gap-2 flex-wrap">
-                                                        <h5 class="fw-semibold mb-0 lh-1">${reminders}</h5>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-6">
-                                        <div class="card custom-card stat-card dashboard-main-card dashboard-main-border border-0 shadow-none border-lg-end mb-0 rounded-0 h-100">
-                                            <a href="javascript:void(0);" class="loadWarningApps"
-                                                data-method="warning_apps" 
-                                                data-url="DashboardAppsWithDivision" 
-                                                data-type="${unit_name}" 
-                                                data-title="Applications" 
-                                            >
-                                                <div class="card-body">
-                                                    <div class="mb-3">
-                                                        <span class="avatar avatar-lg avatar-rounded bg-warning-transparent svg-warning">
-                                                            <i class="ri-alarm-warning-line fs-20"></i>
-                                                        </span>
-                                                    </div>
-                                                    <div class="text-muted mb-2">
-                                                        Warning Queries
-                                                    </div>
-                                                    <div class="d-flex align-items-end gap-2 flex-wrap">
-                                                        <h5 class="fw-semibold mb-0 lh-1">${warnings}</h5>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-6">
-                                        <div class="card custom-card stat-card dashboard-main-card border-0 shadow-none mb-0 rounded-0 h-100">
-                                            <a href="javascript:void(0);" class="loadComplianceQueriesApps"
-                                                data-method="compliance_queries_apps" 
-                                                data-url="DashboardAppsWithDivision" 
-                                                data-type="${unit_name}" 
-                                                data-title="Applications" 
-                                            >
-                                                <div class="card-body">
-                                                    <div class="mb-3">
-                                                        <span class="avatar avatar-lg avatar-rounded bg-danger-transparent svg-danger">
-                                                            <i class="ri-questionnaire-fill fs-20"></i>
-                                                        </span>
-                                                    </div>
-                                                    <div class="text-muted mb-2">
-                                                        Compliance Queries
-                                                    </div>
-                                                    <div class="d-flex align-items-end gap-2 flex-wrap">
-                                                        <h5 class="fw-semibold mb-0 lh-1">${compliance_queries}</h5>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-12">
-                        <div class="card custom-card">
-                            <div class="card-header d-flex justify-content-between">
-                                <div class="card-title">
-                                    Unit Monitoring
-                                </div>
-                                <div>
-                                    <button class="btn btn-sm btn-warning showOfficerList"
-                                        data-method="apps_with_division" 
-                                        data-url="DashboardAppsWithDivision"
-                                        data-type="${unit_name}" 
-                                        data-title="Applications With Divisions"
-                                        data-date="" 
-                                        data-unit-id="${unit_id}" 
-                                        data-division="${division}"
-                                    >
-                                        <i class="ri-refresh-line"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-info showOfficerModal"
-                                        data-method="apps_with_division" 
-                                        data-url="DashboardAppsWithDivision"
-                                        data-type="${unit_name}" 
-                                        data-title="Applications With Divisions"
-                                        data-date="" 
-                                        data-unit-id="${unit_id}" 
-                                        data-division="${division}"
-                                    >
-                                        View All
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <ul class="pt-2 list-unstyled top-country-sales-list">
-                                    <div class="alert alert-dark border mb-0 p-2">
-                                        <div class="d-flex align-items-start">
-                                            <div class="me-2 svg-dark">
-                                                <svg class="flex-shrink-0" xmlns="http://www.w3.org/2000/svg" height="1.5rem" viewBox="0 0 24 24" width="1.5rem" fill="#000000">
-                                                    <path d="M0 0h24v24H0V0z" fill="none"></path>
-                                                    <path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path>
-                                                </svg>
-                                            </div>
-                                            <div class="text-dark w-100">
-                                                <div class="fw-medium d-flex justify-content-between">Unit Monitoring Dashboard</div>
-                                                <div class="fs-12 op-8 mb-1">
-                                                    <strong>Refresh Button</strong> <span class="text-warning">(Yellow)</span> - Click to load/update the top 10 officers with their application counts.
-                                                </div>
-                                                <div class="fs-12 op-8 mb-1">
-                                                    <strong>View All Button</strong> <span class="text-info">(Blue)</span> - Click to open detailed view showing all officers in a modal.
-                                                </div>
-                                                <div class="fs-12 op-8">
-                                                    This dashboard shows officer performance metrics for the <strong>${unit_name}</strong> unit.
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End:: row-1 -->
-    </div>
-</div>
+<div class="main-content app-content unit-case-green">
+ <div class="container-fluid page-container">
+  <div class="page-header-breadcrumb mb-3">
+   <div class="d-flex align-center justify-content-between flex-wrap">
+    <h1 class="page-title fw-medium fs-18 mb-0">Unit Case Management :: <span class="text-primary">${unit_name}</span></h1>
+    <ol class="breadcrumb mb-0"><li class="breadcrumb-item"><a href="javascript:void(0);">ELIS</a></li><li class="breadcrumb-item active" aria-current="page">Unit Case Management</li></ol>
+   </div>
+  </div>
+  <input type="hidden" id="userid" value="${sessionScope.userid}">
+  <input type="hidden" class="form-control" id="inc_1" value="${incoming}">
+  <input type="hidden" class="form-control" id="com_3" value="${completed}">
+  <input type="hidden" class="form-control" id="que_2" value="${queried}">
+  <input type="hidden" class="form-control" id="awa_4" value="${awaiting_payment}">
+  <input type="hidden" class="form-control" id="awa_req_5" value="${awaiting_request}">
+  <input type="hidden" class="form-control" id="req_com_6" value="${completed_request}">
+  <input type="hidden" class="form-control" id="req_com_7" value="${attention_required}">
+  <input type="hidden" class="form-control" id="req_inp_8" value="${request_for_additional_input}">
+  <input type="hidden" class="form-control" id="awa_insp_9" value="${awaiting_inspection}">
+  <input type="hidden" class="form-control" id="awa_pub_10" value="${awaiting_publication}">
+  <div class="row"><div class="col-xxl-9"><div class="row">
+<div class="col-lg-4"><div class="card custom-card stat-card dashboard-main-card primary" id="card-incoming"><a href="javascript:void(0);" class="btnLoadUnitApplications" data-id="1"><div class="card-body" id="body-bg-1"><div class="d-flex align-items-start gap-3"><div><span class="avatar avatar-md bg-primary svg-white"><i class="ri-download-2-line fs-20"></i></span></div><div><span class="d-block text-muted">Incoming Files</span><h5 class="fw-semibold mb-1">${incoming}</h5></div></div></div></a></div></div>
+<div class="col-lg-4"><div class="card custom-card stat-card dashboard-main-card danger" id="card-queried"><a href="javascript:void(0);" class="btnLoadUnitApplications" data-id="2"><div class="card-body" id="body-bg-2"><div class="d-flex align-items-start gap-3"><div><span class="avatar avatar-md bg-danger svg-white"><i class="ri-question-line fs-20"></i></span></div><div><span class="d-block text-muted">Queried</span><h5 class="fw-semibold mb-1">${queried}</h5></div></div></div></a></div></div>
+<div class="col-lg-4"><div class="card custom-card stat-card dashboard-main-card warning" id="card-awaiting_payments"><a href="javascript:void(0);" class="btnLoadUnitApplications" data-id="4"><div class="card-body" id="body-bg-4"><div class="d-flex align-items-start gap-3"><div><span class="avatar avatar-md bg-warning svg-white"><i class="ri-hand-coin-line fs-20"></i></span></div><div><span class="d-block text-muted">Awaiting Payments</span><h5 class="fw-semibold mb-1">${awaiting_payment}</h5></div></div></div></a></div></div>
+<div class="col-lg-4"><div class="card custom-card stat-card dashboard-main-card info" id="card-awaiting_request"><a href="javascript:void(0);" class="btnLoadUnitApplications" data-id="5"><div class="card-body" id="body-bg-5"><div class="d-flex align-items-start gap-3"><div><span class="avatar avatar-md bg-info svg-white"><i class="ri-time-line fs-20"></i></span></div><div><span class="d-block text-muted">Awaiting Request</span><h5 class="fw-semibold mb-1">${awaiting_request}</h5></div></div></div></a></div></div>
+<div class="col-lg-4"><div class="card custom-card stat-card dashboard-main-card success" id="card-request_completed"><a href="javascript:void(0);" class="btnLoadUnitApplications" data-id="6"><div class="card-body" id="body-bg-6"><div class="d-flex align-items-start gap-3"><div><span class="avatar avatar-md bg-success svg-white"><i class="ri-checkbox-circle-line fs-20"></i></span></div><div><span class="d-block text-muted">Completed Request</span><h5 class="fw-semibold mb-1">${completed_request}</h5></div></div></div></a></div></div>
+<div class="col-lg-4"><div class="card custom-card stat-card dashboard-main-card secondary" id="card-attention_required"><a href="javascript:void(0);" class="btnLoadUnitApplications" data-id="7"><div class="card-body" id="body-bg-7"><div class="d-flex align-items-start gap-3"><div><span class="avatar avatar-md bg-secondary svg-white"><i class="ri-alarm-warning-line fs-20"></i></span></div><div><span class="d-block text-muted">Attention Required</span><h5 class="fw-semibold mb-1">${attention_required}</h5></div></div></div></a></div></div>
+<div class="col-lg-4"><div class="card custom-card stat-card dashboard-main-card danger" id="card-request_additional_input"><a href="javascript:void(0);" class="btnLoadUnitApplications" data-id="8"><div class="card-body" id="body-bg-8"><div class="d-flex align-items-start gap-3"><div><span class="avatar avatar-md bg-danger svg-white"><i class="bi bi-envelope-arrow-up fs-20"></i></span></div><div><span class="d-block text-muted">Request for Additional Input</span><h5 class="fw-semibold mb-1">${request_for_additional_input}</h5></div></div></div></a></div></div>
+<div class="col-lg-4"><div class="card custom-card stat-card dashboard-main-card primary" id="card-awaiting_inspection"><a href="javascript:void(0);" class="btnLoadUnitApplications" data-id="9"><div class="card-body" id="body-bg-9"><div class="d-flex align-items-start gap-3"><div><span class="avatar avatar-md bg-primary svg-white"><i class="bi bi-eyeglasses fs-20"></i></span></div><div><span class="d-block text-muted">Awaiting Inspection</span><h5 class="fw-semibold mb-1">${awaiting_inspection}</h5></div></div></div></a></div></div>
+<div class="col-lg-4"><div class="card custom-card stat-card dashboard-main-card warning" id="card-awaiting_publication"><a href="javascript:void(0);" class="btnLoadUnitApplications" data-id="10"><div class="card-body" id="body-bg-10"><div class="d-flex align-items-start gap-3"><div><span class="avatar avatar-md bg-warning svg-white"><i class="bi bi-newspaper fs-20"></i></span></div><div><span class="d-block text-muted">Awaiting Publication</span><h5 class="fw-semibold mb-1">${awaiting_publication}</h5></div></div></div></a></div></div>
+<div class="col-xl-12"><div class="card custom-card overflow-hidden">
+<div class="card-header d-flex justify-content-between align-items-center"><div class="card-title">Application Details</div><div>
+<button class="btn btn-warning label-btn" id="btnViewBatchlist"><i class="ri-list-check label-btn-icon"></i>View Batch List</button>
+<button class="btn btn-primary label-btn" data-bs-toggle="modal" data-bs-target="#incoming_advanced_search"><i class="ri-filter-line label-btn-icon"></i>Advanced Filter</button>
+</div></div><div class="card-body p-3"><div class="row d-none" id="allBatchList"><div class="col-xl-3 col-lg-4 col-md-4 col-sm-12"><div class="card card-body">
+<div class="form-group mb-2"><label for="">Purpose for Batching</label><input type="text" class="form-control form-control-sm" id="txt_general_job_purpose"></div>
+<div class="form-group mb-2"><label for="">Remarks/Notes</label><textarea type="text" class="form-control col" id="txt_general_remarks_notes" value="" placeholder="Remarks/Notes"></textarea></div>
+<button class="btn btn-sm w-100 btn-primary" id="btnAddAlltoBatchlist">Add All to Batch List</button>
+</div></div></div><div class="table-responsive"><table class="table table-striped" id="job_casemgtdetailsdataTable"><thead class="table-light"><tr>
+<th><input type="checkbox" class="form-check-input" id="selectAll"></th><th>Created Date</th><th>Job Number</th><th>Applicant Name</th><th>Application Type</th><th>Status</th><th class="officerInd">Sent By</th><th>Locality</th><th>Type of Plotting</th><th>Actions</th>
+</tr></thead><tbody></tbody></table></div></div></div></div></div></div>
+<div class="col-xxl-3"><div class="row"><div class="col-xl-12"><div class="card custom-card overflow-hidden custom-hrm-list"><div class="card-body p-0"><div class="row g-0">
+<div class="col-xl-6"><div class="card custom-card stat-card dashboard-main-card border-0 shadow-none border-lg-end border-bottom mb-0 rounded-0 h-100"><a href="javascript:void(0);" id="btn_load_resolved_queries"><div class="card-body"><div class="mb-3"><span class="avatar avatar-lg avatar-rounded bg-primary-transparent svg-primary"><i class="ri-discuss-fill fs-20"></i></span></div><div class="text-muted mb-2">Responded Queries</div><div class="d-flex align-items-end gap-2 flex-wrap"><h5 class="fw-semibold mb-0 lh-1">${query_response}</h5></div></div></a></div></div>
+<div class="col-xl-6"><div class="card custom-card stat-card dashboard-main-card border-0 shadow-none border-bottom mb-0 rounded-0 h-100"><a href="javascript:void(0);" class="loadReminderApps" data-method="reminder_apps" data-url="DashboardAppsWithDivision" data-type="${unit_name}" data-title="Applications"><div class="card-body"><div class="mb-3"><span class="avatar avatar-lg avatar-rounded bg-info-transparent svg-info"><i class="ri-24-hours-fill fs-20"></i></span></div><div class="text-muted mb-2">Reminder Queries</div><div class="d-flex align-items-end gap-2 flex-wrap"><h5 class="fw-semibold mb-0 lh-1">${reminders}</h5></div></div></a></div></div>
+<div class="col-xl-6"><div class="card custom-card stat-card dashboard-main-card border-0 shadow-none border-lg-end mb-0 rounded-0 h-100"><a href="javascript:void(0);" class="loadWarningApps" data-method="warning_apps" data-url="DashboardAppsWithDivision" data-type="${unit_name}" data-title="Applications"><div class="card-body"><div class="mb-3"><span class="avatar avatar-lg avatar-rounded bg-warning-transparent svg-warning"><i class="ri-alarm-warning-line fs-20"></i></span></div><div class="text-muted mb-2">Warning Queries</div><div class="d-flex align-items-end gap-2 flex-wrap"><h5 class="fw-semibold mb-0 lh-1">${warnings}</h5></div></div></a></div></div>
+<div class="col-xl-6"><div class="card custom-card stat-card dashboard-main-card border-0 shadow-none mb-0 rounded-0 h-100"><a href="javascript:void(0);" class="loadComplianceQueriesApps" data-method="compliance_queries_apps" data-url="DashboardAppsWithDivision" data-type="${unit_name}" data-title="Applications"><div class="card-body"><div class="mb-3"><span class="avatar avatar-lg avatar-rounded bg-danger-transparent svg-danger"><i class="ri-questionnaire-fill fs-20"></i></span></div><div class="text-muted mb-2">Compliance Queries</div><div class="d-flex align-items-end gap-2 flex-wrap"><h5 class="fw-semibold mb-0 lh-1">${compliance_queries}</h5></div></div></a></div></div>
+</div></div></div></div><div class="col-xl-12"><div class="card custom-card"><div class="card-header d-flex justify-content-between"><div class="card-title">Unit Monitoring</div><div>
+<button class="btn btn-sm btn-warning showOfficerList" data-method="apps_with_division" data-url="DashboardAppsWithDivision" data-type="${unit_name}" data-title="Applications With Divisions" data-date="" data-unit-id="${unit_id}" data-division="${division}"><i class="ri-refresh-line"></i></button>
+<button class="btn btn-sm btn-outline-info showOfficerModal" data-method="apps_with_division" data-url="DashboardAppsWithDivision" data-type="${unit_name}" data-title="Applications With Divisions" data-date="" data-unit-id="${unit_id}" data-division="${division}">View All</button>
+</div></div><div class="card-body"><ul class="pt-2 list-unstyled top-country-sales-list"><div class="alert alert-dark border mb-0 p-2"><div class="d-flex align-items-start"><div class="me-2 svg-dark"><svg class="flex-shrink-0" xmlns="http://www.w3.org/2000/svg" height="1.5rem" viewBox="0 0 24 24" width="1.5rem" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path></svg></div><div class="text-dark w-100"><div class="fw-medium d-flex justify-content-between">Unit Monitoring Dashboard</div>
+<div class="fs-12 op-8 mb-1"><strong>Refresh Button</strong> <span class="text-warning">(Yellow)</span> - Click to load/update the top 10 officers with their application counts.</div>
+<div class="fs-12 op-8 mb-1"><strong>View All Button</strong> <span class="text-info">(Blue)</span> - Click to open detailed view showing all officers in a modal.</div>
+<div class="fs-12 op-8">This dashboard shows officer performance metrics for the <strong>${unit_name}</strong> unit.</div>
+</div></div></div></ul></div></div></div></div></div></div></div>

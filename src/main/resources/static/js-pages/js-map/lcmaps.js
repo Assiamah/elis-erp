@@ -2581,6 +2581,11 @@ $("#lc_btn_visualise_search").click(function(event) {
 			}
 		});
 
+
+		$("#lc_btn_visualise_wkt_new_gf").click(function () {
+         $('#lc_bl_wkt_polygon').prop('readonly', false).css('cursor', 'text');
+		});
+
 		$("#lc_btn_visualise_coordinate_gf_2").click(function () {
 
 			// let jsonArr = [];
