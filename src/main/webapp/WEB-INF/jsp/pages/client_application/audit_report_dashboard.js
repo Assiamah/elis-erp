@@ -245,10 +245,11 @@ $(document).off('click', '.advanced-activity-logs-card').on('click', '.advanced-
                   .css('width', '100%');
               }
             },
-            {
-              extend: 'colvis',
-              text: 'Show / Hide Columns'
-            },
+            
+            // {
+            //   extend: 'colvis',
+            //   text: 'Show / Hide Columns'
+            // },
             'pageLength'
           ]
         }).draw();
@@ -405,6 +406,7 @@ function safeJsonParse(str) {
     try {
         // Only parse if str is a non-empty string and looks like JSON
         if (!str || str === "N/A") return null;
+        if (typeof str !== "string") return str;
         return JSON.parse(str);
     } catch (err) {
         console.warn("Invalid JSON:", str);
@@ -486,6 +488,12 @@ $(document).off('click', '.view-activity-details').on('click', '.view-activity-d
                     } 
                     else if(logtype === 'Delete Parcel'){
                       deleteTransactionDetails(originalDataObj, changesObj, logDate);
+                    }
+                    else if(logtype === 'Menu-Template Assignment'){
+                      menuTemplateAssignmentDetails(originalDataObj, changesObj, logDate, title, record);
+                    }
+                    else if(logtype === 'Milestone Assignment'){
+                      milestoneAssignmentDetails(originalDataObj, changesObj, logDate, title, record);
                     }
                     else {
                         displayActivityDetails(originalDataObj, changesObj, logDate);
@@ -738,6 +746,309 @@ function deleteTransactionDetails(originalData, changesData, logDate) {
     // Show modal first to ensure map container is visible
     $('#transactionDeleteModal').modal('show');
 
+}
+
+function menuTemplateAssignmentDetails(originalData, changesData, logDate, title, record) {
+    const allRequestedItems = normalizeMenuTemplateAssignments(changesData);
+    const profileNamesByKey = new Map(
+        allRequestedItems
+            .filter(item => item.profile_name || item.profileName)
+            .map(item => [menuTemplateProfileKey(item), item.profile_name ?? item.profileName])
+    );
+    const originalItems = normalizeMenuTemplateAssignments(originalData)
+        .filter(item => isMenuTemplateSelected(item))
+        .map(item => enrichMenuTemplateProfileName(item, profileNamesByKey));
+    const requestedItems = allRequestedItems
+        .filter(item => isMenuTemplateSelected(item));
+
+    const originalKeys = new Set(originalItems.map(menuTemplateProfileKey));
+    const requestedKeys = new Set(requestedItems.map(menuTemplateProfileKey));
+    const addedItems = requestedItems.filter(item => !originalKeys.has(menuTemplateProfileKey(item)));
+    const removedItems = originalItems.filter(item => !requestedKeys.has(menuTemplateProfileKey(item)));
+    const firstRequestedItem = requestedItems[0] || {};
+    const assignedTo = record?.user_assign_to_name || record?.assigned_to_name ||
+        firstRequestedItem.user_assign_to_name || firstRequestedItem.user_name || 'Not available';
+    const performedBy = record?.user_name || record?.created_by_name || 'Not available';
+    const remarks = record?.reason_remarks || record?.remarks ||
+        firstRequestedItem.assignment_reason || 'No remarks provided.';
+    const assignmentNature = record?.nature_of_assignment || record?.assignment_nature ||
+        firstRequestedItem.nature_of_assignment || firstRequestedItem.assignment_nature || 'Not specified';
+
+    $('#menuTemplateAssignmentTitle').text(title);
+    $('#menuTemplateAssignedTo').text(assignedTo);
+    $('#menuTemplatePerformedBy').text(performedBy);
+    $('#menuTemplateAssignmentRemarks').text(remarks);
+    $('#menuTemplateAssignmentNature').text(formatMenuTemplateAssignmentNature(assignmentNature));
+    $('#menuTemplateAssignmentLogDate').text(formatMenuTemplateLogDate(logDate));
+    $('#menuTemplateRequestedCount').text(requestedItems.length.toLocaleString());
+    $('#menuTemplateAddedCount').text(addedItems.length.toLocaleString());
+    $('#menuTemplateRemovedCount').text(removedItems.length.toLocaleString());
+
+    $('#menuTemplateRequestedProfiles').html(
+        buildMenuTemplateAssignmentTable(requestedItems, item =>
+            originalKeys.has(menuTemplateProfileKey(item)) ? 'Existing' : 'New')
+    );
+    $('#menuTemplateOriginalProfiles').html(buildMenuTemplateAssignmentTable(originalItems));
+    $('#menuTemplateRemovedProfiles').html(buildMenuTemplateAssignmentTable(removedItems, () => 'Removed'));
+
+    $('#menuTemplateAssignmentDetailsModal').modal('show');
+}
+
+function normalizeMenuTemplateAssignments(data) {
+    if (!data) return [];
+
+    let value = data;
+    if (typeof value === 'string') {
+        try {
+            value = JSON.parse(value);
+        } catch (error) {
+            console.warn('Unable to parse menu-template assignment data:', error);
+            return [];
+        }
+    }
+
+    if (value && !Array.isArray(value) && value.data !== undefined) {
+        value = value.data;
+        if (typeof value === 'string') {
+            try {
+                value = JSON.parse(value);
+            } catch (error) {
+                return [];
+            }
+        }
+    }
+
+    if (Array.isArray(value)) return value.filter(item => item && typeof item === 'object');
+    return value && typeof value === 'object' ? [value] : [];
+}
+
+function isMenuTemplateSelected(item) {
+    return item.option_check === undefined || item.option_check === true || item.option_check === 1 ||
+        String(item.option_check).toLowerCase() === 'true';
+}
+
+function menuTemplateProfileKey(item) {
+    return String(item.profile_auto ?? item.profile_id ?? item.profile_name ?? item.profileName ?? '')
+        .trim()
+        .toLowerCase();
+}
+
+function menuTemplateProfileName(item) {
+    return item.profile_name ?? item.profileName ?? item.profile ?? item.name ?? item.profile_auto ?? 'Unnamed profile';
+}
+
+function enrichMenuTemplateProfileName(item, profileNamesByKey) {
+    if (item.profile_name || item.profileName) return item;
+
+    const profileName = profileNamesByKey.get(menuTemplateProfileKey(item));
+    return profileName ? { ...item, profile_name: profileName } : item;
+}
+
+function escapeMenuTemplateValue(value) {
+    return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+function formatMenuTemplateLogDate(logDate) {
+    if (!logDate) return 'Not available';
+    const date = new Date(logDate);
+    return Number.isNaN(date.getTime()) ? String(logDate) : date.toLocaleString();
+}
+
+function formatMenuTemplateAssignmentNature(value) {
+    if (!value || value === 'Not specified') return 'Not specified';
+    const text = String(value).replace(/_/g, ' ').trim();
+    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+}
+
+function milestoneAssignmentDetails(originalData, changesData, logDate, title, record) {
+    const allRequestedItems = normalizeMilestoneAssignments(changesData);
+    const milestoneDetailsByKey = new Map(
+        allRequestedItems.map(item => [milestoneAssignmentKey(item), item])
+    );
+    const originalItems = normalizeMilestoneAssignments(originalData)
+        .filter(item => isMilestoneAssignmentSelected(item))
+        .map(item => enrichMilestoneAssignment(item, milestoneDetailsByKey));
+    const requestedItems = allRequestedItems.filter(item => isMilestoneAssignmentSelected(item));
+
+    const originalKeys = new Set(originalItems.map(milestoneAssignmentKey));
+    const requestedKeys = new Set(requestedItems.map(milestoneAssignmentKey));
+    const addedItems = requestedItems.filter(item => !originalKeys.has(milestoneAssignmentKey(item)));
+    const removedItems = originalItems.filter(item => !requestedKeys.has(milestoneAssignmentKey(item)));
+    const firstRequestedItem = requestedItems[0] || {};
+    const assignedTo = record?.user_assign_to_name || record?.assigned_to_name ||
+        firstRequestedItem.user_assign_to_name || firstRequestedItem.user_name || 'Not available';
+    const performedBy = record?.user_name || record?.created_by_name || 'Not available';
+    const remarks = record?.reason_remarks || record?.remarks ||
+        firstRequestedItem.assignment_reason || 'No remarks provided.';
+    const assignmentNature = record?.nature_of_assignment || record?.assignment_nature ||
+        firstRequestedItem.nature_of_assignment || firstRequestedItem.assignment_nature || 'Not specified';
+
+    $('#milestoneAssignmentTitle').text(title);
+    $('#milestoneAssignmentAssignedTo').text(assignedTo);
+    $('#milestoneAssignmentPerformedBy').text(performedBy);
+    $('#milestoneAssignmentLogDate').text(formatMenuTemplateLogDate(logDate));
+    $('#milestoneAssignmentRemarks').text(remarks);
+    $('#milestoneAssignmentNature').text(formatMenuTemplateAssignmentNature(assignmentNature));
+    $('#milestoneAssignmentRequestedCount').text(requestedItems.length.toLocaleString());
+    $('#milestoneAssignmentAddedCount').text(addedItems.length.toLocaleString());
+    $('#milestoneAssignmentRemovedCount').text(removedItems.length.toLocaleString());
+
+    $('#milestoneAssignmentRequestedItems').html(
+        buildMilestoneAssignmentTable(requestedItems, item =>
+            originalKeys.has(milestoneAssignmentKey(item)) ? 'Existing' : 'New')
+    );
+    $('#milestoneAssignmentOriginalItems').html(buildMilestoneAssignmentTable(originalItems));
+    $('#milestoneAssignmentRemovedItems').html(
+        buildMilestoneAssignmentTable(removedItems, () => 'Removed')
+    );
+
+    $('#milestoneAssignmentDetailsModal').modal('show');
+}
+
+function normalizeMilestoneAssignments(data) {
+    if (!data) return [];
+    let value = data;
+
+    if (typeof value === 'string') {
+        try {
+            value = JSON.parse(value);
+        } catch (error) {
+            console.warn('Unable to parse milestone assignment data:', error);
+            return [];
+        }
+    }
+
+    if (value && !Array.isArray(value) && value.data !== undefined) {
+        value = value.data;
+        if (typeof value === 'string') {
+            try {
+                value = JSON.parse(value);
+            } catch (error) {
+                return [];
+            }
+        }
+    }
+
+    if (Array.isArray(value)) return value.filter(item => item && typeof item === 'object');
+    return value && typeof value === 'object' ? [value] : [];
+}
+
+function isMilestoneAssignmentSelected(item) {
+    return item.option_check === undefined || item.option_check === true || item.option_check === 1 ||
+        String(item.option_check).toLowerCase() === 'true';
+}
+
+function milestoneAssignmentKey(item) {
+    return String(item.ms_id ?? item.milestone_id ?? item.milestone_description ?? '')
+        .trim()
+        .toLowerCase();
+}
+
+function enrichMilestoneAssignment(item, milestoneDetailsByKey) {
+    const details = milestoneDetailsByKey.get(milestoneAssignmentKey(item));
+    return details ? { ...details, ...item } : item;
+}
+
+function buildMilestoneAssignmentTable(items, statusResolver) {
+    if (!items.length) {
+        return '<div class="text-center text-muted p-4"><i class="fas fa-info-circle me-2"></i>No milestones to display.</div>';
+    }
+
+    const rows = items
+        .slice()
+        .sort((a, b) => String(a.milestone_description || '').localeCompare(String(b.milestone_description || '')))
+        .map((item, index) => {
+            const milestone = escapeMenuTemplateValue(item.milestone_description || 'Milestone name unavailable');
+            const mainService = escapeMenuTemplateValue(item.main_service_name || 'Not specified');
+            const subService = escapeMenuTemplateValue(item.sub_service_name || 'Not specified');
+            const status = statusResolver ? statusResolver(item) : '';
+            let statusBadge = '';
+
+            if (status === 'New') {
+                statusBadge = '<span class="badge bg-success">New assignment</span>';
+            } else if (status === 'Removed') {
+                statusBadge = '<span class="badge bg-danger">Removed</span>';
+            } else if (status === 'Existing') {
+                statusBadge = '<span class="badge bg-secondary">Already assigned</span>';
+            }
+
+            return `
+                <tr>
+                    <td class="text-muted text-center">${index + 1}</td>
+                    <td><div class="fw-bold text-dark">${milestone}</div></td>
+                    <td>${mainService}</td>
+                    <td>${subService}</td>
+                    ${statusResolver ? `<td>${statusBadge}</td>` : ''}
+                </tr>`;
+        }).join('');
+
+    return `
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th class="text-center" style="width: 60px;">#</th>
+                    <th>Milestone</th>
+                    <th>Main Service</th>
+                    <th>Sub-Service</th>
+                    ${statusResolver ? '<th>Status</th>' : ''}
+                </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+        </table>`;
+}
+
+function buildMenuTemplateAssignmentTable(items, statusResolver) {
+    if (!items.length) {
+        return '<div class="text-center text-muted p-4"><i class="fas fa-info-circle me-2"></i>No profiles to display.</div>';
+    }
+
+    const rows = items
+        .slice()
+        .sort((a, b) => String(menuTemplateProfileName(a)).localeCompare(String(menuTemplateProfileName(b))))
+        .map((item, index) => {
+            const profileName = escapeMenuTemplateValue(menuTemplateProfileName(item));
+            const profileReference = escapeMenuTemplateValue(item.profile_auto ?? item.profile_id ?? 'Not available');
+            const moduleName = escapeMenuTemplateValue(item.module_name ?? item.moduleName ?? 'No module specified');
+            const status = statusResolver ? statusResolver(item) : '';
+            let statusBadge = '';
+
+            if (status === 'New') {
+                statusBadge = '<span class="badge bg-success">New assignment</span>';
+            } else if (status === 'Removed') {
+                statusBadge = '<span class="badge bg-danger">Removed</span>';
+            } else if (status === 'Existing') {
+                statusBadge = '<span class="badge bg-secondary">Already assigned</span>';
+            }
+
+            return `
+                <tr>
+                    <td class="text-muted text-center">${index + 1}</td>
+                    <td>
+                        <div class="fw-bold text-dark">${profileName}</div>
+                        <small class="text-muted">Profile reference: ${profileReference}</small>
+                    </td>
+                    <td>${moduleName}</td>
+                    ${statusResolver ? `<td>${statusBadge}</td>` : ''}
+                </tr>`;
+        }).join('');
+
+    return `
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th class="text-center" style="width: 60px;">#</th>
+                    <th>Template / Profile Name</th>
+                    <th>Module</th>
+                    ${statusResolver ? '<th>Status</th>' : ''}
+                </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+        </table>`;
 }
 
 
