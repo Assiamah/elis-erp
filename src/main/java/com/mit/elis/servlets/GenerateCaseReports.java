@@ -4564,7 +4564,17 @@ public class GenerateCaseReports {
 					cert_template =  case_reports_cl.create_land_certificate_template(
 							cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 							cls_url_config.getSoftfile_location(), case_number, job_number);
-						} else if (business_process_sub_name.equals("APPLICATION FOR WHOLE TRANSFER")) {
+				} else if (business_process_sub_name.equals("APPLICATION FOR WHOLE TRANSFER")) {
+							cert_template =  case_reports_cl.create_land_certificate_template(
+									cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+									cls_url_config.getSoftfile_location(), case_number, job_number);
+							
+				} else if (business_process_sub_name.equals("APPLICATION FOR TITLE REGISTRATION WITH CONCURRENCE")) {
+							cert_template =  case_reports_cl.create_land_certificate_template(
+									cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+									cls_url_config.getSoftfile_location(), case_number, job_number);
+
+				} else if (business_process_sub_name.equals("APPLICATION FOR TITLE REGISTRATION WITH CONSENT")) {
 							cert_template =  case_reports_cl.create_land_certificate_template(
 									cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
 									cls_url_config.getSoftfile_location(), case_number, job_number);
