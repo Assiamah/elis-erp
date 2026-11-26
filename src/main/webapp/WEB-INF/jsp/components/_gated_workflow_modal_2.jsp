@@ -458,6 +458,24 @@
                 </div>
 
                 <div class="form-group mb-3">
+                    <label class="form-label d-block">Job Number Option</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="existing_job_number_mode"
+                            id="existing_job_number_mode_manual" value="manual" checked>
+                        <label class="form-check-label" for="existing_job_number_mode_manual">Enter a job number</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="existing_job_number_mode"
+                            id="existing_job_number_mode_generate" value="generate">
+                        <label class="form-check-label" for="existing_job_number_mode_generate">Generate automatically</label>
+                    </div>
+                    <div class="alert alert-info py-2 mt-2 d-none" id="existingJobNumberGenerateNotice">
+                        <i class="bi bi-info-circle me-1"></i>The system will generate a new job number and case number.
+                    </div>
+                </div>
+
+                <div id="existingJobNumberManualFields">
+                <div class="form-group mb-3">
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label for="job_number_on_tc_e" class="form-label">
@@ -474,6 +492,7 @@
                             <input class="form-control" id="case_number_on_tc_e">
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
             <div class="modal-footer">

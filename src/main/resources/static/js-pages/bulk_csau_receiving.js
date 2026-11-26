@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    const MIN_SEARCH_LENGTH = 8;
+    const MIN_SEARCH_LENGTH = 3;
     
     // Cache DOM elements
     const $searchForm = $('#frmEnquiryJobSearch');

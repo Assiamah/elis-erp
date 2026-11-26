@@ -12,7 +12,7 @@ $(document).ready(function() {
     const $filelistModal = $('#filelistModal');
     
     // Constants
-    const MIN_SEARCH_LENGTH = 8;
+    const MIN_SEARCH_LENGTH = 3;
     const MIN_BATCHLIST_LENGTH = 4;
 
     // ==================== MAIN SEARCH FUNCTIONALITY ====================

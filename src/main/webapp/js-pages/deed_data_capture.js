@@ -2,7 +2,10 @@
     const state = {
         loadedJob: null,
         modalOptionsLoaded: false,
-        loadingFullCase: false
+        modalOptionsPromise: null,
+        loadingFullCase: false,
+        pendingLinkedCreation: null,
+        linkedCreation: null
     };
 
     function parseJsonSafely(raw) {
@@ -562,6 +565,7 @@
         );
 
         showAddToBatchButton(record);
+        $('#btnOpenDeedLinkExistingJob').toggleClass('d-none', !firstNonEmpty(record.case_number));
     }
 
     function showAddToBatchButton(record) {
@@ -666,8 +670,22 @@
         }
     }
 
+    function syncExistingJobNumberMode() {
+        const generateAutomatically = $('input[name="existing_job_number_mode"]:checked').val() === 'generate';
+        $('#existingJobNumberManualFields').toggleClass('d-none', generateAutomatically);
+        $('#existingJobNumberGenerateNotice').toggleClass('d-none', !generateAutomatically);
+        $('#job_number_on_tc_e, #case_number_on_tc_e').prop('disabled', generateAutomatically);
+        $('#btn_create_new_job_and_case_number_e').html(generateAutomatically
+            ? '<i class="bi bi-magic me-1"></i>Generate Job and Case Number'
+            : '<i class="bi bi-arrow-repeat me-1"></i>Generate Existing Application');
+    }
+
     function loadApplicationByJobNumber(jobNumber, options) {
         const config = $.extend({ silent: false }, options);
+
+        if (!config.silent) {
+            $('#btnOpenDeedLinkExistingJob').addClass('d-none');
+        }
 
         if (!jobNumber) {
             setLookupStatus('warning', 'Enter a valid job number to continue.');
@@ -697,6 +715,7 @@
                 }
 
                 state.loadedJob = null;
+                $('#btnOpenDeedLinkExistingJob').addClass('d-none');
                 markStepTwoReady(false);
                 updateLoadedSummary({});
                 $('#deedLoadedStatus').text('Application not found');
@@ -740,85 +759,71 @@
 
     function loadExistingJobModalOptions() {
         if (state.modalOptionsLoaded) {
-            return;
+            return $.Deferred().resolve().promise();
         }
+        if (state.modalOptionsPromise) return state.modalOptionsPromise;
 
-        $.ajax({
+        const mainServicesRequest = $.ajax({
             type: 'POST',
             url: 'Case_Management_Serv',
             data: { request_type: 'get_lc_main_service' },
-            cache: false,
-            success: function (response) {
-                const rows = parseJsonSafely(response) || [];
-                populateSelect(
-                    $('#main_service_on_tc_e'),
-                    '-- Select --',
-                    rows,
-                    function (row) {
-                        return row.business_process_id + '-' + row.business_process_name;
-                    },
-                    function (row) {
-                        return row.business_process_name;
-                    }
-                );
-            }
+            cache: false
         });
-
-        $.ajax({
+        const useTypesRequest = $.ajax({
             type: 'POST',
             url: 'Case_Management_Serv',
             data: { request_type: 'get_type_of_use_list' },
-            cache: false,
-            success: function (response) {
-                const rows = parseJsonSafely(response) || [];
-                populateSelect(
-                    $('#type_of_use_on_tc_e'),
-                    '-- Select --',
-                    rows,
-                    function (row) {
-                        return row.typeofuse_id + '_' + row.typeofuse_name;
-                    },
-                    function (row) {
-                        return row.typeofuse_name;
-                    }
-                );
-            }
+            cache: false
         });
-
-        $.ajax({
+        const regionsRequest = $.ajax({
             type: 'POST',
             url: 'app_modal_fills_serv',
             data: { request_type: 'get_all_office_region' },
-            cache: false,
-            success: function (response) {
-                const rows = parseJsonSafely(response) || [];
-                populateSelect(
-                    $('#office_region_on_tc_e'),
-                    '-- Select --',
-                    rows,
-                    function (row) {
-                        return row.ord_region_code + '_' + row.ord_region_name;
-                    },
-                    function (row) {
-                        return row.ord_region_name;
-                    }
-                );
-            }
+            cache: false
         });
 
-        state.modalOptionsLoaded = true;
+        state.modalOptionsPromise = $.when(mainServicesRequest, useTypesRequest, regionsRequest)
+            .done(function (mainResponse, useResponse, regionResponse) {
+                const mainRows = parseJsonSafely(mainResponse[0]) || [];
+                const useRows = parseJsonSafely(useResponse[0]) || [];
+                const regionRows = parseJsonSafely(regionResponse[0]) || [];
+                populateSelect($('#main_service_on_tc_e'), '-- Select --', mainRows,
+                    row => row.business_process_id + '-' + row.business_process_name,
+                    row => row.business_process_name);
+                populateSelect($('#deed_link_main_service'), '-- Select --', mainRows,
+                    row => row.business_process_id + '-' + row.business_process_name,
+                    row => row.business_process_name);
+                populateSelect($('#type_of_use_on_tc_e'), '-- Select --', useRows,
+                    row => row.typeofuse_id + '_' + row.typeofuse_name,
+                    row => row.typeofuse_name);
+                populateSelect($('#deed_link_type_of_use'), '-- Select --', useRows,
+                    row => row.typeofuse_id + '_' + row.typeofuse_name,
+                    row => row.typeofuse_name);
+                populateSelect($('#office_region_on_tc_e'), '-- Select --', regionRows,
+                    row => row.ord_region_code + '_' + row.ord_region_name,
+                    row => row.ord_region_name);
+                populateSelect($('#deed_link_office_region'), '-- Select --', regionRows,
+                    row => row.ord_region_code + '_' + row.ord_region_name,
+                    row => row.ord_region_name);
+                state.modalOptionsLoaded = true;
+            })
+            .fail(function () {
+                state.modalOptionsPromise = null;
+            });
+        return state.modalOptionsPromise;
     }
 
-    function loadSubServices(mainServiceValue) {
+    function loadSubServices(mainServiceValue, targetSelector = '#sub_service_on_tc_e') {
         const parts = String(mainServiceValue || '').split('-');
         const mainServiceId = parts[0];
+        const $target = $(targetSelector);
 
         if (!mainServiceId || mainServiceId === '0' || mainServiceId === '-1') {
-            $('#sub_service_on_tc_e').empty().append(new Option('Select Sub Service', '-1'));
-            return;
+            $target.empty().append(new Option('Select Sub Service', '-1'));
+            return $.Deferred().resolve().promise();
         }
 
-        $.ajax({
+        return $.ajax({
             type: 'POST',
             url: 'Case_Management_Serv',
             data: { request_type: 'get_lc_sub_service' },
@@ -829,9 +834,9 @@
                     return String(row.business_process_id) === String(mainServiceId);
                 });
 
-                $('#sub_service_on_tc_e').empty().append(new Option('-- Select --', '0'));
+                $target.empty().append(new Option('-- Select --', '0'));
                 $.each(matchingRows, function () {
-                    $('#sub_service_on_tc_e').append(
+                    $target.append(
                         new Option(this.business_process_sub_name, this.business_process_sub_id + '-' + this.business_process_sub_name)
                     );
                 });
@@ -839,16 +844,17 @@
         });
     }
 
-    function loadLocalities(regionValue) {
+    function loadLocalities(regionValue, targetSelector = '#locality_on_tc_e') {
         const parts = String(regionValue || '').split('_');
         const regionId = parts[0];
+        const $target = $(targetSelector);
 
         if (!regionId || regionId === '0' || regionId === '-1') {
-            $('#locality_on_tc_e').empty().append(new Option('-- Select --', '0'));
-            return;
+            $target.empty().append(new Option('-- Select --', '0'));
+            return $.Deferred().resolve().promise();
         }
 
-        $.ajax({
+        return $.ajax({
             type: 'POST',
             url: 'Case_Management_Serv',
             data: {
@@ -859,9 +865,9 @@
             success: function (response) {
                 const rows = parseJsonSafely(response) || [];
 
-                $('#locality_on_tc_e').empty().append(new Option('-- Select --', '0'));
+                $target.empty().append(new Option('-- Select --', '0'));
                 $.each(rows, function () {
-                    $('#locality_on_tc_e').append(new Option(this.location_name, this.location_name));
+                    $target.append(new Option(this.location_name, this.location_name));
                 });
             }
         });
@@ -876,12 +882,13 @@
         const officeRegionParts = String(officeRegion || '').split('_');
         const jobNumber = $.trim($('#job_number_on_tc_e').val());
         const caseNumber = $.trim($('#case_number_on_tc_e').val());
+        const generateAutomatically = $('input[name="existing_job_number_mode"]:checked').val() === 'generate';
 
-        if (!jobNumber) {
+        if (!generateAutomatically && !jobNumber) {
             Swal.fire({
                 icon: 'warning',
                 title: 'Job Number Required',
-                text: 'Enter the job number you want to create before continuing.'
+                text: 'Enter a job number or choose automatic generation.'
             });
             return;
         }
@@ -890,7 +897,9 @@
             type: 'POST',
             url: 'Case_Management_Serv',
             data: {
-                request_type: 'online_select_process_acknowledgement_not_on_case_exist_cj',
+                request_type: generateAutomatically
+                    ? 'online_select_process_acknowledgement_not_on_case_exist_generate_job_number'
+                    : 'online_select_process_acknowledgement_not_on_case_exist_cj',
                 main_service_id: firstNonEmpty(mainServiceParts[0], ''),
                 main_service_sub_id: firstNonEmpty(subServiceParts[0], ''),
                 main_service_desc: firstNonEmpty(mainServiceParts[1], ''),
@@ -900,8 +909,9 @@
                 locality: $.trim($('#locality_on_tc_e').val()),
                 type_of_use: $('#type_of_use_on_tc_e').val(),
                 type_of_interest: $('#type_of_interest_on_tc_e').val(),
-                job_number: jobNumber,
-                case_number: caseNumber,
+                job_number: generateAutomatically ? '' : jobNumber,
+                case_number: generateAutomatically ? '' : caseNumber,
+                file_number: $.trim($('#file_number_on_tc_e').val()),
                 nature_of_instrument: $('#nature_of_instrument_on_tc_e').val(),
                 office_region_id: firstNonEmpty(officeRegionParts[0], ''),
                 office_region_name: firstNonEmpty(officeRegionParts[1], '')
@@ -910,7 +920,8 @@
             beforeSend: function () {
                 $('#btn_create_new_job_and_case_number_e')
                     .prop('disabled', true)
-                    .html('<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>Generating...');
+                    .html('<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>'
+                        + (generateAutomatically ? 'Generating...' : 'Creating...'));
             },
             success: function (response) {
                 const payload = parseJsonSafely(response);
@@ -957,8 +968,105 @@
             },
             complete: function () {
                 $('#btn_create_new_job_and_case_number_e')
-                    .prop('disabled', false)
-                    .html('<i class="bi bi-arrow-repeat me-1"></i>Generate Existing Application');
+                    .prop('disabled', false);
+                syncExistingJobNumberMode();
+            }
+        });
+    }
+
+    function createLinkedJobApplication() {
+        const linkContext = state.linkedCreation;
+        const source = state.loadedJob;
+        const mainService = $('#deed_link_main_service').val();
+        const subService = $('#deed_link_sub_service').val();
+        const officeRegion = $('#deed_link_office_region').val();
+        const mainServiceParts = String(mainService || '').split('-');
+        const subServiceParts = String(subService || '').split('-');
+        const officeRegionParts = String(officeRegion || '').split('_');
+        const jobNumber = $.trim($('#deed_link_job_number').val());
+        const caseNumber = $.trim($('#deed_link_case_number').val());
+        const $error = $('#deedCreateLinkedJobError');
+
+        if (!linkContext || !source || !caseNumber) {
+            $error.text('The checked job context is missing. Check the source job again before creating a linked job.').removeClass('d-none');
+            return;
+        }
+        if (!jobNumber) {
+            $error.text('Enter a new job number.').removeClass('d-none');
+            $('#deed_link_job_number').trigger('focus');
+            return;
+        }
+        if (!mainServiceParts[0] || mainServiceParts[0] === '0' || !subServiceParts[0] || subServiceParts[0] === '0') {
+            $error.text('Select the main service and sub service for the new job.').removeClass('d-none');
+            return;
+        }
+        if (!$.trim($('#deed_link_client_name').val())) {
+            $error.text('Enter the client name for the new job.').removeClass('d-none');
+            $('#deed_link_client_name').trigger('focus');
+            return;
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: 'Case_Management_Serv',
+            data: {
+                request_type: 'online_select_process_acknowledgement_not_on_case_exist_cj',
+                main_service_id: firstNonEmpty(mainServiceParts[0], ''),
+                main_service_sub_id: firstNonEmpty(subServiceParts[0], ''),
+                main_service_desc: firstNonEmpty(mainServiceParts[1], ''),
+                main_service_sub_desc: firstNonEmpty(subServiceParts[1], ''),
+                client_name: $.trim($('#deed_link_client_name').val()),
+                land_size: $.trim($('#deed_link_land_size').val()),
+                locality: $.trim($('#deed_link_locality').val()),
+                type_of_use: $('#deed_link_type_of_use').val(),
+                type_of_interest: $('#deed_link_type_of_interest').val(),
+                nature_of_instrument: $('#deed_link_nature_of_instrument').val(),
+                licensed_no: $.trim($('#deed_link_surveyor_number').val()),
+                job_number: jobNumber,
+                case_number: caseNumber,
+                file_number: $.trim($('#deed_link_file_number').val()),
+                linked_reference: linkContext.reference,
+                source_job_number: firstNonEmpty(source.job_number, ''),
+                source_transaction_number: firstNonEmpty(source.transaction_number, ''),
+                copy_source_details: linkContext.mode === 'copy',
+                office_region_id: firstNonEmpty(officeRegionParts[0], ''),
+                office_region_name: firstNonEmpty(officeRegionParts[1], '')
+            },
+            cache: false,
+            beforeSend: function () {
+                $error.addClass('d-none').empty();
+                $('#btnCreateDeedLinkedJob').prop('disabled', true)
+                    .html('<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>Creating...');
+            },
+            success: function (response) {
+                const payload = parseJsonSafely(response);
+                if (payload && payload.success === false) {
+                    $error.text(payload.message || payload.msg || 'The linked job could not be created.').removeClass('d-none');
+                    return;
+                }
+
+                const createdJobNumber = firstNonEmpty(payload && payload.job_number, jobNumber);
+                if (payload && payload.case_number) $('#deed_link_case_number').val(payload.case_number);
+                const modalElement = document.getElementById('deedCreateLinkedJobModal');
+                if (modalElement) bootstrap.Modal.getOrCreateInstance(modalElement).hide();
+                state.linkedCreation = null;
+                $('#deed_job_number').val(createdJobNumber);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Linked Job Created',
+                    text: 'The new job was created under the checked job’s case number.',
+                    timer: 1800,
+                    showConfirmButton: false
+                }).then(function () {
+                    loadApplicationByJobNumber(createdJobNumber);
+                });
+            },
+            error: function () {
+                $error.text('The linked job could not be created. Please review the details and try again.').removeClass('d-none');
+            },
+            complete: function () {
+                $('#btnCreateDeedLinkedJob').prop('disabled', false)
+                    .html('<i class="bi bi-link-45deg me-1"></i>Create and Link Job');
             }
         });
     }
@@ -966,6 +1074,7 @@
     $(function () {
         markStepTwoReady(false);
         updateDeedPolygonConfirmButton();
+        $('#btnOpenDeedLinkExistingJob').addClass('d-none');
 
         $('#deedJobLookupForm').on('submit', function (event) {
             event.preventDefault();
@@ -976,10 +1085,145 @@
             openCreateExistingJobModal();
         });
 
+        $('#btnOpenDeedLinkExistingJob').on('click', function () {
+            $('#deedLinkedReference').val('');
+            $('#deedLinkedJobModeDifferent').prop('checked', true);
+            $('#deedLinkedJobError').addClass('d-none').text('');
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('deedLinkExistingJobModal')).show();
+        });
+
+        $('#btnContinueDeedLinkedJob').on('click', function () {
+            const reference = $.trim($('#deedLinkedReference').val());
+            const source = state.loadedJob;
+            const mode = $('input[name="deedLinkedJobMode"]:checked').val();
+            const $error = $('#deedLinkedJobError');
+
+            if (!source || !firstNonEmpty(source.case_number)) {
+                $error.text('Load a job with a case number before linking another job.').removeClass('d-none');
+                return;
+            }
+            if (!reference) {
+                $error.text('Enter the existing job number or non-digital file number.').removeClass('d-none');
+                $('#deedLinkedReference').trigger('focus');
+                return;
+            }
+            if (mode === 'copy' && !firstNonEmpty(source.transaction_number)) {
+                $error.text('The checked job has no transaction reference, so its parties and further-entry details cannot be copied.').removeClass('d-none');
+                return;
+            }
+
+            state.pendingLinkedCreation = { reference: reference, mode: mode };
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('deedLinkExistingJobModal')).hide();
+        });
+
+        $('#deedLinkExistingJobModal').on('hidden.bs.modal', function () {
+            const linkContext = state.pendingLinkedCreation;
+            if (!linkContext) return;
+            state.pendingLinkedCreation = null;
+            state.linkedCreation = linkContext;
+            loadExistingJobModalOptions().always(function () {
+                $('#deed_link_job_number').val(linkContext.reference).prop('readonly', true);
+                $('#deed_link_case_number').val(firstNonEmpty(state.loadedJob.case_number));
+                $('#deed_link_main_service, #deed_link_sub_service, #deed_link_client_name, #deed_link_land_size, #deed_link_locality, #deed_link_office_region, #deed_link_type_of_use, #deed_link_type_of_interest, #deed_link_nature_of_instrument, #deed_link_surveyor_number, #deed_link_file_number').val('');
+
+                if (linkContext.mode === 'copy') {
+                    const source = state.loadedJob;
+                    const mainService = source.business_process_id && source.business_process_name
+                        ? source.business_process_id + '-' + source.business_process_name : '';
+                    const subService = source.business_process_sub_id && source.business_process_sub_name
+                        ? source.business_process_sub_id + '-' + source.business_process_sub_name : '';
+                    if (mainService && !$('#deed_link_main_service option').filter(function () {
+                        return $(this).val() === mainService;
+                    }).length) {
+                        $('#deed_link_main_service').append(new Option(source.business_process_name, mainService));
+                    }
+                    $('#deed_link_main_service').val(mainService);
+                    setFieldValue('#deed_link_client_name', firstNonEmpty(source.ar_name, source.client_name, source.applicant_name));
+                    setFieldValue('#deed_link_land_size', firstNonEmpty(source.land_size, source.size_of_land));
+                    const rawOfficeRegion = String(firstNonEmpty(
+                        source.office_region_received,
+                        source.office_region,
+                        source.office_region_id && source.office_region_name
+                            ? source.office_region_id + '_' + source.office_region_name : '',
+                        source.regional_code && source.regional_name
+                            ? source.regional_code + '_' + source.regional_name : '',
+                        source.office_region_code && source.office_region_name
+                            ? source.office_region_code + '_' + source.office_region_name : '',
+                        source.region_code && source.region_name
+                            ? source.region_code + '_' + source.region_name : '',
+                        source.region
+                    )).trim();
+                    const officeRegionParts = rawOfficeRegion.split('_');
+                    const officeRegionId = firstNonEmpty(source.office_region_id, source.regional_code,
+                        source.office_region_code, source.region_code, officeRegionParts.length > 1 ? officeRegionParts[0] : '');
+                    const officeRegionName = firstNonEmpty(source.office_region_name, source.regional_name,
+                        source.region_name, officeRegionParts.length > 1 ? officeRegionParts.slice(1).join('_') : rawOfficeRegion);
+                    let officeRegionValue = '';
+                    const $regionOptions = $('#deed_link_office_region option');
+                    const normalizedRegionName = officeRegionName.toLowerCase();
+                    const matchingRegionOption = $regionOptions.filter(function () {
+                        const optionValue = String($(this).val() || '');
+                        const optionName = String($(this).text() || '').trim().toLowerCase();
+                        const valueName = optionValue.includes('_') ? optionValue.substring(optionValue.indexOf('_') + 1).toLowerCase() : '';
+                        return (officeRegionId && optionValue.split('_')[0] === String(officeRegionId))
+                            || (normalizedRegionName && (optionName === normalizedRegionName || valueName === normalizedRegionName));
+                    }).first();
+                    if (matchingRegionOption.length) {
+                        officeRegionValue = matchingRegionOption.val();
+                    } else if (officeRegionId || officeRegionName) {
+                        officeRegionValue = officeRegionId
+                            ? officeRegionId + (officeRegionName ? '_' + officeRegionName : '')
+                            : officeRegionName;
+                        $('#deed_link_office_region').append(new Option(officeRegionName || officeRegionId, officeRegionValue));
+                    }
+                    if (officeRegionValue) $('#deed_link_office_region').val(officeRegionValue);
+                    const sourceLocality = firstNonEmpty(source.locality, source.location_name,
+                        source.locality_of_parcel, source.land_location);
+                    if (officeRegionValue) {
+                        loadLocalities(officeRegionValue, '#deed_link_locality').always(function () {
+                            setSelectValue('#deed_link_locality', sourceLocality);
+                        });
+                    } else {
+                        setSelectValue('#deed_link_locality', sourceLocality);
+                    }
+                    setSelectValue('#deed_link_type_of_use', firstNonEmpty(source.type_of_use));
+                    setSelectValue('#deed_link_type_of_interest', firstNonEmpty(source.type_of_interest));
+                    setSelectValue('#deed_link_nature_of_instrument', firstNonEmpty(source.nature_of_instrument));
+                    setFieldValue('#deed_link_surveyor_number', firstNonEmpty(source.licensed_no, source.surveyor_number));
+                    setFieldValue('#deed_link_file_number', firstNonEmpty(source.file_number));
+                    if (mainService && subService) {
+                        loadSubServices(mainService, '#deed_link_sub_service').done(function () {
+                            setSelectValue('#deed_link_sub_service', subService);
+                        });
+                    }
+                    $('#deed_link_main_service, #deed_link_sub_service, #deed_link_client_name, #deed_link_land_size, #deed_link_locality, #deed_link_office_region, #deed_link_type_of_use, #deed_link_type_of_interest, #deed_link_nature_of_instrument, #deed_link_surveyor_number, #deed_link_file_number')
+                        .prop('readonly', true)
+                        .filter('select').prop('disabled', true);
+                }
+
+                $('#deedCreateLinkedJobError').addClass('d-none').empty();
+                const modalElement = document.getElementById('deedCreateLinkedJobModal');
+                if (modalElement) bootstrap.Modal.getOrCreateInstance(modalElement).show();
+            });
+        });
+
+        $('#deedCreateLinkedJobModal').on('hidden.bs.modal', function () {
+            $('#deed_link_job_number').prop('readonly', false);
+            $('#deed_link_main_service, #deed_link_sub_service, #deed_link_client_name, #deed_link_land_size, #deed_link_locality, #deed_link_office_region, #deed_link_type_of_use, #deed_link_type_of_interest, #deed_link_nature_of_instrument, #deed_link_surveyor_number, #deed_link_file_number')
+                .prop('readonly', false)
+                .prop('disabled', false);
+            if (state.linkedCreation) state.linkedCreation = null;
+        });
+
         $('#CreateJobNumberModalExisting').on('show.bs.modal', function () {
             loadExistingJobModalOptions();
-            $('#job_number_on_tc_e').val($.trim($('#deed_job_number').val()));
+            syncExistingJobNumberMode();
+            if ($('input[name="existing_job_number_mode"]:checked').val() !== 'generate') {
+                $('#job_number_on_tc_e').val($.trim($('#deed_job_number').val()));
+            }
         });
+
+        $(document).on('change', 'input[name="existing_job_number_mode"]', syncExistingJobNumberMode);
 
         $('#main_service_on_tc_e').on('change', function () {
             loadSubServices($(this).val());
@@ -989,9 +1233,19 @@
             loadLocalities($(this).val());
         });
 
+        $('#deed_link_main_service').on('change', function () {
+            loadSubServices($(this).val(), '#deed_link_sub_service');
+        });
+
+        $('#deed_link_office_region').on('change', function () {
+            loadLocalities($(this).val(), '#deed_link_locality');
+        });
+
         $('#btn_create_new_job_and_case_number_e').on('click', function () {
             createExistingJobApplication();
         });
+
+        $('#btnCreateDeedLinkedJob').on('click', createLinkedJobApplication);
 
         $('#further_entry').on('show.bs.modal', function () {
             if (state.loadedJob) {

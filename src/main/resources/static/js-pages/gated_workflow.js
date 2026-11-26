@@ -14251,6 +14251,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     $('#CreateJobNumberModalExisting').on('show.bs.modal', async function(event) {
+        updateExistingJobNumberMode();
         try {
             // Show loading state
             showLoadingState(this, true);
@@ -14398,6 +14399,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    function updateExistingJobNumberMode() {
+        const generateAutomatically = $('input[name="existing_job_number_mode"]:checked').val() === 'generate';
+        $('#existingJobNumberManualFields').toggleClass('d-none', generateAutomatically);
+        $('#existingJobNumberGenerateNotice').toggleClass('d-none', !generateAutomatically);
+        $('#job_number_on_tc_e, #case_number_on_tc_e').prop('disabled', generateAutomatically);
+        $('#btn_create_new_job_and_case_number_e').html(generateAutomatically
+            ? '<i class="bi bi-magic me-1"></i>Generate Job and Case Number'
+            : '<i class="bi bi-arrow-repeat me-1"></i>Generate Existing Application');
+        if (generateAutomatically) {
+            $('#job_number_on_tc_e, #case_number_on_tc_e').val('');
+        }
+    }
+
+    $(document).on('change', 'input[name="existing_job_number_mode"]', updateExistingJobNumberMode);
+
     $('#btn_create_new_job_and_case_number_e').on('click', function(e) {
         e.preventDefault();
         
@@ -14433,6 +14449,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var nature_of_instrument_on_tc = $("#nature_of_instrument_on_tc_e").val();
         var job_number_on_tc = $("#job_number_on_tc_e").val();
         var case_number_on_tc = $("#case_number_on_tc_e").val();
+        var generate_job_number = $('input[name="existing_job_number_mode"]:checked').val() === 'generate';
 
         var licensed_no = $("#licensed_surveyor_no_on_tcland_size_on_tc_e").val();
         
@@ -14469,13 +14486,26 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             return;
         }
+
+        if (!generate_job_number && !job_number_on_tc) {
+            Swal.fire({
+                title: 'Missing Information',
+                text: 'Enter a job number or choose automatic generation.',
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#0d6efd'
+            });
+            return;
+        }
         
         // Show confirmation dialog
         Swal.fire({
-            title: 'Create New Job & Case Number',
+            title: generate_job_number ? 'Generate Job & Case Number' : 'Create New Job & Case Number',
             html: `
                 <div class="text-start">
-                    <p class="mb-3">Are you sure you want to create a new Job and Case number with the following details?</p>
+                    <p class="mb-3">${generate_job_number
+                        ? 'Are you sure you want the system to generate a new Job and Case number?'
+                        : 'Are you sure you want to create a new Job and Case number with the following details?'}</p>
                     
                     <div class="card border mb-3">
                         <div class="card-body p-3">
@@ -14516,7 +14546,9 @@ document.addEventListener('DOMContentLoaded', function() {
             `,
             icon: 'question',
             showCancelButton: true,
-            confirmButtonText: '<i class="fas fa-plus-circle me-2"></i>Create New',
+            confirmButtonText: generate_job_number
+                ? '<i class="fas fa-magic me-2"></i>Generate'
+                : '<i class="fas fa-plus-circle me-2"></i>Create New',
             cancelButtonText: '<i class="fas fa-times me-2"></i>Cancel',
             confirmButtonColor: '#198754',
             cancelButtonColor: '#6c757d',
@@ -14545,7 +14577,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
                                 <span class="visually-hidden">Loading...</span>
                             </div>
-                            <p class="mb-1">Creating new Job and Case numbers</p>
+                            <p class="mb-1">${generate_job_number ? 'Generating' : 'Creating'} new Job and Case numbers</p>
                             <p class="text-muted small mb-0">Please wait while we process your request...</p>
                         </div>
                     `,
@@ -14562,7 +14594,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     type: "POST",
                     url: "Case_Management_Serv",
                     data: {
-                        request_type: 'online_select_process_acknowledgement_not_on_case_exist_cj',
+                        request_type: generate_job_number
+                            ? 'online_select_process_acknowledgement_not_on_case_exist_generate_job_number'
+                            : 'online_select_process_acknowledgement_not_on_case_exist_cj',
                         main_service_id: main_service_id,
                         main_service_sub_id: sub_service_id,
                         main_service_desc: main_service_name,
@@ -14572,8 +14606,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         locality: locality_on_tc,
                         type_of_use: type_of_use_on_tc,
                         type_of_interest: type_of_interest_on_tc,
-                        job_number: job_number_on_tc,
-                        case_number: case_number_on_tc,
+                        job_number: generate_job_number ? '' : job_number_on_tc,
+                        case_number: generate_job_number ? '' : case_number_on_tc,
                         nature_of_instrument: nature_of_instrument_on_tc,
                         office_region_id: office_region_id,
                         office_region_name: office_region_name,

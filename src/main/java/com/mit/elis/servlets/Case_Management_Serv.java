@@ -6141,6 +6141,77 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				return web_service_response;
 			}
 
+			if (request_type.equals("online_select_process_acknowledgement_not_on_case_exist_generate_job_number")) {
+
+				String main_service_id = request.getParameter("main_service_id");
+				String main_service_sub_id = request.getParameter("main_service_sub_id");
+				String main_service_desc = request.getParameter("main_service_desc");
+				String main_service_sub_desc = request.getParameter("main_service_sub_desc");
+
+				String client_name = request.getParameter("client_name");
+				String land_size = request.getParameter("land_size");
+				String locality = request.getParameter("locality");
+
+				String type_of_use = request.getParameter("type_of_use");
+				String type_of_interest = request.getParameter("type_of_interest");
+				String nature_of_instrument = request.getParameter("nature_of_instrument");
+
+				String fullname = (String) session.getAttribute("fullname"); String mac_address = (String) session.getAttribute("mac_address"); String ip_address =  (String) session.getAttribute("ip_address");
+
+				String userid = (String) session.getAttribute("userid");
+
+				String regional_code = (String) session.getAttribute("regional_code");
+				String regional_name = (String) session.getAttribute("regional_name");
+				String distict_code = (String) session.getAttribute("distict_code");
+				String district_name = (String) session.getAttribute("district_name");
+
+				// String service_bill_descdription_formated =
+				// main_service_sub_desc.replace(" ", "_");
+				String rs_result = null;
+
+				JSONArray jsonArray = new JSONArray();
+				JSONObject property_data_json = new JSONObject();
+				property_data_json.put("business_process_id", main_service_id);
+				property_data_json.put("business_process_name", main_service_desc);
+				property_data_json.put("business_process_sub_id", main_service_sub_id);
+				property_data_json.put("business_process_sub_name", main_service_sub_desc);
+				property_data_json.put("ar_name", client_name);
+
+				property_data_json.put("land_size", land_size);
+				property_data_json.put("locality_of_parcel", locality);
+
+				property_data_json.put("type_of_use", type_of_use);
+				property_data_json.put("type_of_interest", type_of_interest);
+				property_data_json.put("nature_of_instrument", nature_of_instrument);
+
+				property_data_json.put("fullname", fullname);
+				property_data_json.put("userid", userid);
+				// property_data_json.put("office_region", office_region);
+				property_data_json.put("office_distict", "No" + "_" + "No");
+				property_data_json.put("office_region_received", regional_code + "_" + regional_name);
+				property_data_json.put("office_distict_received", distict_code + "_" + district_name);
+				property_data_json.put("fullname", fullname);
+				property_data_json.put("userid", userid); 
+				property_data_json.put("mac_address", mac_address);
+
+				jsonArray.put(property_data_json);
+
+				rs_result = jsonArray.toString();
+
+				// //System.out.println(rs_result);
+				web_service_response = casemgt_cl.online_select_process_acknowledgement_not_on_case_exist_generate_job_number(
+						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+						rs_result);
+				if (web_service_response != null) {
+					// //System.out.println(web_service_response);
+
+				} else {
+					//System.out.println(web_service_response);
+				}
+
+				return web_service_response;
+			}
+
 			if (request_type.equals("online_select_process_acknowledgement_not_on_case_exist_cj")) {
 
 				String main_service_id = request.getParameter("main_service_id");
@@ -6158,6 +6229,11 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 
 				String job_number = request.getParameter("job_number");
 				String case_number = request.getParameter("case_number");
+				String file_number = request.getParameter("file_number");
+				String linked_reference = request.getParameter("linked_reference");
+				String source_job_number = request.getParameter("source_job_number");
+				String source_transaction_number = request.getParameter("source_transaction_number");
+				String copy_source_details = request.getParameter("copy_source_details");
 
 				String licensed_no = request.getParameter("licensed_no");
 
@@ -6191,6 +6267,15 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 
 				property_data_json.put("job_number", job_number);
 				property_data_json.put("case_number", case_number);
+				property_data_json.put("file_number", file_number != null ? file_number : "");
+				property_data_json.put("linked_reference", linked_reference != null ? linked_reference : "");
+				property_data_json.put("source_job_number", source_job_number != null ? source_job_number : "");
+				property_data_json.put("source_transaction_number", source_transaction_number != null ? source_transaction_number : "");
+				property_data_json.put("copy_source_details", "true".equalsIgnoreCase(copy_source_details));
+				if ("true".equalsIgnoreCase(copy_source_details) && source_transaction_number != null
+						&& !source_transaction_number.trim().isEmpty()) {
+					property_data_json.put("transaction_number", source_transaction_number);
+				}
 
 				property_data_json.put("licensed_no", licensed_no);
 
@@ -6208,9 +6293,15 @@ obj.put("mac_address", mac_address); obj.put("ip_address", ip_address);
 				rs_result = jsonArray.toString();
 
 				// //System.out.println(rs_result);
-				web_service_response = casemgt_cl.online_select_process_acknowledgement_not_on_case_exist_cj(
-						cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
-						rs_result);
+				if ("true".equalsIgnoreCase(copy_source_details)) {
+					web_service_response = casemgt_cl.online_select_process_acknowledgement_not_on_case_exist_cj_copy(
+							cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+							rs_result);
+				} else {
+					web_service_response = casemgt_cl.online_select_process_acknowledgement_not_on_case_exist_cj(
+							cls_url_config.getWeb_service_url_ser(), cls_url_config.getWeb_service_url_ser_api_key(),
+							rs_result);
+				}
 				if (web_service_response != null) {
 					// //System.out.println(web_service_response);
 
