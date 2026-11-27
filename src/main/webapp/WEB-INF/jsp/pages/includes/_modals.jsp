@@ -950,6 +950,7 @@
 							>
 								<option value="Male">Natural Person</option>
 								<option value="Female">Company</option>
+								<option value="Stool">Stool</option>
 							</select>
 						</div>
 					</div>

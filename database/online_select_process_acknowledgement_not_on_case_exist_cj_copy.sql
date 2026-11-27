@@ -828,3 +828,76 @@ $BODY$;
 ALTER FUNCTION csau.online_select_process_acknowledgement_not_on_case_exist_gjn(text)
     OWNER TO postgres;
 
+-- FUNCTION: csau.load_application_details_by_job_number_all(text)
+
+-- DROP FUNCTION IF EXISTS csau.load_application_details_by_job_number_all(text);
+
+CREATE OR REPLACE FUNCTION csau.load_application_details_by_job_number_all(
+	vr_job_number text)
+    RETURNS text
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+DECLARE 
+
+   json_result_obj TEXT DEFAULT '';
+ 
+ 
+BEGIN
+
+  json_result_obj= json_build_object('success',true,'data',array_to_json(array_agg(row_to_json(t))))
+
+ from (
+	 
+	 SELECT 
+	m.case_number,
+    l.transaction_number,
+    l.job_number,
+    l.business_process_id,
+    l.business_process_name,
+	l.current_application_status,
+	l.created_for,
+    l.created_for_id,
+	l.business_process_sub_id,
+    l.business_process_sub_name,
+	m.ar_name,	 
+    l.job_purpose,
+    l.job_status,
+    to_char(l.job_datesend, 'mm/dd/yyyy'::text)::date AS job_datesend,
+    l.job_recieved_by,
+    l.job_forwarded_by,
+    l.job_recieved_by_id,
+    l.job_forwarded_by_id,
+    l.current_division_of_application,
+	c.land_size,
+    c.licensed_no,
+	c.regional_number,
+    c.locality,
+	l.region_code,
+	l.regional_name
+	 
+   FROM csau.lrd_registration_sub_process l
+     JOIN csau.lrd_registration_processing m ON l.transaction_number = m.transaction_number::text
+     JOIN csau_geospatial.lc_plan_approval_plottings c ON c.case_number::text = m.case_number::text
+
+ WHERE l.job_number=vr_job_number OR 
+	   m.case_number=vr_job_number OR 
+	   l.transaction_number=vr_job_number OR 
+	   c.regional_number=vr_job_number OR 
+	   c.glpin=vr_job_number OR
+	   m.file_number = vr_job_number) t;
+
+IF  json_result_obj IS NULL THEN
+     json_result_obj = 'Error in loading Data';
+ 
+END IF;
+   
+  
+  RETURN json_result_obj;
+END;
+$BODY$;
+
+ALTER FUNCTION csau.load_application_details_by_job_number_all(text)
+    OWNER TO postgres;
+

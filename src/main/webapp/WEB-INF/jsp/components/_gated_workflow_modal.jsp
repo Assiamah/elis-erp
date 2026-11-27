@@ -835,6 +835,7 @@
             <select name="bl_txt_ar_gender" id="party_ar_person_type_gen" class="form-select">
               <option value="Natural Person">Natural Person</option>
               <option value="Company">Company</option>
+              <option value="Stool">Stool</option>
             </select>
           </div>
           
